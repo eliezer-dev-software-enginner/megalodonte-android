@@ -1,0 +1,2847 @@
+{
+  "schemaVersion": 1,
+  "note": "Static source inventory. Status and declarations do not certify full API or behavioral parity; transitive/platform signatures require review.",
+  "types": [
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.Bootstrap",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/Bootstrap.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.application.Application",
+        "javafx.scene.image.Image",
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.base.theme.FontLoader"
+      ],
+      "publicMemberDeclarations": [
+        "public static void dispatch(Class<? extends Application> appClass, Stage stage, String[] args)",
+        "public static void dispatch(Stage stage, String[] args)",
+        "public static void dispatch(Stage stage)",
+        "public static void applyAppIcon(Stage stage)",
+        "public static void applyStageIcon(Stage stage, String routeIconPath)",
+        "public static void dispatchEvent(MegalodonteApp.Event event)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.Context",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/Context.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.animation.PauseTransition",
+        "javafx.application.Platform",
+        "javafx.beans.value.ChangeListener",
+        "javafx.scene.Parent",
+        "javafx.scene.Scene",
+        "javafx.stage.Stage",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.ComponentInterface",
+        "megalodonte.base.components.ScreenComponent",
+        "megalodonte.base.route.RouteResult",
+        "megalodonte.base.route.RouterBase",
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeManager"
+      ],
+      "publicMemberDeclarations": [
+        "public megalodonte.contracts.BackendContract backendContract()",
+        "public String[] getArgs()",
+        "public Stage javafxStage()",
+        "public void useView(Class<? extends ScreenComponent> componentClass)",
+        "public void useView(ScreenComponent component)",
+        "public void updateView(ScreenComponent component)",
+        "public void useView(RouteResult routeResult)",
+        "public void useView(ComponentInterface<?> component)",
+        "public RouterBuilder useRouter(RouterBase router)",
+        "public void start()"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.ErrorReporter",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/ErrorReporter.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void register(Handler appHandler)",
+        "public static void handle(Throwable t)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.JavaFXHost",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/JavaFXHost.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.LinuxDesktopEntry",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/LinuxDesktopEntry.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.MegalodonteApp",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/MegalodonteApp.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.application.Application"
+      ],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static Context getCurrentContext()",
+        "public static String[] getArgs()",
+        "public static void appName(String name)",
+        "public static void appIcon(String classpathResourcePath)",
+        "public static void run(Consumer<Context> contextHandler, Consumer<Event> onEvent)",
+        "public static void run(Consumer<Context> contextHandler)",
+        "public static void run(String[] args, Consumer<Context> contextHandler, Consumer<Event> onEvent)",
+        "public static void run(String[] args, Consumer<Context> contextHandler)",
+        "public static void run(Class<? extends Application> appClass, String[] args, Consumer<Context> contextHandler, Consumer<Event> onEvent)",
+        "public static void run(Class<? extends Application> appClass, String[] args, Consumer<Context> contextHandler)",
+        "public static void run(Class<? extends Application> appClass, Consumer<Context> contextHandler, Consumer<Event> onEvent)",
+        "public static void run(Class<? extends Application> appClass, Consumer<Context> contextHandler)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.MegalodonteApplication",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/MegalodonteApplication.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.application.Application",
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public final void start(Stage primaryStage)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.application.View",
+      "source": "megalodonte-base/src/main/java/megalodonte/application/View.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.ComponentInterface"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.Animations",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/Animations.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.animation.Animation",
+        "javafx.animation.FadeTransition",
+        "javafx.animation.Interpolator",
+        "javafx.animation.ParallelTransition",
+        "javafx.animation.ScaleTransition",
+        "javafx.animation.SequentialTransition",
+        "javafx.animation.TranslateTransition",
+        "javafx.scene.Node",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public static Animation rotate(Node node, double fromAngle, double toAngle, Duration duration)",
+        "public static Animation rotate360(Node node)",
+        "public static Animation rotate(Component c, double fromAngle, double toAngle, Duration duration)",
+        "public static Animation rotate360(Component c)",
+        "public static Animation fadeSlide(Component c, boolean entering)",
+        "public static Animation fadeSlide(Component c, boolean entering, Duration delay)",
+        "public static Animation fade(Component c, boolean entering)",
+        "public static Animation fade(Component c, boolean entering, Duration delay)",
+        "public static Animation fadeSlideDown(Component c, boolean entering)",
+        "public static Animation fadeSlideDown(Component c, boolean entering, Duration delay)",
+        "public static Animation fadeSlideUp(Component c, boolean entering)",
+        "public static Animation fadeSlideUp(Component c, boolean entering, Duration delay)",
+        "public static Animation fadeScale(Component c, boolean entering)",
+        "public static Animation fadeScale(Component c, boolean entering, Duration duration)",
+        "public static Animation fadeScale(Component c, boolean entering, Duration duration, Duration delay)",
+        "public static Animation pop(Component c, boolean entering)",
+        "public static Animation pop(Component c, boolean entering, Duration delay)",
+        "public static Animation slideHorizontal(Component c, boolean entering)",
+        "public static Animation slideHorizontal(Component c, boolean entering, Duration delay)",
+        "public static Animation shake(Component c)",
+        "public static Animation shake(Component c, Duration delay)",
+        "public static Animation bounce(Component c)",
+        "public static Animation bounce(Component c, Duration delay)",
+        "public static Animation pulse(Component c)",
+        "public static Animation pulse(Component c, int cycles)",
+        "public static Animation pulse(Component c, Duration delay)",
+        "public static Animation pulse(Component c, int cycles, Duration delay)",
+        "public static Animation pulse(Component c, int cycles, Duration speed, Duration delay)",
+        "public static Animation flash(Component c)",
+        "public static Animation flash(Component c, Duration delay)",
+        "public static Animation wobble(Component c)",
+        "public static Animation wobble(Component c, Duration delay)",
+        "public static Animation slideInLeft(Component c, boolean entering)",
+        "public static Animation slideInLeft(Component c, boolean entering, Duration delay)",
+        "public static Animation slideInRight(Component c, boolean entering)",
+        "public static Animation slideInRight(Component c, boolean entering, Duration delay)",
+        "public static Animation riseIn(Component c, boolean entering)",
+        "public static Animation riseIn(Component c, boolean entering, Duration duration)",
+        "public static Animation riseIn(Component c, boolean entering, Duration duration, Duration delay)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.async.Async",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/async/Async.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.application.ErrorReporter"
+      ],
+      "publicMemberDeclarations": [
+        "public static void Run(RunnableThrowing task)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.async.RunnableThrowing",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/async/RunnableThrowing.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.async.Scope",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/async/Scope.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.application.ErrorReporter"
+      ],
+      "publicMemberDeclarations": [
+        "public void run(RunnableThrowing task)",
+        "public void onCancel(Runnable cleanup)",
+        "public void cancel()",
+        "public boolean isCancelled()"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.Component",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/Component.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public Node getJavaFxNode()",
+        "public Component fromJavaFxNode(Node newNode)",
+        "public static Component CreateFromJavaFxNode(Node node)",
+        "public Node getJavaFxNode()",
+        "public Component fromJavaFxNode(Node newNode)",
+        "public <T extends Component> Component ref(Ref<T> ref)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.ComponentInterface",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/ComponentInterface.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.IconInterface",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/IconInterface.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public abstract Node getJavaFxNode()",
+        "public IconInterface ref(Ref<IconInterface> ref)",
+        "public static IconInterface of(Node node)",
+        "public Node getJavaFxNode()"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.Props",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/Props.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.base.theme.ThemeManager"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.PropsInterface",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/PropsInterface.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.Ref",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/Ref.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public Ref()",
+        "public Ref(T initial)",
+        "public T current()",
+        "public void setCurrent(T component)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.components.ScreenComponent",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/components/ScreenComponent.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.Redirect",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/Redirect.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "java.awt.Desktop"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void to(String url)",
+        "public static void to(String url, Consumer<Exception> exceptionCallback)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.Route",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/Route.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public record Route( String identification, ScreenFactory factory, RouteProps props )"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.RouteNotFoundException",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/RouteNotFoundException.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public RouteNotFoundException(String identification)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.RouteProps",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/RouteProps.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public record RouteProps(int screenWidth, int screenHeight, String name, boolean screenIsExpandable, String iconPath)",
+        "public RouteProps(int screenWidth, int screenHeight, String name, boolean screenIsExpandable)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.RouterBase",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/RouterBase.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.application.Context"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.RouteResolutionException",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/RouteResolutionException.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public RouteResolutionException(String path, Throwable cause)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.RouteResult",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/RouteResult.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.ComponentInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public record RouteResult( ComponentInterface<?> view, RouteProps props )"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.RouteTable",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/RouteTable.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public record ResolvedRoute(Route route, Map<String, String> params)",
+        "public RouteTable(Set<Route> routes, String entrypoint)",
+        "public String entrypoint()",
+        "public Set<Route> routes()",
+        "public ResolvedRoute resolve(String path)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.ScreenContextInterface",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/ScreenContextInterface.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.ScreenFactory",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/ScreenFactory.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.ScreenComponent",
+        "megalodonte.base.route.v2.ScreenContextInterface"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.ScreenManager",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/ScreenManager.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.application.ErrorReporter",
+        "megalodonte.base.components.ComponentInterface",
+        "megalodonte.base.components.ScreenComponent",
+        "megalodonte.base.route.v2.ScreenContextBase",
+        "megalodonte.base.route.v2.ScreenContextInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public ScreenManager(RouteTable table)",
+        "public RouteTable.ResolvedRoute resolve(String path)",
+        "public RouteResult mount(Stage stage, Route route, Map<String, String> params, RouterBase router)",
+        "public void registerSpawned(Stage stage)",
+        "public void destroy(Stage stage)",
+        "public void closeAllSpawned()"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.v2.ScreenContextBase",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/v2/ScreenContextBase.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.animation.FadeTransition",
+        "javafx.scene.Parent",
+        "javafx.scene.Scene",
+        "javafx.stage.Stage",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.application.Bootstrap",
+        "megalodonte.application.ErrorReporter",
+        "megalodonte.base.async.RunnableThrowing",
+        "megalodonte.base.async.Scope",
+        "megalodonte.base.route.RouteProps",
+        "megalodonte.base.route.RouteResult",
+        "megalodonte.base.route.RouteTable",
+        "megalodonte.base.route.RouterBase",
+        "megalodonte.base.route.ScreenManager",
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeManager"
+      ],
+      "publicMemberDeclarations": [
+        "public ScreenContextBase(Stage selfStage, RouterBase router, ScreenManager screenManager)",
+        "public Scope scope()",
+        "public void navigate(String path)",
+        "public void navigateAndCloseOthers(String path)",
+        "public void spawnWindow(String path)",
+        "public void spawnWindow(String path, Consumer<Exception> errorHandler)",
+        "public void setParams(Map<String, String> params)",
+        "public Stage selfStage()",
+        "public RouterBase router()",
+        "public Map<String, String> getParams()",
+        "public Scene getJavaFXScene()",
+        "public void whenReady(RunnableThrowing runnableThrowing)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.route.v2.ScreenContextInterface",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/route/v2/ScreenContextInterface.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Scene",
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.async.RunnableThrowing",
+        "megalodonte.base.async.Scope",
+        "megalodonte.base.route.RouteNotFoundException",
+        "megalodonte.base.route.RouteProps",
+        "megalodonte.base.route.RouterBase"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.UI",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/UI.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.application.Platform"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void runOnUi(Runnable task)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.base.v2.KeyBind",
+      "source": "megalodonte-base/src/main/java/megalodonte/base/v2/KeyBind.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.Scene",
+        "javafx.scene.input.KeyCode",
+        "javafx.scene.input.KeyEvent"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.base.route.v2.ScreenContextInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public KeyBind on(KeyCode key, Runnable action, Modifier... modifiers)",
+        "public void attach(ScreenContextInterface screenContext)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.platform.javafx.JavaFxFontLoader",
+      "source": "megalodonte-base/src/main/java/megalodonte/platform/javafx/JavaFxFontLoader.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.text.Font"
+      ],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.base.theme.ThemeTypography"
+      ],
+      "publicMemberDeclarations": [
+        "public static int loadAll()",
+        "public static int loadAll(String resourceDirectory)"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.platform.javafx.JavaFxPlatform",
+      "source": "megalodonte-base/src/main/java/megalodonte/platform/javafx/JavaFxPlatform.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Scene",
+        "javafx.stage.Screen"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeManager",
+        "megalodonte.base.theme.ThemePlatform",
+        "megalodonte.contracts.BackendContract",
+        "megalodonte.contracts.Capability"
+      ],
+      "publicMemberDeclarations": [
+        "public static BackendContract contract()",
+        "public static void initialize()"
+      ]
+    },
+    {
+      "module": "megalodonte-base",
+      "type": "megalodonte.utils.ThrowingSupplier",
+      "source": "megalodonte-base/src/main/java/megalodonte/utils/ThrowingSupplier.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Button",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Button.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.animation.KeyFrame",
+        "javafx.animation.KeyValue",
+        "javafx.animation.Timeline",
+        "javafx.scene.control.ContentDisplay",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.application.ErrorReporter",
+        "megalodonte.base.async.RunnableThrowing",
+        "megalodonte.base.components.IconInterface",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.props.ButtonProps",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public Button(String textContent)",
+        "public Button(String textContent, ButtonProps props)",
+        "public Button(ReadableState<String> state)",
+        "public Button(ReadableState<String> state, ButtonProps props)",
+        "public Button onClick(RunnableThrowing handler)",
+        "public Button icon(IconInterface icon)",
+        "public Button icon(ReadableState<IconInterface> iconState)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Card",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Card.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.layout.*"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.props.CardProps",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public Card(Component content)",
+        "public Card(Component content, CardProps props)",
+        "public CardProps props()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Checkbox",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Checkbox.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.control.CheckBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.base.state.State",
+        "megalodonte.props.CheckboxProps"
+      ],
+      "publicMemberDeclarations": [
+        "public Checkbox(String label, State<Boolean> state)",
+        "public Checkbox(String label, State<Boolean> state, CheckboxProps props)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Clickable",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Clickable.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.animation.KeyFrame",
+        "javafx.animation.KeyValue",
+        "javafx.animation.Timeline",
+        "javafx.scene.Cursor",
+        "javafx.scene.input.MouseEvent",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.StackPane",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public Clickable(Component content, Runnable onClick)",
+        "public Clickable(Component content)",
+        "public Clickable onClick(Runnable onClick)",
+        "public void setOnClick(Runnable onClick)",
+        "public void enableHapticFeedback()",
+        "public void setLongPressDelay(Duration delay)",
+        "public void setEnabled(boolean enabled)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.CurrencyInput",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/CurrencyInput.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.scene.Node",
+        "javafx.scene.control.TextInputControl",
+        "javafx.scene.layout.StackPane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.State",
+        "megalodonte.base.components.Component",
+        "megalodonte.styles.util.StyleUtils.updateBorderRadius",
+        "megalodonte.styles.util.StyleUtils.updateFontSize"
+      ],
+      "publicMemberDeclarations": [
+        "public CurrencyInput(State<String> state)",
+        "public Node getJavaFxNode()",
+        "public void setText(String value)",
+        "public String getText()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.DatePicker",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/DatePicker.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.application.Platform",
+        "javafx.scene.layout.StackPane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.IconInterface",
+        "megalodonte.base.state.State",
+        "megalodonte.props.DatePickerProps",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public DatePicker()",
+        "public DatePicker(DatePickerProps props)",
+        "public DatePicker(State<LocalDate> state)",
+        "public DatePicker(State<LocalDate> state, DatePickerProps props)",
+        "public DatePicker(LocalDate initialValue)",
+        "public DatePicker(LocalDate initialValue, DatePickerProps props)",
+        "public DatePicker icon(IconInterface icon)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.FocusableFieldInterface",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/FocusableFieldInterface.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.GridFlow",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/GridFlow.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.layout.TilePane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.props.GridFlowProps",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public GridFlow()",
+        "public GridFlow(GridFlowProps props)",
+        "public GridFlow child(Component component)",
+        "public <T> GridFlow items( Iterable<T> items, Renderer<T> renderer )"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Icon",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Icon.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.image.Image",
+        "javafx.scene.image.ImageView"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.IconInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public Icon(String path, double size)",
+        "public Node getJavaFxNode()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Image",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Image.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.props.ImageProps",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public Image(String imgSource)",
+        "public Image(String imgSource, ImageProps props)",
+        "public Image(ReadableState<String> imgSourceState)",
+        "public Image(ReadableState<String> imgSourceState, ImageProps props)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.inputs.Input",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/inputs/Input.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.control.TextField"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.props.InputProps",
+        "megalodonte.base.state.State"
+      ],
+      "publicMemberDeclarations": [
+        "public Input(State<String> state)",
+        "public Input(State<String> state, InputProps props)",
+        "public Input(String value)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.inputs.InputBase",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/inputs/InputBase.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.scene.Node",
+        "javafx.scene.control.TextInputControl",
+        "javafx.scene.layout.StackPane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.props.InputProps",
+        "megalodonte.base.state.State"
+      ],
+      "publicMemberDeclarations": [
+        "public InputBase onChange(Function<String, OnChangeResult> handler)",
+        "public InputBase onInitialize(Function<String, OnChangeResult> handler)",
+        "public InputBase onEnter(Runnable handler)",
+        "public void bind(State<String> state)",
+        "public InputBase lockCursorToEnd()",
+        "public InputBase left(Node node)",
+        "public InputBase right(Node node)",
+        "public InputBase onChangeFocus(Consumer<Boolean> eventHandler)",
+        "public void requestFocus()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.inputs.OnChangeResult",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/inputs/OnChangeResult.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public OnChangeResult(String displayValue, String stateValue)",
+        "public String getDisplayValue()",
+        "public String getStateValue()",
+        "public static OnChangeResult of(String displayValue, String stateValue)",
+        "public static OnChangeResult same(String value)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.inputs.PasswordInput",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/inputs/PasswordInput.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.control.Button",
+        "javafx.scene.control.PasswordField",
+        "javafx.scene.control.TextField",
+        "javafx.scene.control.TextInputControl"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.props.InputProps",
+        "megalodonte.base.state.State"
+      ],
+      "publicMemberDeclarations": [
+        "public PasswordInput(State<String> state, InputProps props)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.inputs.TextAreaInput",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/inputs/TextAreaInput.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.control.TextArea"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.components.FocusableFieldInterface",
+        "megalodonte.components.Scroll",
+        "megalodonte.props.InputProps",
+        "megalodonte.base.state.State",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public TextAreaInput(State<String> state, InputProps props)",
+        "public void requestFocus()",
+        "public TextAreaInput onChangeFocus(Consumer<Boolean> handler)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.Canva",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/Canva.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.layout.Pane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.props.CanvaProps"
+      ],
+      "publicMemberDeclarations": [
+        "public Canva()",
+        "public Canva(CanvaProps props)",
+        "public Canva child(Component component)",
+        "public Canva child(Component component, double x, double y)",
+        "public Canva children(Component... components)",
+        "public CanvaProps props()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.Column",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/Column.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.control.ScrollPane",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.components.SpacerVertical",
+        "megalodonte.props.ColumnProps",
+        "megalodonte.base.state.ForEachState"
+      ],
+      "publicMemberDeclarations": [
+        "public Column()",
+        "public Column(ColumnProps props)",
+        "public Column c_child(Component component)",
+        "public Column items(List<? extends Component> components)",
+        "public <T> Column items(List<T> data, java.util.function.Function<T, ? extends Component> mapper)",
+        "public <T, C extends Component > Column items(ForEachState<T, C> forEachState, int spacing)",
+        "public <T, C extends Component > Column items(ForEachState<T, C> forEachState)",
+        "public <T, C extends Component > Column items(ForEachState<T, C> forEachState, boolean isScrollable)",
+        "public ColumnProps props()",
+        "public Column children(Component... components)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.Container",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/Container.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.components.SpacerVertical",
+        "megalodonte.props.ContainerProps"
+      ],
+      "publicMemberDeclarations": [
+        "public Container()",
+        "public Container(ContainerProps props)",
+        "public Container c_child(Component component)",
+        "public ContainerProps props()",
+        "public Container children(Component... components)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.FlowRow",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/FlowRow.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.animation.Animation",
+        "javafx.scene.Node",
+        "javafx.scene.control.ScrollPane",
+        "javafx.scene.layout.FlowPane",
+        "javafx.scene.layout.Region"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ForEachState",
+        "megalodonte.base.components.Component",
+        "megalodonte.props.FlowRowProps",
+        "megalodonte.props.Props"
+      ],
+      "publicMemberDeclarations": [
+        "public FlowRow()",
+        "public FlowRow(FlowRowProps props)",
+        "public FlowRow r_child(Component component)",
+        "public FlowRow withTransition(Component.Transition transition)",
+        "public Props props()",
+        "public FlowRow children(Component... components)",
+        "public FlowRow items(List<? extends Component> components)",
+        "public <T, C extends Component> FlowRow items(ForEachState<T, C> forEachState)",
+        "public void changed(javafx.beans.value.ObservableValue<? extends javafx.scene.Scene> obs, javafx.scene.Scene oldScene, javafx.scene.Scene newScene)",
+        "public <T, C extends Component> FlowRow items(ForEachState<T, C> forEachState, boolean isScrollable)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.LayoutComponent",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/LayoutComponent.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ForEachState",
+        "megalodonte.props.Props",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.Row",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/Row.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.control.ScrollPane",
+        "javafx.scene.layout.HBox",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ForEachState",
+        "megalodonte.base.components.Component",
+        "megalodonte.components.SpacerHorizontal",
+        "megalodonte.props.RowProps"
+      ],
+      "publicMemberDeclarations": [
+        "public Row()",
+        "public Row(RowProps props)",
+        "public Row r_child(Component component)",
+        "public RowProps props()",
+        "public Row children(Component... components)",
+        "public Row items(List<? extends Component> components)",
+        "public <T, C extends Component > Row items(ForEachState<T, C> forEachState)",
+        "public <T, C extends Component > Row items(ForEachState<T, C> forEachState, boolean isScrollable)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.layout_components.Stack",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/layout_components/Stack.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.geometry.Pos",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.StackPane",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public Stack()",
+        "public Stack children(Component... components)",
+        "public Stack childInCorner(Component component, Corner corner, int margin)",
+        "public Stack fillHeight()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.LineHorizontal",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/LineHorizontal.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Orientation",
+        "javafx.scene.control.Separator"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public LineHorizontal()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Main",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Main.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void main()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Menu",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Menu.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Point2D",
+        "javafx.scene.Node",
+        "javafx.scene.layout.Region",
+        "javafx.stage.Popup"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.base.components.IconInterface",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.base.theme.ThemeManager",
+        "megalodonte.components.layout_components.Column",
+        "megalodonte.components.layout_components.Container",
+        "megalodonte.components.layout_components.Row",
+        "megalodonte.props.ColumnProps",
+        "megalodonte.props.ContainerProps",
+        "megalodonte.props.RowProps",
+        "megalodonte.props.TextProps",
+        "megalodonte.styles.util.StyleUtils.updateBackgroundColor",
+        "megalodonte.styles.util.StyleUtils.updateBorderColor",
+        "megalodonte.styles.util.StyleUtils.updateBorderRadius",
+        "megalodonte.styles.util.StyleUtils.updateBorderWidth",
+        "megalodonte.styles.util.StyleUtils.updateTextColor"
+      ],
+      "publicMemberDeclarations": [
+        "public Menu(String title)",
+        "public Menu addItem(MenuItem item)",
+        "public Menu item(IconInterface icon, String title, Runnable action)",
+        "public Menu item(MenuItem item)",
+        "public Menu item(String title, Runnable action)",
+        "public Menu itemIf(boolean condition, String title, Runnable action)",
+        "public Menu itemIf(boolean condition, IconInterface icon, String title, Runnable action)",
+        "public List<MenuItem> getItems()",
+        "public String getTitle()",
+        "public void setTitle(String title)",
+        "public Menu textColor(String color)",
+        "public static Menu of(String title)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.MenuBar",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/MenuBar.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.scene.layout.HBox",
+        "javafx.scene.layout.Priority"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.base.theme.ThemeManager",
+        "megalodonte.styles.util.StyleUtils.updateBackgroundColor"
+      ],
+      "publicMemberDeclarations": [
+        "public MenuBar()",
+        "public MenuBar addMenu(Menu menu)",
+        "public MenuBar addComponent(Component component)",
+        "public MenuBar menu(Menu menu)",
+        "public MenuBar menuIf(boolean condition, Menu menu)",
+        "public MenuBar menu(Component component)",
+        "public MenuBar bgColor(String color)",
+        "public MenuBar menu(String title, MenuItem... items)",
+        "public List<Menu> getMenus()",
+        "public MenuBar trailing(Component component)",
+        "public static MenuBar of()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.MenuDemo",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/MenuDemo.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.components.Menu",
+        "megalodonte.components.MenuBar",
+        "megalodonte.components.MenuItem"
+      ],
+      "publicMemberDeclarations": [
+        "public static void main(String[] args)",
+        "public static void demonstrateUsage()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.MenuItem",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/MenuItem.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.IconInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public MenuItem(String title)",
+        "public MenuItem(String title, Runnable action)",
+        "public MenuItem(IconInterface icon, String title, Runnable action)",
+        "public String getTitle()",
+        "public void setTitle(String title)",
+        "public void run()",
+        "public static MenuItem of(String title)",
+        "public static MenuItem of(String title, Runnable action)",
+        "public IconInterface getIcon()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Modal",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Modal.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.geometry.Pos",
+        "javafx.scene.input.MouseEvent",
+        "javafx.scene.layout.StackPane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.Animations",
+        "megalodonte.base.components.Component",
+        "megalodonte.base.state.State",
+        "megalodonte.base.theme.ThemeManager",
+        "megalodonte.props.ButtonProps",
+        "megalodonte.styles.util.StyleUtils.updateBackgroundColor"
+      ],
+      "publicMemberDeclarations": [
+        "public Modal(State<Boolean> visible, Component content)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.PaginatedTable",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/PaginatedTable.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.control.Pagination"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public PaginatedTable(SimpleTable<T> table, int pageSize)",
+        "public void setItems(List<T> items)",
+        "public Node getJavaFxNode()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.ProgressBar",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/ProgressBar.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.State",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public ProgressBar(State<Integer> progressState)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Renderer",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Renderer.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Scroll",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Scroll.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.event.Event",
+        "javafx.scene.Node",
+        "javafx.scene.control.ScrollPane",
+        "javafx.scene.input.ScrollEvent",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.styles.util.StyleUtils.applyStyleProperty",
+        "megalodonte.styles.util.StyleUtils.updateBackgroundColor",
+        "megalodonte.styles.util.StyleUtils.updateBorderColor"
+      ],
+      "publicMemberDeclarations": [
+        "public Scroll(Component component)",
+        "public static void confineScrollEvents(Node scrollableNode)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Select",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Select.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.control.ComboBox",
+        "javafx.scene.control.ListCell"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.base.theme.ThemeManager",
+        "megalodonte.props.SelectProps",
+        "megalodonte.base.state.State",
+        "megalodonte.base.components.Component",
+        "megalodonte.styles.util.StyleUtils.updateBackgroundColor",
+        "megalodonte.styles.util.StyleUtils.updateTextColor_Input",
+        "megalodonte.styles.util.StyleUtils.updateFontSize"
+      ],
+      "publicMemberDeclarations": [
+        "public Select()",
+        "public Select(SelectProps props)",
+        "public Select<T> items(Iterable<T> items)",
+        "public Select<T> items(State<List<T>> state)",
+        "public Select<T> items(ReadableState<List<T>> state)",
+        "public Select<T> expandWhen(ReadableState<Boolean> condition)",
+        "public Select<T> value(State<T> state)",
+        "public Select<T> itemComparator(BiPredicate<T, T> comparator)",
+        "public Select<T> compareById()",
+        "public Select<T> displayText(Function<T, String> mapper)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.SimpleTable",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/SimpleTable.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.collections.FXCollections",
+        "javafx.collections.ObservableList",
+        "javafx.scene.control.TableColumn",
+        "javafx.scene.control.TableView",
+        "javafx.scene.control.TableCell",
+        "javafx.scene.control.SelectionMode",
+        "javafx.scene.text.Font",
+        "javafx.scene.text.FontWeight"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.State",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.theme.ThemeManager",
+        "megalodonte.props.SimpleTableProps",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public SimpleTable()",
+        "public SimpleTable(SimpleTableProps props)",
+        "public SimpleTable<T> horizontalScroll()",
+        "public TableView<T> getTableView()",
+        "public SimpleTable<T> paginate(int pageSize)",
+        "public SimpleTable<T> fromData(ReadableState<List<T>> state)",
+        "public record ExportData(List<String> headers, List<List<String>> rows)",
+        "public ExportData exportData()",
+        "public void nextPage()",
+        "public void previousPage()",
+        "public Component paginationControls()",
+        "public HeaderBuilder header()",
+        "public SimpleTable<T> onChangeFocus(Consumer<Boolean> callback)",
+        "public SimpleTable<T> onItemSelectChange(Consumer<T> callback)",
+        "public SimpleTable<T> enableMultipleSelection(Consumer<List<T>> callback)",
+        "public List<T> getSelectedItems()",
+        "public SimpleTable<T> onItemDoubleClick(Consumer<T> callback)",
+        "public SimpleTable<T> onClickOutside(Runnable callback)",
+        "public ColumnsBuilder columns()",
+        "public SimpleTable<T> build()",
+        "public ColumnsBuilder column(String title, Function<T, Object> valueExtractor)",
+        "public ColumnsBuilder column(String title, Function<T, Object> valueExtractor, Double width)",
+        "public ColumnsBuilder imageColumn(String title, Function<T, String> pathExtractor, double size)",
+        "public ColumnsBuilder imageColumn(String title, Function<T, String> pathExtractor)",
+        "public ColumnsBuilder editableColumn(String title, Function<T, Object> valueExtractor, BiConsumer<T, String> onCommit)",
+        "public HeaderBuilder end()",
+        "public SimpleTable<T> build()",
+        "public ObservableList<T> getItems()",
+        "public T getSelectedItem()",
+        "public void clear()",
+        "public void addItem(T item)",
+        "public boolean removeItem(T item)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.SpacerHorizontal",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/SpacerHorizontal.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.layout.Region"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public SpacerHorizontal()",
+        "public SpacerHorizontal(int widthUnits)",
+        "public SpacerHorizontal(ReadableState<Integer> widthUnitsState)",
+        "public SpacerHorizontal fill()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.SpacerVertical",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/SpacerVertical.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.layout.Region"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public SpacerVertical()",
+        "public SpacerVertical(int spacingUnits)",
+        "public SpacerVertical(ReadableState<Integer> spacingUnitsState)",
+        "public SpacerVertical fill()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.Text",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/Text.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.props.TextProps"
+      ],
+      "publicMemberDeclarations": [
+        "public Text(String textContent)",
+        "public Text(String textContent, TextProps props)",
+        "public Text(ReadableState<String> state)",
+        "public Text(ReadableState<String> state, TextProps props)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.TextComponent",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/TextComponent.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.props.Props",
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public <C extends TextComponent<T>> C onClick(Runnable handler)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.TextFlow",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/TextFlow.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component"
+      ],
+      "publicMemberDeclarations": [
+        "public TextFlow(Component content)",
+        "public TextFlow(Text textComponent)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.v2.Input",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/v2/Input.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.animation.KeyFrame",
+        "javafx.animation.Timeline",
+        "javafx.geometry.Insets",
+        "javafx.geometry.Pos",
+        "javafx.scene.Cursor",
+        "javafx.scene.Node",
+        "javafx.scene.input.Clipboard",
+        "javafx.scene.input.ClipboardContent",
+        "javafx.scene.input.KeyEvent",
+        "javafx.scene.input.MouseEvent",
+        "javafx.scene.layout.Pane",
+        "javafx.scene.layout.StackPane",
+        "javafx.scene.shape.Rectangle",
+        "javafx.scene.text.Text",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.UI",
+        "megalodonte.base.components.Component",
+        "megalodonte.base.state.State",
+        "megalodonte.components.FocusableFieldInterface",
+        "megalodonte.components.inputs.OnChangeResult",
+        "megalodonte.props.v2.InputProps"
+      ],
+      "publicMemberDeclarations": [
+        "public Input(State<String> state)",
+        "public Input(State<String> state, InputProps props)",
+        "public Input onChange(Function<String, OnChangeResult> handler)",
+        "public Input onInitialize(Function<String, OnChangeResult> handler)",
+        "public Input onEnter(Runnable handler)",
+        "public Input onChangeFocus(Consumer<Boolean> eventHandler)",
+        "public Input lockCursorToEnd()",
+        "public Input left(Node iconNode)",
+        "public Input right(Node iconNode)",
+        "public void requestFocus()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.components.v2.Scroll",
+      "source": "megalodonte-components/src/main/java/megalodonte/components/v2/Scroll.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.animation.KeyFrame",
+        "javafx.animation.PauseTransition",
+        "javafx.animation.Timeline",
+        "javafx.geometry.Insets",
+        "javafx.scene.Cursor",
+        "javafx.scene.Node",
+        "javafx.scene.input.MouseEvent",
+        "javafx.scene.input.ScrollEvent",
+        "javafx.scene.layout.Background",
+        "javafx.scene.layout.BackgroundFill",
+        "javafx.scene.layout.CornerRadii",
+        "javafx.scene.layout.Pane",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.StackPane",
+        "javafx.scene.layout.VBox",
+        "javafx.scene.paint.Color",
+        "javafx.scene.shape.Polygon",
+        "javafx.scene.shape.Rectangle",
+        "javafx.util.Duration"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.components.Component",
+        "megalodonte.base.theme.ThemeManager"
+      ],
+      "publicMemberDeclarations": [
+        "public Scroll(Component component)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ButtonProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ButtonProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.scene.Node",
+        "javafx.scene.control.Button",
+        "javafx.scene.control.ContentDisplay"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.props.ButtonVariant.DISABLED",
+        "megalodonte.props.ButtonVariant.GHOST",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": [
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)",
+        "public ButtonProps bgColor(String bgColor)",
+        "public ButtonProps iconOnRight()",
+        "public boolean isIconOnRight()",
+        "public ButtonProps bgColor(ReadableState<String> bgColorState)",
+        "public ButtonProps borderColor(String borderColor)",
+        "public ButtonProps borderWidth(int borderWidth)",
+        "public ButtonProps borderRadius(int borderRadius)",
+        "public ButtonProps textColor(ReadableState<String> textColorState)",
+        "public ButtonProps fillWidth()",
+        "public ButtonProps height(int height)",
+        "public ButtonProps outlined()",
+        "public ButtonProps text()",
+        "public ButtonProps filled()",
+        "public ButtonProps style(ButtonStyle style)",
+        "public ButtonStyle getStyle()",
+        "public ButtonProps variant(ButtonVariant variant)",
+        "public ButtonProps variant(String variant)",
+        "public ButtonProps primary()",
+        "public ButtonProps secondary()",
+        "public ButtonProps success()",
+        "public ButtonProps warning()",
+        "public ButtonProps danger()",
+        "public ButtonProps ghost()",
+        "public ButtonProps disabled()",
+        "public ButtonVariant getVariant()",
+        "public String resolveTextColor(ThemeInterface theme)",
+        "public ButtonProps size(ButtonSize size)",
+        "public ButtonProps small()",
+        "public ButtonProps medium()",
+        "public ButtonProps large()",
+        "public ButtonSize getSize()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ButtonSize",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ButtonSize.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ButtonStyle",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ButtonStyle.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ButtonVariant",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ButtonVariant.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.CanvaProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/CanvaProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.layout.Pane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.applyBackgroundStyling",
+        "megalodonte.styles.util.StyleUtils.applyBorderStyling"
+      ],
+      "publicMemberDeclarations": [
+        "public CanvaProps bgColor(String bgColor)",
+        "public CanvaProps borderColor(String borderColor)",
+        "public CanvaProps borderWidth(int borderWidth)",
+        "public CanvaProps borderRadius(int borderRadius)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.CardProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/CardProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.effect.DropShadow",
+        "javafx.scene.layout.Region",
+        "javafx.scene.paint.Color"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": [
+        "public CardProps fillHeight()",
+        "public boolean hasFillHeight()",
+        "public CardProps fillWidth()",
+        "public boolean hasFillWidth()",
+        "public CardProps height(int height)",
+        "public CardProps width(int width)",
+        "public CardProps width(double width)",
+        "public CardProps bgColor(String bgColor)",
+        "public CardProps borderColor(String borderColor)",
+        "public CardProps borderWidth(int borderWidth)",
+        "public CardProps borderRadius(int borderRadius)",
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)",
+        "public boolean hasFixedWidth()",
+        "public boolean hasFixedHeight()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.CheckboxProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/CheckboxProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.application.Platform",
+        "javafx.scene.Node",
+        "javafx.scene.control.CheckBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ColumnProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ColumnProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.geometry.Pos",
+        "javafx.scene.Node",
+        "javafx.scene.layout.HBox",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.applyBackgroundStyling"
+      ],
+      "publicMemberDeclarations": [
+        "public ColumnProps bgColor(String bgColor)",
+        "public ColumnProps centerHorizontally()",
+        "public ColumnProps centerVertically()",
+        "public ColumnProps fillHeight()",
+        "public ColumnProps fillWidth()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ContainerProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ContainerProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.geometry.Pos",
+        "javafx.scene.Node",
+        "javafx.scene.layout.Pane",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.applyBackgroundStyling"
+      ],
+      "publicMemberDeclarations": [
+        "public ContainerProps fillHeight()",
+        "public boolean hasFillHeight()",
+        "public ContainerProps bgColor(String bgColor)",
+        "public ContainerProps bgImage(String url)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.DatePickerProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/DatePickerProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.application.Platform",
+        "javafx.scene.Node",
+        "javafx.scene.Parent",
+        "javafx.scene.Scene",
+        "javafx.scene.control.DatePicker",
+        "javafx.stage.PopupWindow",
+        "javafx.stage.Window"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.state.State",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": [
+        "public DatePickerProps formatter(DateTimeFormatter formatter)",
+        "public DatePickerProps locale(Locale locale)",
+        "public DatePickerProps placeHolder(String placeHolder)",
+        "public DatePickerProps editable(Boolean editable)",
+        "public DatePickerProps editable(boolean editable)",
+        "public DatePickerProps value(State<LocalDate> state)",
+        "public DatePickerProps pattern(String pattern)",
+        "public DatePickerProps pattern(String pattern, Locale locale)",
+        "public DatePickerProps fontSize(int fontSize)",
+        "public DatePickerProps tone(TextTone tone)",
+        "public TextTone getTone()",
+        "public DatePickerProps height(int height)",
+        "public DatePickerProps width(int width)",
+        "public DatePickerProps color(String color)",
+        "public DatePickerProps bgColor(String bgColor)",
+        "public DatePickerProps borderColor(String borderColor)",
+        "public DatePickerProps borderWidth(int borderWidth)",
+        "public DatePickerProps borderRadius(int borderRadius)",
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)",
+        "public String toString(LocalDate date)",
+        "public LocalDate fromString(String string)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.FlowRowProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/FlowRowProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Pos",
+        "javafx.scene.Node",
+        "javafx.scene.layout.FlowPane",
+        "javafx.scene.layout.HBox",
+        "javafx.scene.layout.Priority"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils"
+      ],
+      "publicMemberDeclarations": [
+        "public FlowRowProps bgColor(String bgColor)",
+        "public FlowRowProps verticalSpacing(double spacing)",
+        "public FlowRowProps fillWidth()",
+        "public FlowRowProps centerHorizontally()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.GridFlowProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/GridFlowProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.geometry.Pos",
+        "javafx.scene.Node",
+        "javafx.scene.layout.TilePane"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public GridFlowProps tileSize(double width, double height)",
+        "public GridFlowProps minWidth(double minWidth)",
+        "public GridFlowProps spacingOf(int units)",
+        "public GridFlowProps spacingVertical(int units)",
+        "public GridFlowProps spacingHorizontal(int units)",
+        "public GridFlowProps centerHorizontally()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.ImageProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/ImageProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.image.ImageView"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public ImageProps size(double size)",
+        "public ImageProps width(double width)",
+        "public ImageProps height(double height)",
+        "public ImageProps preserveRatio(boolean preserve)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.InputProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/InputProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.scene.Node",
+        "javafx.scene.control.TextArea",
+        "javafx.scene.control.TextInputControl",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.StackPane",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": [
+        "public InputProps tone(TextTone tone)",
+        "public TextTone getTone()",
+        "public InputProps height(int height)",
+        "public InputProps width(int width)",
+        "public InputProps minHeight(int minHeight)",
+        "public InputProps maxHeight(int maxHeight)",
+        "public InputProps placeHolder(String text)",
+        "public InputProps disable()",
+        "public InputProps editable(boolean editable)",
+        "public InputProps fillHeight()",
+        "public InputProps bgColor(String bgColor)",
+        "public InputProps borderColor(String borderColor)",
+        "public InputProps borderWidth(int borderWidth)",
+        "public InputProps borderRadius(int borderRadius)",
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)",
+        "public static Insets compensateBorderForStackPane(Insets themePadding, ThemeInterface theme)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.LayoutProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/LayoutProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.layout.Region"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public T minWidth(double minWidth)",
+        "public T maxWidth(double maxWidth)",
+        "public T width(double width)",
+        "public T maxHeight(double maxHeight)",
+        "public T height(double height)",
+        "public T spacingOf(int units)",
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)",
+        "public T onClick(Runnable callback)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.Paddable",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/Paddable.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.Props",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/Props.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.components.PropsInterface",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.base.theme.ThemeManager"
+      ],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.RowProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/RowProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.geometry.Pos",
+        "javafx.scene.Node",
+        "javafx.scene.layout.HBox",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils",
+        "megalodonte.styles.util.StyleUtils.applyBackgroundStyling"
+      ],
+      "publicMemberDeclarations": [
+        "public RowProps bgColor(String bgColor)",
+        "public RowProps fillWidth()",
+        "public RowProps fillHeight()",
+        "public boolean hasFillHeight()",
+        "public RowProps hugWidth()",
+        "public boolean hasHugWidth()",
+        "public RowProps bottomVertically()",
+        "public RowProps leftHorizontally()",
+        "public RowProps centerHorizontally()",
+        "public RowProps centerVertically()",
+        "public RowProps rightHorizontally()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.SelectProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/SelectProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.control.ComboBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": [
+        "public SelectProps tone(TextTone tone)",
+        "public TextTone getTone()",
+        "public SelectProps disable()",
+        "public SelectProps bgColor(String bgColor)",
+        "public SelectProps borderColor(String borderColor)",
+        "public SelectProps borderWidth(int borderWidth)",
+        "public SelectProps borderRadius(int borderRadius)",
+        "public SelectProps height(int height)",
+        "public SelectProps maxWidth(double maxWidth)",
+        "public SelectProps minWidth(double minWidth)",
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.SimpleTableProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/SimpleTableProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.control.TableColumn",
+        "javafx.scene.control.TableRow",
+        "javafx.scene.control.TableView"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.*"
+      ],
+      "publicMemberDeclarations": [
+        "public SimpleTableProps()",
+        "public SimpleTableProps maxWidth(double maxWidth)",
+        "public SimpleTableProps maxHeight(double maxHeight)",
+        "public SimpleTableProps bgColor(String bgColor)",
+        "public SimpleTableProps headerBgColor(String headerBgColor)",
+        "public SimpleTableProps headerTextColor(String headerTextColor)",
+        "public SimpleTableProps borderColor(String borderColor)",
+        "public SimpleTableProps borderWidth(int borderWidth)",
+        "public SimpleTableProps borderRadius(int borderRadius)",
+        "public SimpleTableProps striped(boolean striped)",
+        "public SimpleTableProps rowEvenColor(String rowEvenColor)",
+        "public SimpleTableProps rowOddColor(String rowOddColor)",
+        "public SimpleTableProps rowHoverColor(String rowHoverColor)",
+        "public SimpleTableProps selectionColor(String selectionColor)",
+        "public SimpleTableProps focusColor(String focusColor)",
+        "public SimpleTableProps rowTextColor(String rowTextColor)",
+        "public SimpleTableProps separatorColor(String separatorColor)",
+        "public SimpleTableProps headerHeight(int headerHeight)"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.TextComponentProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/TextComponentProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.theme.Fonts",
+        "megalodonte.styles.util.StyleUtils",
+        "megalodonte.styles.util.StyleUtils.applyStyleProperty"
+      ],
+      "publicMemberDeclarations": [
+        "public T fontSize(int fontSize)",
+        "public T fontSize(ReadableState<Integer> state)",
+        "public T bold()",
+        "public T fontWeight(String weight)",
+        "public Integer getFontSize()",
+        "public ReadableState<Integer> getFontSizeState()",
+        "public String getFontWeight()",
+        "public T fontFamily(String fontFamily)",
+        "public String getFontFamily()",
+        "public T textColor(String color)",
+        "public String getTextColor()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.TextProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/TextProps.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.text.Text"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.styles.util.StyleUtils.updateFontSize",
+        "megalodonte.styles.util.StyleUtils.updateFontWeight",
+        "megalodonte.styles.util.StyleUtils.updateTextColor"
+      ],
+      "publicMemberDeclarations": [
+        "public TextProps tone(TextTone tone)",
+        "public TextTone getTone()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.TextTone",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/TextTone.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.props.v2.InputProps",
+      "source": "megalodonte-components/src/main/java/megalodonte/props/v2/InputProps.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.geometry.Insets",
+        "javafx.scene.Node",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.StackPane",
+        "javafx.scene.text.Text"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.props.Props",
+        "megalodonte.props.TextComponentProps",
+        "megalodonte.props.TextTone",
+        "megalodonte.styles.util.StyleUtils.*",
+        "megalodonte.props.Paddable"
+      ],
+      "publicMemberDeclarations": [
+        "public InputProps tone(TextTone tone)",
+        "public TextTone getTone()",
+        "public InputProps height(int height)",
+        "public InputProps fillWidth()",
+        "public InputProps width(int width)",
+        "public InputProps maxWidth(int maxWidth)",
+        "public InputProps placeHolder(String text)",
+        "public InputProps disable()",
+        "public InputProps bgColor(String bgColor)",
+        "public InputProps borderColor(String borderColor)",
+        "public InputProps borderWidth(int borderWidth)",
+        "public InputProps borderRadius(int borderRadius)",
+        "public int getPaddingUnitsTop()",
+        "public int getPaddingUnitsRight()",
+        "public int getPaddingUnitsDown()",
+        "public int getPaddingUnitsLeft()",
+        "public void setPaddingUnitsTop(int units)",
+        "public void setPaddingUnitsRight(int units)",
+        "public void setPaddingUnitsDown(int units)",
+        "public void setPaddingUnitsLeft(int units)",
+        "public boolean isDisabled()",
+        "public String getPlaceholder()"
+      ]
+    },
+    {
+      "module": "megalodonte-components",
+      "type": "megalodonte.styles.util.StyleUtils",
+      "source": "megalodonte-components/src/main/java/megalodonte/styles/util/StyleUtils.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.scene.Node",
+        "javafx.scene.paint.Color"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.theme.ThemeInterface"
+      ],
+      "publicMemberDeclarations": [
+        "public static void updateBgImage(Node node, String url)",
+        "public static void updateTextColor(Node node, String color)",
+        "public static void updatePlaceholderColor(Node node, String color)",
+        "public static void updatePlaceholderFontSize(Node node, int fontSizePx)",
+        "public static void updateTextColor_Input(Node node, String color)",
+        "public static void updateFontSize(Node node, int value)",
+        "public static void updateFontWeight(Node node, String weight)",
+        "public static void updateBorderColor(Node node, String color)",
+        "public static void updateBorderWidth(Node node, int width)",
+        "public static void updateBorderRadius(Node node, int radius)",
+        "public static void updateBackgroundColor(Node node, String color)",
+        "public static void updateCursor(Node node, String value)",
+        "public static void applyStyleProperty(Node node, String value, String property)",
+        "public static String setStyleProperty(String currentStyle, String property, String value)",
+        "public static String getStylePropertyValue(String currentStyle, String property)",
+        "public static String colorToHex(Color color)",
+        "public static String getFinalColor(String colorField, String fallbackColor)",
+        "public static String getFinalBorderColor(ThemeInterface theme, String borderColor)",
+        "public static int getFinalBorderWidth(ThemeInterface theme, int borderWidth)",
+        "public static int getFinalBorderRadius(ThemeInterface theme, int borderRadius)",
+        "public static String getFinalBackgroundColor(ThemeInterface theme, String bgColor)",
+        "public static void applyBackgroundStyling(Node node, ThemeInterface theme, String bg, byte type)",
+        "public static void applyBackgroundStyling(Node node, ThemeInterface theme, String bgColor)",
+        "public static void applyBorderStyling(Node node, ThemeInterface theme, String borderColor, int borderWidth, int borderRadius)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.scale.ScaleProvider",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/scale/ScaleProvider.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static synchronized void setDetector(DoubleSupplier value)",
+        "public static synchronized void initialize()",
+        "public static synchronized double factor()",
+        "public static int scale(int value)",
+        "public static double scale(double value)",
+        "public static synchronized void setScale(double value)",
+        "public static synchronized void reset()"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.state.ForEachState",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/state/ForEachState.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.state.MappedState",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/state/MappedState.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.state.ReadableState",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/state/ReadableState.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.state.State",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/state/State.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public State(T initial)",
+        "public static <T> State<T> of(T initial)",
+        "public T get()",
+        "public T getOrDefault(T defaultValue)",
+        "public boolean isNull()",
+        "public void set(T newValue)",
+        "public void subscribe(Consumer<T> listener)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.state.Subscription",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/state/Subscription.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.FontLoader",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/FontLoader.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static int loadAll()",
+        "public static int loadAll(String resourceDirectory)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.Fonts",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/Fonts.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static String resolveWeightedFamily(String baseFamily, String weight)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemeBorder",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemeBorder.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider"
+      ],
+      "publicMemberDeclarations": [
+        "public record ThemeBorder( int width, int radiusSm, int radiusMd, int radiusLg )"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemeColors",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemeColors.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public record ThemeColors( String background, String surface, String primary, String secondary, String textPrimary, String textSecondary, String border, String placeholder, String selection, String focusRing, String hover, String success, String warning, String danger )"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemeInterface",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemeInterface.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemeManager",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemeManager.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.State"
+      ],
+      "publicMemberDeclarations": [
+        "public static void setTheme(ThemeInterface theme)",
+        "public static ThemeInterface theme()",
+        "public static ThemeInterface getTheme()",
+        "public static State<ThemeInterface> state()"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemePadding",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemePadding.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider"
+      ],
+      "publicMemberDeclarations": [
+        "public record ThemePadding( int xs, int sm, int md, int lg, int xl )"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemePlatform",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemePlatform.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void install(ToIntFunction<String> fontLoader, Consumer<Object> sceneStyler)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemeSpacing",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemeSpacing.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider"
+      ],
+      "publicMemberDeclarations": [
+        "public record ThemeSpacing( int xs, int sm, int md, int lg, int xl )"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.base.theme.ThemeTypography",
+      "source": "megalodonte-core/src/main/java/megalodonte/base/theme/ThemeTypography.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.scale.ScaleProvider"
+      ],
+      "publicMemberDeclarations": [
+        "public record ThemeTypography(String fontFamily, int title, int subtitle, int body, int small)",
+        "public ThemeTypography(int title, int subtitle, int body, int small)",
+        "public int title()",
+        "public int subtitle()",
+        "public int body()",
+        "public int small()"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.contracts.BackendContract",
+      "source": "megalodonte-core/src/main/java/megalodonte/contracts/BackendContract.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public record BackendContract(String platform, int contractVersion, Set<Capability> capabilities)",
+        "public boolean supports(Capability capability)",
+        "public void require(Capability capability)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.contracts.Capability",
+      "source": "megalodonte-core/src/main/java/megalodonte/contracts/Capability.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.contracts.RouteMatcher",
+      "source": "megalodonte-core/src/main/java/megalodonte/contracts/RouteMatcher.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public record Match<R>(R route, Map<String, String> params)",
+        "public RouteMatcher(Collection<R> routes, Function<R, String> path)",
+        "public Optional<Match<R>> resolve(String requested)"
+      ]
+    },
+    {
+      "module": "megalodonte-core",
+      "type": "megalodonte.contracts.ScreenLifecycle",
+      "source": "megalodonte-core/src/main/java/megalodonte/contracts/ScreenLifecycle.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": []
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.ComputedState",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/ComputedState.java",
+      "status": "same-source-portable-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState"
+      ],
+      "publicMemberDeclarations": [
+        "public T get()",
+        "public void subscribe(Consumer<T> listener)",
+        "public boolean isNull()",
+        "public static <T> ComputedState<T> of(Supplier<T> compute, ReadableState<?>... deps)"
+      ]
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.ForEachState",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/ForEachState.java",
+      "status": "same-source-portable-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState"
+      ],
+      "publicMemberDeclarations": [
+        "public static <T, C> ForEachState<T, C> of(ReadableState<List<T>> state, Function<T, C> componentFactory)",
+        "public List<C> getComponents()",
+        "public ReadableState<List<T>> getState()"
+      ]
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.ForEachStateExample",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/ForEachStateExample.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.State"
+      ],
+      "publicMemberDeclarations": [
+        "public TextComponent(String text)",
+        "public void setText(String text)",
+        "public String getText()",
+        "public String toString()",
+        "public static void main(String[] args)"
+      ]
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.ListenerManager",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/ListenerManager.java",
+      "status": "same-source-portable-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void register(Consumer<?> listener)",
+        "public static void register(Consumer<?> listener, Runnable cleanup)",
+        "public static boolean unregister(Consumer<?> listener)",
+        "public static int getListenerCount()",
+        "public static void disposeAll()"
+      ]
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.Main",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/Main.java",
+      "status": "neutral-candidate-review-transitive-dependencies",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [],
+      "publicMemberDeclarations": [
+        "public static void main(String[] args)"
+      ]
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.v2.ListState",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/v2/ListState.java",
+      "status": "same-source-portable-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.ListenerManager",
+        "megalodonte.base.state.ReadableState"
+      ],
+      "publicMemberDeclarations": [
+        "public ListState(List<E> initial)",
+        "public static <E> ListState<E> of(List<E> initial)",
+        "public static <E> ListState<E> ofEmpty()",
+        "public List<E> get()",
+        "public boolean isNull()",
+        "public void set(List<E> newList)",
+        "public void subscribe(Consumer<List<E>> listener)",
+        "public void onChange(Consumer<List<E>> listener)",
+        "public void refresh()",
+        "public void add(E item)",
+        "public void addAll(java.util.Collection<? extends E> items)",
+        "public void addAll(E[] items)",
+        "public void removeLast()",
+        "public void clear()",
+        "public void removeIf(Predicate<E> filter)",
+        "public boolean remove(E item)",
+        "public boolean removeAll(java.util.Collection<? extends E> items)",
+        "public boolean retainAll(java.util.Collection<? extends E> items)",
+        "public void set(int index, E newItem)",
+        "public boolean replace(E oldItem, E newItem)",
+        "public int indexOf(E item)",
+        "public boolean contains(E item)",
+        "public boolean containsAll(java.util.Collection<? extends E> items)",
+        "public int size()",
+        "public boolean isEmpty()",
+        "public E get(int index)",
+        "public boolean updateIf(Predicate<E> predicate, java.util.function.Function<E, E> updater)"
+      ]
+    },
+    {
+      "module": "megalodonte-reactivity",
+      "type": "megalodonte.v2.Show",
+      "source": "megalodonte-reactivity/src/main/java/megalodonte/v2/Show.java",
+      "status": "android-adapter-partial-api",
+      "platformImports": [
+        "javafx.animation.Animation",
+        "javafx.scene.layout.Priority",
+        "javafx.scene.layout.Region",
+        "javafx.scene.layout.VBox"
+      ],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.state.ReadableState",
+        "megalodonte.base.components.Component",
+        "megalodonte.base.state.State"
+      ],
+      "publicMemberDeclarations": [
+        "public Show withTransition(Transition transition)",
+        "public Show fillHeight()",
+        "public static Show when(ReadableState<Boolean> condition, Supplier<Component> childFactory)",
+        "public static Show when(ReadableState<Boolean> condition, Supplier<Component> trueFactory, Supplier<Component> falseFactory)",
+        "public static Show when(boolean condition, Supplier<Component> childFactory)",
+        "public static Show when(boolean condition, Supplier<Component> trueFactory, Supplier<Component> falseFactory)"
+      ]
+    },
+    {
+      "module": "megalodonte-router",
+      "type": "megalodonte.router.v5.Router",
+      "source": "megalodonte-router/src/main/java/megalodonte/router/v5/Router.java",
+      "status": "platform-adapter-required",
+      "platformImports": [
+        "javafx.stage.Stage"
+      ],
+      "jvmSpecificImports": [
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory"
+      ],
+      "frameworkImports": [
+        "megalodonte.application.Context",
+        "megalodonte.base.route.RouteResult",
+        "megalodonte.base.route.RouteTable",
+        "megalodonte.base.route.RouterBase",
+        "megalodonte.base.route.ScreenManager"
+      ],
+      "publicMemberDeclarations": [
+        "public Router(RouteTable table)",
+        "public void bind(Context context)",
+        "public RouteResult entrypoint()",
+        "public RouteResult navigateOnStage(String path, Stage stage)",
+        "public RouteResult navigateAndCloseOthers(String path)",
+        "public Stage mainStage()"
+      ]
+    },
+    {
+      "module": "megalodonte-theme",
+      "type": "megalodonte.theme.DefaultTheme",
+      "source": "megalodonte-theme/src/main/java/megalodonte/theme/DefaultTheme.java",
+      "status": "shared-artifact",
+      "platformImports": [],
+      "jvmSpecificImports": [],
+      "frameworkImports": [
+        "megalodonte.base.theme.ThemeBorder",
+        "megalodonte.base.theme.ThemeColors",
+        "megalodonte.base.theme.ThemeInterface",
+        "megalodonte.base.theme.ThemePadding",
+        "megalodonte.base.theme.ThemeSpacing",
+        "megalodonte.base.theme.ThemeTypography"
+      ],
+      "publicMemberDeclarations": [
+        "public ThemeColors colors()",
+        "public ThemeTypography typography()",
+        "public ThemeSpacing spacing()",
+        "public ThemePadding padding()",
+        "public ThemeBorder border()"
+      ]
+    }
+  ]
+}
