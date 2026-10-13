@@ -5,6 +5,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "megalodonte-android"
 include(":framework-core", ":android-bridge", ":app")
-includeBuild("../megalodonte-ecossystem/megalodonte-libs/megalodonte-core")
-includeBuild("../megalodonte-ecossystem/megalodonte-libs/megalodonte-theme")
-includeBuild("../megalodonte-ecossystem/megalodonte-libs/megalodonte-reactivity-portable")
+includeBuild("../libraries/megalodonte-core")
+includeBuild("../libraries/megalodonte-theme")
+includeBuild("../libraries/megalodonte-reactivity-portable")

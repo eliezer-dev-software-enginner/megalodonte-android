@@ -6,13 +6,13 @@
 - JDK 25 disponível para os toolchains dos projetos comuns; o bytecode portátil/Android permanece Java 17.
 - Android SDK Platform 35 e Build Tools 36.0.0 (padrão do AGP 9.0.1).
 - Emulador/dispositivo Android 15 ou posterior para execução.
-- Checkout do ecossistema no diretório irmão, incluindo core/theme/reactivity-portable.
+- Checkout das bibliotecas em `framework/libraries`, incluindo core/theme/reactivity-portable.
 
 ```text
 megalodonte-world/
-  megalodonte-android/
-  megalodonte-ecossystem/
-    megalodonte-libs/
+  framework/
+    megalodonte-android/
+    libraries/
       megalodonte-core/
       megalodonte-theme/
       megalodonte-reactivity-portable/

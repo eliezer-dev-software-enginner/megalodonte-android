@@ -1,4 +1,4 @@
-param([string]$LibraryRoot = (Join-Path $PSScriptRoot '../../megalodonte-ecossystem/megalodonte-libs'))
+param([string]$LibraryRoot = (Join-Path $PSScriptRoot '../../libraries'))
 $ErrorActionPreference = 'Stop'
 $taskLibraryRoot = (Resolve-Path -LiteralPath $LibraryRoot).Path
 $taskAndroidRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
