@@ -5,7 +5,9 @@ bridge e widgets nativos. O MVP foi validado pelo usuário. Estado, tema e contr
 agora vêm do megalodonte-core compartilhado; o cliente declara megalodonte-theme
 como dependência Gradle real. A paridade completa de todas as APIs ainda está pendente.
 
-A aplicação cliente usa o padrão clássico do Megalodonte, incluindo seus imports:
+A aplicação cliente usa o padrão clássico do Megalodonte. Este trecho é uma
+versão reduzida de `app/src/main/java/my_app/WelcomeScreen.java`; consulte o
+arquivo para os imports e hooks de persistência do contador:
 
 ```java
 public class WelcomeScreen implements ScreenComponent {
@@ -55,11 +57,33 @@ O workspace inclui via composite build os projetos irmãos megalodonte-core,
 megalodonte-theme e megalodonte-reactivity-portable. Não recompila State/tema
 dentro do backend; consulte a matriz antes de portar telas maiores.
 
-Com o JDK compatível, `ANDROID_HOME` e SDK 35 configurados:
+O `settings.gradle.kts` exige esta disposição de diretórios:
+
+```text
+framework/
+  megalodonte-android/
+  libraries/
+    megalodonte-core/
+    megalodonte-theme/
+    megalodonte-reactivity-portable/
+```
+
+Esses projetos irmãos não estão incluídos neste repositório. Para
+`:framework-core:check`, também são necessários os fontes dos exemplos
+`megalodonte-app1-welcome` a `megalodonte-app4-hide-seek` em
+`framework/megalodonte-ecossystem/`, conforme os caminhos definidos em
+`framework-core/build.gradle.kts`. Sem eles, essa checagem não reproduz a
+validação dos clientes originais.
+
+Com JDK 25, Android SDK Platform 35, `ANDROID_HOME` configurado e os projetos
+irmãos presentes, execute no PowerShell, a partir da raiz:
 
 ```powershell
 ./gradlew.bat :framework-core:check :app:assembleDebug :app:lintDebug
 ```
 
 O APK é gerado em `app/build/outputs/apk/debug/app-debug.apk`.
-Abra esta pasta como projeto no Android Studio para executar a demonstração.
+Abra a raiz do repositório como projeto no Android Studio para executar a demonstração.
+Veja [configuração e execução](docs/GETTING_STARTED.md) para requisitos,
+instalação no dispositivo e comandos de verificação. O código Java usa nível 17;
+o JDK 25 é exigido pelos projetos comuns, conforme esse guia.
