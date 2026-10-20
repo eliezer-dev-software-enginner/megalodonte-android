@@ -51,6 +51,14 @@ Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 | `android-bridge` | Renderers nativos, propriedades/eventos, tema, insets e lifecycle |
 | `app` | `Main`, `WelcomeScreen` e conexão mínima da Activity com o host do framework |
 
+O `android-bridge` também contém `AndroidJsoncScreen`, que interpreta um subconjunto
+portátil de views JSONC e produz os componentes Megalodonte renderizados pela
+bridge Android. A primeira versão cobre `Text`, `Button`, `Column`, `Row` e
+`Container`, estados de texto e ações de botões; tipos ainda não suportados
+geram erro explícito. O
+`megalodonte-cli --platform android --mode jsonc` gera uma aplicação inicial
+com essa integração, enquanto `--mode native` gera uma tela Java.
+
 ## Build
 
 O workspace inclui via composite build os projetos irmãos megalodonte-core,
@@ -87,3 +95,8 @@ Abra a raiz do repositório como projeto no Android Studio para executar a demon
 Veja [configuração e execução](docs/GETTING_STARTED.md) para requisitos,
 instalação no dispositivo e comandos de verificação. O código Java usa nível 17;
 o JDK 25 é exigido pelos projetos comuns, conforme esse guia.
+
+## Licença
+
+Este repositório não inclui um arquivo de licença. As condições de uso e
+redistribuição precisam ser definidas pelos responsáveis pelo projeto.
