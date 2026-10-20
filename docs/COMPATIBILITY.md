@@ -17,8 +17,9 @@
 | ProgressBar | State<Integer>, faixa 0–100 | Controle nativo; estilos adicionais pendentes |
 | Scroll | Filho único, scroll vertical | Eixo horizontal e API de ScrollPane não compartilhados |
 | Show.when | Condição reativa/boolean, ramo único/ternário, GONE no Android | Transitions/expandWhen pendentes |
+| JSONC Android | Renderer próprio para os 21 tipos do schema, incluindo controles de dados, mídia e gráficos; veja [JSONC_ANDROID.md](JSONC_ANDROID.md) | Paridade de propriedades e APIs Java independentes ainda não é completa |
 | Route matching | Matcher comum disponível no core | Desktop usa o matcher; Router/Context de navegação Android pendentes |
-| Select / DatePicker / Image / Icon / CurrencyInput | Pendente | Portar modelo + renderer + testes |
+| Select / DatePicker / Image / Icon / CurrencyInput como API Java clássica | Pendente; Select, DatePicker e Image já têm renderer JSONC Android | Portar facades Java independentes e testes de dispositivo |
 | Card / Stack / GridFlow / FlowRow / Canva / TextFlow / Line | Pendente | Portar layout/modelo e traduzir comportamento |
 | SimpleTable / PaginatedTable / Menu / MenuBar / Modal | Pendente | Extrair modelos; não prometer ObservableList/Stage no mobile |
 | Async / Scope / UI / ErrorReporter | Pendente no Android | Exigem executor, dispatcher e logging injetáveis |

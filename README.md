@@ -41,6 +41,7 @@ Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 - [Configuração, build e execução](docs/GETTING_STARTED.md)
 - [Análise das bibliotecas e refatorações](docs/LIBRARY_ANALYSIS.md)
 - [Matriz de compatibilidade e lacunas](docs/COMPATIBILITY.md)
+- [Componentes JSONC no Android](docs/JSONC_ANDROID.md)
 - [Inventário reproduzível](docs/library-inventory.json)
 
 ## Módulos
@@ -51,11 +52,10 @@ Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 | `android-bridge` | Renderers nativos, propriedades/eventos, tema, insets e lifecycle |
 | `app` | `Main`, `WelcomeScreen` e conexão mínima da Activity com o host do framework |
 
-O `android-bridge` também contém `AndroidJsoncScreen`, que interpreta um subconjunto
-portátil de views JSONC e produz os componentes Megalodonte renderizados pela
-bridge Android. A primeira versão cobre `Text`, `Button`, `Column`, `Row` e
-`Container`, estados de texto e ações de botões; tipos ainda não suportados
-geram erro explícito. O
+O `android-bridge` também contém `AndroidJsoncScreen`, que interpreta views
+JSONC e produz componentes Megalodonte renderizados pela bridge Android. Os
+21 tipos de componentes do schema têm renderer Android; as diferenças de
+propriedades em relação ao desktop estão em [JSONC_ANDROID.md](docs/JSONC_ANDROID.md). O
 `megalodonte-cli --platform android --mode jsonc` gera uma aplicação inicial
 com essa integração, enquanto `--mode native` gera uma tela Java.
 

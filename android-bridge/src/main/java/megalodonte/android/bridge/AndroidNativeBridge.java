@@ -77,10 +77,14 @@ public final class AndroidNativeBridge implements NativeBridge {
             nativeButton.setText(button.label());
             nativeButton.setTextSize(button.props().getFontSize() == null
                 ? ThemeManager.theme().typography().body() : ScaleProvider.scale(button.props().getFontSize()));
+            nativeButton.setLayoutParams(new ViewGroup.LayoutParams(button.props().isFillWidth() ? -1 : -2,
+                    button.props().getHeight() < 0 ? -2 : dp(button.props().getHeight())));
             nativeButton.setOnClickListener(v -> {
                 if (events != null) events.accept(new Event(component.bridgeId(), "click"));
             });
             view = nativeButton;
+        } else if (component instanceof AndroidJsoncControl control) {
+            view = control.create(host.getContext(), cleanup);
         } else if (component instanceof megalodonte.components.SpacerVertical || component instanceof megalodonte.components.SpacerHorizontal) {
             view = new View(host.getContext());
         } else if (component instanceof Input input) {
@@ -93,6 +97,8 @@ public final class AndroidNativeBridge implements NativeBridge {
             field.setEnabled(!input.props.isDisabled());
             if (!input.props.isEditable()) field.setKeyListener(null);
             field.setImeOptions(input.multiline() ? EditorInfo.IME_FLAG_NO_ENTER_ACTION : EditorInfo.IME_ACTION_DONE);
+            field.setLayoutParams(new ViewGroup.LayoutParams(input.props.getWidth() < 0 ? input.props.getWidth() : dp(input.props.getWidth()),
+                    input.props.getHeight() < 0 ? (input.multiline() ? dp(120) : -2) : dp(input.props.getHeight())));
             TextWatcher watcher = new TextWatcher() {
                 @Override public void beforeTextChanged(CharSequence text, int start, int count, int after) { }
                 @Override public void onTextChanged(CharSequence text, int start, int before, int count) { }
@@ -143,6 +149,12 @@ public final class AndroidNativeBridge implements NativeBridge {
                 if (child instanceof LinearComponent childLayout) {
                     width = dimension(childLayout.props().getWidth()); height = dimension(childLayout.props().getHeight());
                 }
+                View childView = create(child);
+                ViewGroup.LayoutParams requested = childView.getLayoutParams();
+                if (requested != null) {
+                    if (width == -2 && requested.width != -2) width = requested.width;
+                    if (height == -2 && requested.height != -2) height = requested.height;
+                }
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
                 if (height == -1 && layout.getOrientation() == LinearLayout.VERTICAL) { params.height = 0; params.weight = 1; }
                 if (width == -1 && layout.getOrientation() == LinearLayout.HORIZONTAL) { params.width = 0; params.weight = 1; }
@@ -157,7 +169,7 @@ public final class AndroidNativeBridge implements NativeBridge {
                     if (component instanceof Row) params.setMarginStart(dp(container.props().getSpacing()));
                     else params.topMargin = dp(container.props().getSpacing());
                 }
-                layout.addView(create(child), params);
+                layout.addView(childView, params);
             }
             view = layout;
         } else throw new IllegalArgumentException("Unsupported component: " + component.getClass());
