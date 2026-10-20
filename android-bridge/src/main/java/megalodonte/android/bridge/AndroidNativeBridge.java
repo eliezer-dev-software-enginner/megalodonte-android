@@ -38,7 +38,13 @@ import megalodonte.components.inputs.Input;
 import megalodonte.components.Checkbox;
 import megalodonte.components.ProgressBar;
 import megalodonte.components.Scroll;
+import megalodonte.components.Select;
+import megalodonte.components.DatePicker;
+import megalodonte.components.Image;
 import megalodonte.v2.Show;
+import megalodonte.base.state.State;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import megalodonte.base.scale.ScaleProvider;
 import megalodonte.contracts.BackendContract;
 import megalodonte.contracts.Capability;
@@ -85,6 +91,25 @@ public final class AndroidNativeBridge implements NativeBridge {
             view = nativeButton;
         } else if (component instanceof AndroidJsoncControl control) {
             view = control.create(host.getContext(), cleanup);
+        } else if (component instanceof Select select) {
+            view = new AndroidJsoncControl("Select", new JSONObject(),
+                    State.of(new JSONArray(select.options).toString()), select.state,
+                    null, null, null, null, null).create(host.getContext(), cleanup);
+        } else if (component instanceof DatePicker datePicker) {
+            view = new AndroidJsoncControl("DatePicker", new JSONObject(),
+                    null, datePicker.state, null, null, null, null, null)
+                    .create(host.getContext(), cleanup);
+        } else if (component instanceof Image image) {
+            JSONObject props = new JSONObject();
+            try {
+                props.put("description", image.description);
+                props.put("width", image.width);
+                props.put("height", image.height);
+            } catch (org.json.JSONException error) {
+                throw new IllegalStateException("Could not configure image", error);
+            }
+            view = new AndroidJsoncControl("Image", props, image.source,
+                    null, null, null, null, null, null).create(host.getContext(), cleanup);
         } else if (component instanceof megalodonte.components.SpacerVertical || component instanceof megalodonte.components.SpacerHorizontal) {
             view = new View(host.getContext());
         } else if (component instanceof Input input) {
