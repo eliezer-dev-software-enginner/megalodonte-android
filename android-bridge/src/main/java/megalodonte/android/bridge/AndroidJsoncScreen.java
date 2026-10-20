@@ -74,6 +74,11 @@ public final class AndroidJsoncScreen implements ScreenComponent {
         stringState(name).set(java.util.Objects.requireNonNull(value));
     }
 
+    /** Returns the current value of a declared string state for a Java action handler. */
+    public String getStringState(String name) {
+        return stringState(name).get();
+    }
+
     public AndroidJsoncScreen slot(String name, Component content) {
         slots.put(java.util.Objects.requireNonNull(name), java.util.Objects.requireNonNull(content));
         return this;

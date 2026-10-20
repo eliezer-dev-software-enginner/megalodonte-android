@@ -38,6 +38,9 @@ integer states hold list selection. A Java action updates a string state with
 `Text` and `Input` support `format.kind` values `mask`, `currency`, `number`,
 `uppercase` and `lowercase` where applicable. Mask and currency inputs store
 digits while displaying punctuation. Password inputs reject formatting.
+An action handler can read a bound string input through
+`screen.getStringState("fieldName")`; use `screen.setState("fieldName", value)`
+to update it. This supports form logic in Java while the view remains JSONC.
 
 ```jsonc
 {
