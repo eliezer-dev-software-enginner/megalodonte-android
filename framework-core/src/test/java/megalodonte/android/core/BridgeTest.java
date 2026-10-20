@@ -130,6 +130,19 @@ public final class BridgeTest {
         controlRuntime.close();
         progress.set(99);
         require(Integer.valueOf(65).equals(controls.values.get(bar.bridgeId())), "Controls must detach on disposal");
+        FakeBridge routeBridge = new FakeBridge();
+        try (Context ignored = MegalodonteApp.launch(routeBridge, Map.of(), () ->
+                MegalodonteApp.run(context -> {
+                    var router = new megalodonte.application.AndroidRouter(context)
+                            .route("/list", () -> () -> new Text("List"))
+                            .route("/form", () -> () -> new Text("Form"));
+                    router.start("/list");
+                    require("List".equals(((Text) routeBridge.root).value()), "Initial route must mount");
+                    router.navigate("/form");
+                    require("Form".equals(((Text) routeBridge.root).value()), "Navigation must mount the destination");
+                    require(router.back() && "List".equals(((Text) routeBridge.root).value()), "Back must restore the previous route");
+                    require(!router.back(), "Back at the entry route must return false");
+                }))) { }
         System.out.println("Bridge, lifecycle and unchanged desktop welcome client tests passed");
     }
 }

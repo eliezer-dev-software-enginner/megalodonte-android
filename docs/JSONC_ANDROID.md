@@ -41,6 +41,8 @@ digits while displaying punctuation. Password inputs reject formatting.
 An action handler can read a bound string input through
 `screen.getStringState("fieldName")`; use `screen.setState("fieldName", value)`
 to update it. This supports form logic in Java while the view remains JSONC.
+For multiple views, register each `AndroidJsoncScreen` as a route in
+`AndroidRouter`; see [Android navigation](NAVIGATION_ANDROID.md).
 
 ```jsonc
 {
