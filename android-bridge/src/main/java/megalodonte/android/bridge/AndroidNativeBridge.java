@@ -277,7 +277,7 @@ public final class AndroidNativeBridge implements NativeBridge {
     @Override public void setText(String id, String value) {
         checkThread();
         View view = views.get(id);
-        if (!(view instanceof TextView) || view instanceof android.widget.Button)
+        if (!(components.get(id) instanceof Text) || !(view instanceof TextView))
             throw new IllegalArgumentException("Not a mounted Text: " + id);
         ((TextView) view).setText(value);
     }

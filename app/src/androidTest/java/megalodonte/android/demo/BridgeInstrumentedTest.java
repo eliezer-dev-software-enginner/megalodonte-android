@@ -63,7 +63,8 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                 Button toggle = new Button("toggle").onClick(() -> visible.set(!visible.get()));
                 Scroll root = new Scroll(new Column().children(input, derived,
                     new Row().children(checkbox, toggle), bar, show));
-                BridgeRuntime runtime = new BridgeRuntime(new AndroidNativeBridge(host), root);
+                AndroidNativeBridge bridge = new AndroidNativeBridge(host);
+                BridgeRuntime runtime = new BridgeRuntime(bridge, root);
                 ThemeInterface originalTheme = ThemeManager.theme();
                 try {
                     EditText nativeInput = host.findViewWithTag(input.bridgeId());
@@ -76,6 +77,12 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     nativeInput.setText("native");
                     require(inputState.get().equals("NATIVE") && nativeInput.getText().toString().equals("NATIVE"), "Formatted input feedback failed");
                     require(inputChanges.get() == 1 && nativeDerived.getText().toString().equals("Length: 6"), "Input loop/derived binding failed");
+                    try {
+                        bridge.setText(input.bridgeId(), "bypass");
+                        throw new AssertionError("setText accepted an Input");
+                    } catch (IllegalArgumentException expected) { }
+                    require(inputState.get().equals("NATIVE") && nativeInput.getText().toString().equals("NATIVE"),
+                        "Rejected text update changed the input");
                     nativeCheckbox.setChecked(true);
                     require(checked.get(), "Native checkbox must update state");
                     progress.set(65);
