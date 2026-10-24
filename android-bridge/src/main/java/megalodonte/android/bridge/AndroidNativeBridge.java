@@ -41,6 +41,7 @@ import megalodonte.components.Scroll;
 import megalodonte.components.Select;
 import megalodonte.components.DatePicker;
 import megalodonte.components.Image;
+import megalodonte.components.MenuBar;
 import megalodonte.v2.Show;
 import megalodonte.base.state.State;
 import org.json.JSONArray;
@@ -70,7 +71,9 @@ public final class AndroidNativeBridge implements NativeBridge {
     }
     private View create(Component component) {
         View view;
-        if (component instanceof Text text) {
+        if (component instanceof MenuBar menuBar) {
+            view = AndroidMenuBar.create(host.getContext(), menuBar, "", "");
+        } else if (component instanceof Text text) {
             TextView nativeText = new TextView(host.getContext());
             ThemeInterface theme = ThemeManager.getTheme();
             nativeText.setText(text.value());

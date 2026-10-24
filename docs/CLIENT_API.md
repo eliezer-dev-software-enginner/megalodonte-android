@@ -107,3 +107,7 @@ artefato real: `implementation("megalodonte:megalodonte-theme:1.0.0-beta")`.
 `context.backendContract().supports(Capability.DESKTOP_WINDOWS)` permite
 distinguir capacidades. Use isso junto da matriz: não significa que todos os
 overloads legados de uma categoria foram portados.
+
+## MenuBar nativa no Android
+
+`megalodonte.components.MenuBar`, `Menu` e `MenuItem` mantêm a API fluida de menus e ações do desktop (`MenuBar.of().menu(new Menu("Projeto").item("Salvar", action))`). No Android, `AndroidNativeBridge` renderiza o componente com uma `android.widget.Toolbar`; os comandos abrem no menu de três pontos. Um único grupo é apresentado diretamente, enquanto vários grupos aparecem como submenus. `MenuItem.showAsAction()` solicita exibição na barra quando houver espaço; os demais itens ficam no overflow. O adaptador `AndroidMenuBar.create(context, bar, title, subtitle)` permite usar o mesmo contrato também em uma `Activity` Android tradicional, como no editor de vídeo. As ações são `Runnable` executadas na thread da UI. Recursos exclusivos da barra JavaFX, como componentes arbitrários em `trailing` e estilos de `bgColor`, não fazem parte deste contrato nativo.

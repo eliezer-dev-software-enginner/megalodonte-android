@@ -9,6 +9,9 @@ import megalodonte.base.components.Component;
 import megalodonte.base.components.ScreenComponent;
 import megalodonte.base.state.State;
 import megalodonte.components.Button;
+import megalodonte.components.Menu;
+import megalodonte.components.MenuBar;
+import megalodonte.components.MenuItem;
 import megalodonte.components.Text;
 import megalodonte.components.layout_components.Container;
 import megalodonte.props.ContainerProps;
@@ -60,6 +63,16 @@ public final class BridgeTest {
         if (!condition) throw new AssertionError(message);
     }
     public static void main(String[] args) {
+        int[] menuCalls = {0};
+        MenuBar menuBar = MenuBar.of().menu(new Menu("Projeto")
+                .item("Novo", () -> menuCalls[0]++)
+                .itemIf(false, "Oculto", () -> menuCalls[0]++));
+        require(menuBar.getMenus().size() == 1 && menuBar.getMenus().get(0).getItems().size() == 1,
+                "MenuBar must preserve the desktop menu/item contract");
+        MenuItem menuAction = menuBar.getMenus().get(0).getItems().get(0);
+        menuAction.run();
+        require(menuCalls[0] == 1 && "Novo".equals(menuAction.getTitle()),
+                "Native menu command must run its declared action");
         FakeBridge welcomeBridge = new FakeBridge();
         try (Context ignored = MegalodonteApp.launch(welcomeBridge, Map.of(), WelcomeAppTest::runOriginalMain)) {
             require(welcomeBridge.root instanceof Container, "Original client must render Container");
