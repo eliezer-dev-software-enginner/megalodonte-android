@@ -1,8 +1,8 @@
 # Megalodonte Android
 
 Backend experimental Android do framework Megalodonte: componentes declarativos,
-bridge e widgets nativos. O MVP foi validado pelo usuário. Estado, tema e contratos
-agora vêm do megalodonte-core compartilhado; o cliente declara megalodonte-theme
+bridge e widgets nativos. Estado, tema e contratos
+vêm do megalodonte-core compartilhado; o cliente declara megalodonte-theme
 como dependência Gradle real. A paridade completa de todas as APIs ainda está pendente.
 
 A aplicação cliente usa o padrão clássico do Megalodonte. Este trecho é uma
@@ -56,8 +56,8 @@ O `android-bridge` também contém `AndroidJsoncScreen`, que interpreta views
 JSONC e produz componentes Megalodonte renderizados pela bridge Android. Os
 21 tipos de componentes do schema têm renderer Android; as diferenças de
 propriedades em relação ao desktop estão em [JSONC_ANDROID.md](docs/JSONC_ANDROID.md). O
-`megalodonte-cli --platform android --mode jsonc` gera uma aplicação inicial
-com essa integração, enquanto `--mode native` gera uma tela Java.
+gerador externo `megalodonte-cli` oferece os modos Android `jsonc` e `native`;
+consulte [JSONC_ANDROID.md](docs/JSONC_ANDROID.md) para o escopo dessa integração.
 
 ## Build
 
@@ -74,17 +74,21 @@ framework/
     megalodonte-core/
     megalodonte-theme/
     megalodonte-reactivity-portable/
+  megalodonte-ecossystem/
+    megalodonte-app1-welcome/
+    megalodonte-app2-counter/
+    megalodonte-app3-string-lenght/
+    megalodonte-app4-hide-seek/
 ```
 
-Esses projetos irmãos não estão incluídos neste repositório. Para
-`:framework-core:check`, também são necessários os fontes dos exemplos
-`megalodonte-app1-welcome` a `megalodonte-app4-hide-seek` em
-`framework/megalodonte-ecossystem/`, conforme os caminhos definidos em
-`framework-core/build.gradle.kts`. Sem eles, essa checagem não reproduz a
-validação dos clientes originais.
+Esses projetos irmãos e exemplos não estão incluídos neste repositório. Os
+exemplos em `framework/megalodonte-ecossystem/` são necessários para
+`:framework-core:check`, conforme os caminhos definidos em
+`framework-core/build.gradle.kts`.
 
-Com JDK 25, Android SDK Platform 35, `ANDROID_HOME` configurado e os projetos
-irmãos presentes, execute no PowerShell, a partir da raiz:
+Com JDK 25, Android SDK Platform 35, `ANDROID_HOME` configurado, as três
+bibliotecas irmãs e os quatro exemplos presentes nos caminhos acima, execute
+no PowerShell, a partir da raiz:
 
 ```powershell
 ./gradlew.bat :framework-core:check :app:assembleDebug :app:lintDebug
