@@ -3,6 +3,7 @@ package megalodonte.android.bridge;
 import android.app.Activity;
 import android.os.Bundle;
 import android.graphics.Insets;
+import android.os.Build;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import java.util.HashMap;
@@ -20,8 +21,13 @@ public abstract class MegalodonteActivity extends Activity {
         megalodonte.base.scale.ScaleProvider.setDetector(() -> 1.0);
         FrameLayout host = new FrameLayout(this);
         host.setOnApplyWindowInsetsListener((view, insets) -> {
-            Insets safe = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-            view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Insets safe = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+            } else {
+                view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
+                        insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
+            }
             return insets;
         });
         setContentView(host);

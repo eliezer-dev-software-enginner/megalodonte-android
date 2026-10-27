@@ -45,6 +45,11 @@ public final class AndroidRouter {
 
     public String currentPath() { return currentPath; }
 
+    /** Rebuild the current screen while preserving the back stack. */
+    public void refresh() {
+        if (currentPath != null) show(currentPath);
+    }
+
     private void show(String path) {
         ScreenComponent screen = requireRoute(path).get();
         if (screen == null) throw new IllegalStateException("Route returned no screen: " + path);

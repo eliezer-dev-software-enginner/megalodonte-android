@@ -176,6 +176,8 @@ public final class AndroidNativeBridge implements NativeBridge {
                 int width = -2, height = -2;
                 if (child instanceof LinearComponent childLayout) {
                     width = dimension(childLayout.props().getWidth()); height = dimension(childLayout.props().getHeight());
+                } else if (child instanceof Scroll && layout.getOrientation() == LinearLayout.VERTICAL) {
+                    width = -1;
                 }
                 View childView = create(child);
                 ViewGroup.LayoutParams requested = childView.getLayoutParams();
@@ -223,7 +225,7 @@ public final class AndroidNativeBridge implements NativeBridge {
             Component component = components.get(id);
             if (view instanceof TextView nativeText) {
                 if (component instanceof Button button) {
-                    nativeText.setTextColor(color(theme.colors().background()));
+                    nativeText.setTextColor(Color.WHITE);
                     view.setBackgroundTintList(ColorStateList.valueOf(color(theme.colors().primary())));
                     nativeText.setTextSize(button.props().getFontSize() == null
                         ? theme.typography().body() : ScaleProvider.scale(button.props().getFontSize()));
