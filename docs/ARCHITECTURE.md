@@ -21,7 +21,9 @@ sequenceDiagram
 ## Contrato
 
 `mount` recebe uma árvore declarativa e o destino dos eventos nativos.
-`setText` envia uma atualização identificada por ID. `close` descarta a montagem.
+`setText` envia uma atualização identificada por ID. `setChildren` substitui as
+views de um bloco de lista reativa (`ForEach`) na mesma posição do layout pai.
+`close` descarta a montagem.
 `Event` transporta o ID do componente e o nome do evento. Nesta etapa só existe `click`.
 Os IDs são internos e gerados automaticamente. O runtime impede que a mesma
 instância de componente seja montada em dois lugares na mesma árvore.
@@ -49,11 +51,28 @@ Props são resolvidos pelo renderer, com dimensões em dp e fontes em sp.
 A tela não conhece IDs nem comandos da bridge. Veja [CLIENT_API.md](CLIENT_API.md).
 Não há diff: `context.useView` descarta a árvore anterior e monta a nova tela.
 
+## Listas reativas
+
+`Column.items(ReadableState<List<T>>, mapper)` e `Row.items(...)` anexam um
+`ForEach<T>`, que guarda o estado observado e os componentes mapeados.
+`BridgeRuntime` indexa o bloco, exige `Capability.LIST_RENDERING` e assina o
+estado. Quando a lista publica um novo valor, o runtime chama
+`bridge.setChildren(forEachId, novosComponentes)`, fecha as assinaturas da
+subárvore anterior, indexa e assina a nova. `AndroidNativeBridge` mantém um
+`ListBlock` com pai, espaçamento, âncora `GONE` e as views atuais; a troca remove
+somente as views do bloco e recria na mesma posição. Listeners e limpezas por
+componente são executados no descarte, então itens removidos param de disparar
+eventos. Não há reconciliação por identidade nem preservação de foco/estado.
+
 ## Ciclo de vida
 
 `MainActivity` estende `MegalodonteActivity` e apenas chama `Main.main()`.
 O host cria bridge/Context e mantém um contexto de inicialização por thread para
-`MegalodonteApp.run`. O Context chama `restoreState`, `render` e `onMount`.
+`MegalodonteApp.run`. A ordem é `restoreState` → `render()` → montagem e
+assinaturas → `onMount()`: `render()` sempre roda antes de `onMount()` e não é
+chamado novamente quando o estado muda. Como o runtime já assina os estados
+nesse ponto, mudanças feitas em `onMount` (inclusive em uma `ListState`) chegam
+à UI montada sem novo render.
 Na recriação, o host recupera o mapa salvo pela tela no Bundle. Ao destruir a
 Activity ou trocar de tela, o runtime fecha bindings/views e chama `onDestroy`.
 

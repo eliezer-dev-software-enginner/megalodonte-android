@@ -36,12 +36,20 @@ O clique altera o `State` e o runtime atualiza o texto. Hooks opcionais de
 `saveState`/`restoreState` preservam o contador na recriação da Activity.
 O layout respeita barras do sistema, recortes, dp e sp.
 
+Listas reativas são suportadas em `Column.items`/`Row.items` com um
+`ReadableState<List<T>>` (por exemplo, `ListState`) e um mapper. O runtime
+substitui apenas as views do bloco quando a lista muda. `render()` executa antes
+de `onMount()`; como as assinaturas já existem nesse momento, mudanças de estado
+em `onMount` (inclusive em uma `ListState`) aparecem na UI sem novo render.
+
 ## Limites desta etapa
 
 A bridge é síncrona, em Java e na thread principal. Não há runtime JavaScript,
 serialização, diff da árvore, roteamento ou equivalência completa com o backend JavaFX.
 Suportados: Text/Button, Container/Column/Row, Scroll, espaçadores,
-Input/PasswordInput/TextAreaInput, Checkbox, ProgressBar e Show.when, com a
+Input/PasswordInput/TextAreaInput, Checkbox, ProgressBar, Show.when e listas
+reativas via `ForEach`/`items(ReadableState<List<T>>, ...)`, com recriação das
+views ao mudar (sem reconciliação por identidade nem preservação de foco); a
 API parcial detalhada em COMPATIBILITY.md. ThemeInterface/tokens são os tipos
 reais do core. O renderer reestiliza as views quando ThemeManager muda.
 BackendContract v1, ScreenLifecycle e RouteMatcher são comuns. O matcher já é

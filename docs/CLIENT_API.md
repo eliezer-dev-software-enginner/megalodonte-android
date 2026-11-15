@@ -48,6 +48,34 @@ O `Text` recebe o estado observável como no desktop. O framework assina o estad
 gera os IDs e envia as atualizações à view nativa. A aplicação só descreve a tela
 e altera seu estado no callback.
 
+## Listas reativas
+
+`Column.items` e `Row.items` aceitam um `ReadableState<List<T>>` — por exemplo um
+`ListState` — e um mapper que devolve um componente por item:
+
+```java
+private final ListState<String> nomes = ListState.ofEmpty();
+
+@Override public Component render() {
+    return new Column(new ColumnProps().fillWidth()).items(
+        nomes,
+        nome -> new Button(nome, new ButtonProps().fillWidth())
+    );
+}
+
+@Override public void onMount() {
+    nomes.set(List.of("Ana", "Bruno"));
+}
+```
+
+Também existe `Column.items(List<T>, mapper)` para uma lista estática já materializada.
+No overload reativo, cada mudança do estado recria apenas as views do bloco,
+mantendo posição, espaçamento e largura no layout pai. O mapper precisa devolver
+uma instância nova por item; reutilizar a mesma instância é recusado. Mutar a
+lista no lugar não é observado: publique uma nova lista, como as operações do
+`ListState` fazem. Ainda não há reconciliação por identidade nem preservação de
+foco/estado das views; itens são recriados a cada mudança.
+
 ## Ponto de entrada Android
 
 ```java
@@ -81,6 +109,13 @@ Para preservar dados na recriação Android, uma tela também pode implementar:
 O host salva o mapa em Bundle e o Context restaura antes de chamar `render()`.
 Esses hooks são extensões Android opcionais; uma tela estática só precisa de render.
 
+A ordem no `Context.useView` é `restoreState` → `render()` → montagem/assinaturas →
+`onMount()`. Ou seja, `render()` sempre roda antes de `onMount()` e não é chamado
+de novo quando o estado muda. Como as assinaturas já estão ativas em `onMount`,
+preencher um `State` ou uma `ListState` nesse hook atualiza a UI montada
+reativamente, inclusive listas. O javadoc de `render()`/`onMount()` registra essa
+ordem em inglês.
+
 ## Escopo suportado
 
 | Recurso clássico | Implementado no Android |
@@ -95,6 +130,8 @@ Esses hooks são extensões Android opcionais; uma tela estática só precisa de
 | `State` / `ReadableState` | Fontes originais, incluindo map |
 | `ThemeManager` / `DefaultTheme` | Core/tema reais, com todos os tokens; dependência Gradle do cliente |
 | `MegalodonteApp.run` / `context.useView` | Inicialização e montagem/troca de tela |
+| `ListState` / `ForEachState` | Artefato portátil; `ListState` funciona como `ReadableState<List<T>>` |
+| `Column` / `Row` | children/c_child, items estático e items reativo (`ReadableState<List<T>>`) |
 
 Os nomes/imports preservam a experiência clássica nesse subconjunto. As classes
 Android substituem as implementações JavaFX e não devem ser combinadas com os

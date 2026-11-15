@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.EditText;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import megalodonte.android.bridge.AndroidNativeBridge;
 import megalodonte.android.core.BridgeRuntime;
@@ -31,6 +34,7 @@ import megalodonte.components.inputs.OnChangeResult;
 import megalodonte.components.layout_components.Column;
 import megalodonte.components.layout_components.Row;
 import megalodonte.v2.Show;
+import megalodonte.v2.ListState;
 
 /** Native-widget tests without a test-framework dependency; run with adb am instrument. */
 public final class BridgeInstrumentedTest extends Instrumentation {
@@ -112,9 +116,47 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     inputState.set("after");
                     require(checked.get() && inputChanges.get() == 1 && nativeInput.getText().toString().equals("disposed"), "Native listeners/bindings survived disposal");
                     require(host.getChildCount() == 0, "Host must release native views");
+                    FrameLayout listHost = new FrameLayout(testActivity);
+                    ListState<String> names = ListState.of(new ArrayList<>(List.of("Ada", "Grace")));
+                    AtomicInteger listClicks = new AtomicInteger();
+                    Column listColumn = new Column().items(names, name ->
+                        new Button(name).onClick(() -> listClicks.incrementAndGet()));
+                    AndroidNativeBridge listBridge = new AndroidNativeBridge(listHost);
+                    BridgeRuntime listRuntime = new BridgeRuntime(listBridge, listColumn);
+                    try {
+                        LinearLayout layout = (LinearLayout) listHost.getChildAt(0);
+                        require(buttonLabels(layout).equals(List.of("Ada", "Grace")), "Reactive list must mount its items");
+                        names.add("Linus");
+                        require(buttonLabels(layout).equals(List.of("Ada", "Grace", "Linus")), "Reactive list must add native views");
+                        buttonWithText(layout, "Linus").performClick();
+                        require(listClicks.get() == 1, "Reactive list buttons must dispatch");
+                        android.widget.Button removed = buttonWithText(layout, "Ada");
+                        names.remove("Ada");
+                        require(buttonLabels(layout).equals(List.of("Grace", "Linus")), "Reactive list must remove native views");
+                        removed.performClick();
+                        require(listClicks.get() == 1, "Removed list buttons must stop dispatching");
+                        names.clear();
+                        require(buttonLabels(layout).isEmpty(), "Reactive list must release cleared views");
+
+                        State<String> suffix = State.of("!");
+                        ListState<String> labels = ListState.of(new ArrayList<>(List.of("A")));
+                        Column textColumn = new Column().items(labels, label ->
+                            new Text(suffix.map(value -> label + value)));
+                        FrameLayout textHost = new FrameLayout(testActivity);
+                        AndroidNativeBridge textBridge = new AndroidNativeBridge(textHost);
+                        BridgeRuntime textRuntime = new BridgeRuntime(textBridge, textColumn);
+                        try {
+                            LinearLayout textLayout = (LinearLayout) textHost.getChildAt(0);
+                            require(textValues(textLayout).equals(List.of("A!")), "Mapped text must mount");
+                            labels.add("B");
+                            suffix.set("?");
+                            require(textValues(textLayout).equals(List.of("A?", "B?")), "Mapped text states must bind");
+                        } finally { textRuntime.close(); }
+                    } finally { listRuntime.close(); }
+                    require(listHost.getChildCount() == 0, "Reactive list host must be released");
                 } finally { runtime.close(); ThemeManager.setTheme(originalTheme); }
             });
-            result.putString("stream", "Native client/render/input/checkbox/progress/show/theme/disposal tests passed\n");
+            result.putString("stream", "Native client/render/input/checkbox/progress/show/theme/reactive-list/disposal tests passed\n");
             result.putString("megalodonte.result", "passed");
             finish(Activity.RESULT_OK, result);
         } catch (Throwable error) {
@@ -127,6 +169,31 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                 runOnMainSync(closing::finish);
             }
         }
+    }
+    private static List<String> buttonLabels(LinearLayout layout) {
+        List<String> labels = new ArrayList<>();
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child.getVisibility() == View.GONE) continue;
+            if (child instanceof android.widget.Button button) labels.add(button.getText().toString());
+        }
+        return labels;
+    }
+    private static android.widget.Button buttonWithText(LinearLayout layout, String text) {
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child instanceof android.widget.Button button && text.contentEquals(button.getText())) return button;
+        }
+        throw new AssertionError("Missing native button: " + text);
+    }
+    private static List<String> textValues(LinearLayout layout) {
+        List<String> values = new ArrayList<>();
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child.getVisibility() == View.GONE) continue;
+            if (child instanceof TextView text && !(child instanceof android.widget.Button)) values.add(text.getText().toString());
+        }
+        return values;
     }
     private static boolean containsText(View view, String value) {
         if (view instanceof TextView text && value.equals(text.getText().toString())) return true;

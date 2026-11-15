@@ -22,7 +22,8 @@
 - [ ] Unificar contratos de Component/Props/eventos por método.
 - [ ] Router Android/Navigator neutro com back stack e restauração.
 - [ ] TaskExecutor/UiDispatcher/logging comuns para Async/Scope.
-- [ ] List rendering e descarte/reconciliação de subárvores.
+- [x] List rendering reativo (`ForEach`, `items(ReadableState<List<T>>, ...)`) e descarte da subárvore anterior.
+- [ ] Reconciliação por identidade e preservação de foco/estado de views em listas reativas.
 - [ ] TableModel/seleção/paginação/exportação comuns e renderer Android.
 - [ ] Select/DatePicker/Image/Icon/CurrencyInput e fontes/recursos.
 - [ ] Menu/Modal/Stack/Grid/Flow/Canva/TextFlow, animações e props avançadas.
@@ -48,6 +49,8 @@
 - [x] Testar cliques, estado derivado, descarte, troca de tela e restauração.
 
 - [x] Executar `:framework-core:check`: testes de contrato passaram em 2026-10-05.
+- [x] Contrato `LIST_RENDERING` e teste Java de lista reativa (`:framework-core:listRenderingTest`, 2026-11-15).
+- [x] Instrumentação API 35 em 2026-11-15: montar, adicionar, remover, limpar, clique em item dinâmico e binding de texto em lista reativa.
 - [x] Gerar APK com `:app:assembleDebug`: `app/build/outputs/apk/debug/app-debug.apk`.
 - [x] Executar `:app:lintDebug`: build/check/lint concluídos com sucesso em 2026-10-05.
 - [x] Ícone da aplicação e regras de extração de dados definidos no manifest.

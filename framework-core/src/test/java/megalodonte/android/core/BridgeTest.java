@@ -1,6 +1,7 @@
 package megalodonte.android.core;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import megalodonte.application.Context;
@@ -27,6 +28,7 @@ public final class BridgeTest {
         Component root;
         final Map<String, String> texts = new HashMap<>();
         final Map<String, Object> values = new HashMap<>();
+        final Map<String, List<Component>> lists = new HashMap<>();
         int closeCount;
         @Override public void mount(Component root, Consumer<Event> events) {
             this.root = root; this.events = events; texts.clear(); index(root);
@@ -37,6 +39,10 @@ public final class BridgeTest {
         }
         @Override public void setText(String id, String value) { texts.put(id, value); }
         @Override public void setValue(String id, Object value) { values.put(id, value); if (value instanceof String text) texts.put(id, text); }
+        @Override public void setChildren(String id, List<Component> children) {
+            lists.put(id, List.copyOf(children));
+            children.forEach(this::index);
+        }
         @Override public void close() { closeCount++; }
         @Override public void applyTheme(ThemeInterface theme) { }
         @Override public BackendContract contract() { return new BackendContract("test", 1, java.util.EnumSet.allOf(megalodonte.contracts.Capability.class)); }

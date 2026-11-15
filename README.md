@@ -32,6 +32,31 @@ Em `Main`, configure o tema e chame
 Veja os fontes completos em `app/src/main/java/my_app/` e o
 [guia da API cliente](docs/CLIENT_API.md).
 
+## Listas reativas e ciclo de vida
+
+`Column.items` e `Row.items` aceitam um `ReadableState<List<T>>` (por exemplo,
+`ListState`) além da lista estática:
+
+```java
+private final ListState<String> nomes = ListState.ofEmpty();
+
+@Override public Component render() {
+    return new Column(new ColumnProps().fillWidth())
+        .items(nomes, nome -> new Button(nome, new ButtonProps().fillWidth()));
+}
+
+@Override public void onMount() {
+    nomes.set(List.of("Ana", "Bruno"));
+}
+```
+
+Cada mudança recria apenas as views do bloco, na mesma posição do layout; ainda
+não há reconciliação por identidade nem preservação de foco/estado. `render()`
+sempre roda antes de `onMount()`, e o runtime já está assinando os estados nesse
+momento — por isso preencher uma `ListState` em `onMount` atualiza a tela sem
+novo render. A ordem completa está no javadoc de `ScreenComponent` e em
+[Arquitetura](docs/ARCHITECTURE.md).
+
 Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 
 ## Documentação

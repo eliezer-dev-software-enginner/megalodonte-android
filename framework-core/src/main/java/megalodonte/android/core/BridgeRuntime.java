@@ -1,43 +1,36 @@
 package megalodonte.android.core;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import megalodonte.base.components.Component;
-import megalodonte.components.Button;
-import megalodonte.components.Text;
 import megalodonte.base.state.Subscription;
 import megalodonte.base.theme.ThemeManager;
-import megalodonte.components.inputs.Input;
+import megalodonte.components.Button;
+import megalodonte.components.Text;
 import megalodonte.components.Checkbox;
 import megalodonte.components.ProgressBar;
+import megalodonte.components.inputs.Input;
+import megalodonte.v2.ForEach;
 import megalodonte.v2.Show;
 
 /** Internal mounted tree. Screen authors never send native commands themselves. */
 public final class BridgeRuntime implements AutoCloseable {
     private final NativeBridge bridge;
     private final Map<String, Component> components = new HashMap<>();
-    private final List<Subscription> bindings = new ArrayList<>();
+    private final Map<String, Subscription> subscriptions = new HashMap<>();
+    private Subscription theme;
     private boolean closed;
     public BridgeRuntime(NativeBridge bridge, Component root) {
         this.bridge = Objects.requireNonNull(bridge);
         index(Objects.requireNonNull(root));
         try {
             bridge.mount(root, this::dispatch);
-            bindings.add(ThemeManager.state().observe(theme -> {
-                if (!closed && theme != null) bridge.applyTheme(theme);
-            }));
-            components.values().forEach(component -> {
-                if (component instanceof Text text && text.state() != null) bind(text);
-                else if (component instanceof Input input) bindings.add(input.displayState().observe(value -> updateValue(input.bridgeId(), value)));
-                else if (component instanceof Checkbox checkbox) bindings.add(checkbox.state.observe(value -> updateValue(checkbox.bridgeId(), value)));
-                else if (component instanceof ProgressBar progress) bindings.add(progress.state.observe(value -> updateValue(progress.bridgeId(), value)));
-                else if (component instanceof Show show) bindings.add(show.condition.observe(value -> updateValue(show.bridgeId(), value)));
-                else if (component instanceof megalodonte.components.SpacerVertical space) bindings.add(space.size.observe(value -> updateValue(space.bridgeId(), value)));
-                else if (component instanceof megalodonte.components.SpacerHorizontal space) bindings.add(space.size.observe(value -> updateValue(space.bridgeId(), value)));
+            theme = ThemeManager.state().observe(value -> {
+                if (!closed && value != null) bridge.applyTheme(value);
             });
+            bindTree(root);
         } catch (RuntimeException error) {
             close();
             throw error;
@@ -50,6 +43,7 @@ public final class BridgeRuntime implements AutoCloseable {
         if (component instanceof Checkbox) bridge.contract().require(megalodonte.contracts.Capability.CHECKBOX);
         if (component instanceof ProgressBar) bridge.contract().require(megalodonte.contracts.Capability.PROGRESS);
         if (component instanceof Show) bridge.contract().require(megalodonte.contracts.Capability.CONDITIONAL_RENDERING);
+        if (component instanceof ForEach) bridge.contract().require(megalodonte.contracts.Capability.LIST_RENDERING);
         if (component instanceof megalodonte.components.Scroll) bridge.contract().require(megalodonte.contracts.Capability.SCROLL);
         if (component instanceof megalodonte.components.layout_components.Row) bridge.contract().require(megalodonte.contracts.Capability.ROW);
         if (component instanceof megalodonte.components.layout_components.Column) bridge.contract().require(megalodonte.contracts.Capability.COLUMN);
@@ -61,9 +55,61 @@ public final class BridgeRuntime implements AutoCloseable {
             throw new IllegalArgumentException("Component reused in the same tree: " + component.bridgeId());
         component.children().forEach(this::index);
     }
-    private void bind(Text text) {
-        String id = text.bridgeId();
-        bindings.add(text.state().observe(value -> setText(id, value)));
+    private void bindTree(Component component) {
+        bind(component);
+        if (component instanceof ForEach<?> forEach) {
+            forEach.components().forEach(this::bindTree);
+        } else {
+            component.children().forEach(this::bindTree);
+        }
+    }
+    private void bind(Component component) {
+        String id = component.bridgeId();
+        if (closed || subscriptions.containsKey(id)) return;
+        Subscription binding;
+        if (component instanceof Text text) {
+            binding = text.state() == null ? null : text.state().observe(value -> setText(id, value));
+        } else if (component instanceof Input input) {
+            binding = input.displayState().observe(value -> updateValue(id, value));
+        } else if (component instanceof Checkbox checkbox) {
+            binding = checkbox.state.observe(value -> updateValue(id, value));
+        } else if (component instanceof ProgressBar progress) {
+            binding = progress.state.observe(value -> updateValue(id, value));
+        } else if (component instanceof Show show) {
+            binding = show.condition.observe(value -> updateValue(id, value));
+        } else if (component instanceof megalodonte.components.SpacerVertical space) {
+            binding = space.size.observe(value -> updateValue(id, value));
+        } else if (component instanceof megalodonte.components.SpacerHorizontal space) {
+            binding = space.size.observe(value -> updateValue(id, value));
+        } else if (component instanceof ForEach<?> forEach) {
+            // observe() delivers the current list immediately; the initial items
+            // were already mounted by mount(), so skip that first notification.
+            boolean[] initial = { true };
+            binding = forEach.state().observe(ignored -> {
+                if (initial[0]) { initial[0] = false; return; }
+                refreshList(forEach);
+            });
+        } else {
+            binding = null;
+        }
+        if (binding != null) subscriptions.put(id, binding);
+    }
+    private void refreshList(ForEach<?> forEach) {
+        if (closed) return;
+        List<Component> previous = forEach.components();
+        forEach.refresh();
+        bridge.setChildren(forEach.bridgeId(), forEach.components());
+        previous.forEach(this::unmount);
+        List<Component> next = forEach.components();
+        next.forEach(this::index);
+        next.forEach(this::bindTree);
+    }
+    private void unmount(Component component) {
+        Subscription binding = subscriptions.remove(component.bridgeId());
+        if (binding != null) binding.close();
+        if (component instanceof ForEach<?> forEach) forEach.components().forEach(this::unmount);
+        else component.children().forEach(this::unmount);
+        components.remove(component.bridgeId());
     }
     private void dispatch(NativeBridge.Event event) {
         if (closed) return;
@@ -85,8 +131,9 @@ public final class BridgeRuntime implements AutoCloseable {
     @Override public void close() {
         if (closed) return;
         closed = true;
-        bindings.forEach(Subscription::close);
-        bindings.clear();
+        subscriptions.values().forEach(Subscription::close);
+        subscriptions.clear();
+        if (theme != null) { theme.close(); theme = null; }
         components.clear();
         bridge.close();
     }

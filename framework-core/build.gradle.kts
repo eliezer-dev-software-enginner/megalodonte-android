@@ -26,6 +26,20 @@ tasks.check { dependsOn("bridgeTest") }
 // Contract tests run through JavaExec; no JUnit engine is used in this bootstrap.
 tasks.test { enabled = false }
 
+// Reactive list rendering is validated without the desktop client fixtures, which
+// may be mid-migration in sibling repositories.
+val listRenderingTest = sourceSets.create("listRenderingTest") {
+    java.srcDir("src/listRenderingTest/java")
+    compileClasspath += sourceSets.main.get().output + configurations.testCompileClasspath.get()
+    runtimeClasspath += sourceSets.main.get().output + configurations.testRuntimeClasspath.get()
+}
+tasks.register<JavaExec>("listRenderingTest") {
+    dependsOn(tasks.named(listRenderingTest.classesTaskName))
+    classpath = listRenderingTest.runtimeClasspath
+    mainClass.set("megalodonte.android.core.ListRenderingTest")
+}
+tasks.check { dependsOn("listRenderingTest") }
+
 listOf(2 to "megalodonte-app2-counter", 3 to "megalodonte-app3-string-lenght", 4 to "megalodonte-app4-hide-seek").forEach { (number, app) ->
     val fixtureSources = tasks.register<Sync>("prepareClient$number") {
         from("../../megalodonte-ecossystem/$app/src/main/java") { include("my_app/*.java") }

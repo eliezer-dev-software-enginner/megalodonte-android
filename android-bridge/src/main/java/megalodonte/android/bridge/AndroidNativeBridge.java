@@ -16,6 +16,8 @@ import android.text.Editable;
 import android.text.InputType;
 import android.view.inputmethod.EditorInfo;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.HashSet;
 import android.content.res.ColorStateList;
@@ -43,6 +45,7 @@ import megalodonte.components.DatePicker;
 import megalodonte.components.Image;
 import megalodonte.components.MenuBar;
 import megalodonte.v2.Show;
+import megalodonte.v2.ForEach;
 import megalodonte.base.state.State;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,11 +55,30 @@ import megalodonte.contracts.Capability;
 
 /** Renders actual Android widgets. No WebView, JavaScript engine or JavaFX. */
 public final class AndroidNativeBridge implements NativeBridge {
+    /** One reactive list block, rendered inline inside its parent layout. */
+    private static final class ListBlock {
+        final LinearComponent container;
+        final LinearLayout parent;
+        final boolean horizontal;
+        final int spacing;
+        final View anchor;
+        final List<Component> components = new ArrayList<>();
+        final List<View> views = new ArrayList<>();
+        ListBlock(LinearComponent container, LinearLayout parent, int spacing, View anchor) {
+            this.container = container;
+            this.parent = parent;
+            this.horizontal = container instanceof Row;
+            this.spacing = spacing;
+            this.anchor = anchor;
+        }
+    }
     private final ViewGroup host;
     private final Map<String, View> views = new HashMap<>();
     private final Map<String, Component> components = new HashMap<>();
+    private final Map<String, ListBlock> listBlocks = new HashMap<>();
+    private final Map<String, List<Runnable>> componentCleanup = new HashMap<>();
+    private final Set<View> listAnchors = Collections.newSetFromMap(new IdentityHashMap<>());
     private Consumer<Event> events;
-    private final List<Runnable> cleanup = new ArrayList<>();
     private final Set<String> updating = new HashSet<>();
     public AndroidNativeBridge(ViewGroup host) { this.host = host; }
     private void checkThread() {
@@ -70,6 +92,7 @@ public final class AndroidNativeBridge implements NativeBridge {
         host.addView(create(root), new ViewGroup.LayoutParams(-1, -1));
     }
     private View create(Component component) {
+        List<Runnable> cleanup = new ArrayList<>();
         View view;
         if (component instanceof MenuBar menuBar) {
             view = AndroidMenuBar.create(host.getContext(), menuBar, "", "");
@@ -173,41 +196,113 @@ public final class AndroidNativeBridge implements NativeBridge {
             int padding = dp(container.props().getPadding());
             layout.setPadding(padding, padding, padding, padding);
             for (Component child : container.children()) {
-                int width = -2, height = -2;
-                if (child instanceof LinearComponent childLayout) {
-                    width = dimension(childLayout.props().getWidth()); height = dimension(childLayout.props().getHeight());
-                } else if (child instanceof Scroll && layout.getOrientation() == LinearLayout.VERTICAL) {
-                    width = -1;
+                if (child instanceof ForEach<?> forEach) {
+                    mountListBlock(layout, container, forEach);
+                } else {
+                    View childView = create(child);
+                    layout.addView(childView, linearParams(container, child, childView));
                 }
-                View childView = create(child);
-                ViewGroup.LayoutParams requested = childView.getLayoutParams();
-                if (requested != null) {
-                    if (width == -2 && requested.width != -2) width = requested.width;
-                    if (height == -2 && requested.height != -2) height = requested.height;
-                }
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
-                if (height == -1 && layout.getOrientation() == LinearLayout.VERTICAL) { params.height = 0; params.weight = 1; }
-                if (width == -1 && layout.getOrientation() == LinearLayout.HORIZONTAL) { params.width = 0; params.weight = 1; }
-                if (child instanceof megalodonte.components.SpacerVertical space) {
-                    params.width = 0; params.height = space.flexible && !(component instanceof Row) ? 0 : dp(space.size.get());
-                    if (space.flexible && !(component instanceof Row)) params.weight = 1;
-                } else if (child instanceof megalodonte.components.SpacerHorizontal space) {
-                    params.height = 0; params.width = space.flexible && component instanceof Row ? 0 : dp(space.size.get());
-                    if (space.flexible && component instanceof Row) params.weight = 1;
-                }
-                if (layout.getChildCount() > 0) {
-                    if (component instanceof Row) params.setMarginStart(dp(container.props().getSpacing()));
-                    else params.topMargin = dp(container.props().getSpacing());
-                }
-                layout.addView(childView, params);
             }
+            applySpacing(layout, container.props().getSpacing(), component instanceof Row);
             view = layout;
+        } else if (component instanceof ForEach<?>) {
+            throw new IllegalArgumentException("ForEach must be a direct child of a Column or Row");
         } else throw new IllegalArgumentException("Unsupported component: " + component.getClass());
         view.setTag(component.bridgeId());
         components.put(component.bridgeId(), component);
         if (views.putIfAbsent(component.bridgeId(), view) != null)
             throw new IllegalArgumentException("Duplicate component id: " + component.bridgeId());
+        if (!cleanup.isEmpty()) componentCleanup.put(component.bridgeId(), cleanup);
         return view;
+    }
+    private void mountListBlock(LinearLayout layout, LinearComponent container, ForEach<?> forEach) {
+        View anchor = new View(host.getContext());
+        anchor.setVisibility(View.GONE);
+        listAnchors.add(anchor);
+        layout.addView(anchor, new LinearLayout.LayoutParams(0, 0));
+        ListBlock block = new ListBlock(container, layout, container.props().getSpacing(), anchor);
+        for (Component child : forEach.components()) {
+            View childView = create(child);
+            layout.addView(childView, linearParams(container, child, childView));
+            block.components.add(child);
+            block.views.add(childView);
+        }
+        if (listBlocks.putIfAbsent(forEach.bridgeId(), block) != null)
+            throw new IllegalArgumentException("Duplicate reactive list id: " + forEach.bridgeId());
+    }
+    @Override public void setChildren(String componentId, List<Component> children) {
+        checkThread();
+        ListBlock block = listBlocks.get(componentId);
+        if (block == null) throw new IllegalArgumentException("Not a mounted reactive list: " + componentId);
+        List<Component> next = List.copyOf(children);
+        for (Component previous : block.components) discard(previous);
+        for (View previous : block.views) block.parent.removeView(previous);
+        block.components.clear();
+        block.views.clear();
+        int index = block.parent.indexOfChild(block.anchor) + 1;
+        for (Component child : next) {
+            View childView = create(child);
+            block.parent.addView(childView, index++, linearParams(block.container, child, childView));
+            block.components.add(child);
+            block.views.add(childView);
+        }
+        applySpacing(block.parent, block.spacing, block.horizontal);
+    }
+    private LinearLayout.LayoutParams linearParams(LinearComponent container, Component child, View childView) {
+        boolean horizontal = container instanceof Row;
+        int width = -2, height = -2;
+        if (child instanceof LinearComponent childLayout) {
+            width = dimension(childLayout.props().getWidth()); height = dimension(childLayout.props().getHeight());
+        } else if (child instanceof Scroll && !horizontal) {
+            width = -1;
+        }
+        ViewGroup.LayoutParams requested = childView.getLayoutParams();
+        if (requested != null) {
+            if (width == -2 && requested.width != -2) width = requested.width;
+            if (height == -2 && requested.height != -2) height = requested.height;
+        }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+        if (height == -1 && !horizontal) { params.height = 0; params.weight = 1; }
+        if (width == -1 && horizontal) { params.width = 0; params.weight = 1; }
+        if (child instanceof megalodonte.components.SpacerVertical space) {
+            params.width = 0; params.height = space.flexible && !horizontal ? 0 : dp(space.size.get());
+            if (space.flexible && !horizontal) params.weight = 1;
+        } else if (child instanceof megalodonte.components.SpacerHorizontal space) {
+            params.height = 0; params.width = space.flexible && horizontal ? 0 : dp(space.size.get());
+            if (space.flexible && horizontal) params.weight = 1;
+        }
+        return params;
+    }
+    private void applySpacing(LinearLayout layout, int spacing, boolean horizontal) {
+        int visible = 0;
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (listAnchors.contains(child)) continue;
+            if (!(child.getLayoutParams() instanceof LinearLayout.LayoutParams params)) continue;
+            if (visible == 0) {
+                params.topMargin = 0;
+                params.setMarginStart(0);
+            } else if (horizontal) {
+                params.setMarginStart(dp(spacing));
+            } else {
+                params.topMargin = dp(spacing);
+            }
+            child.setLayoutParams(params);
+            visible++;
+        }
+    }
+    private void discard(Component component) {
+        if (component instanceof ForEach<?> forEach) {
+            ListBlock block = listBlocks.remove(forEach.bridgeId());
+            if (block != null) listAnchors.remove(block.anchor);
+            for (Component child : forEach.components()) discard(child);
+        } else {
+            for (Component child : component.children()) discard(child);
+        }
+        components.remove(component.bridgeId());
+        views.remove(component.bridgeId());
+        List<Runnable> cleanup = componentCleanup.remove(component.bridgeId());
+        if (cleanup != null) cleanup.forEach(Runnable::run);
     }
     private int dp(int value) { return Math.round(value * host.getResources().getDisplayMetrics().density); }
     private int dimension(double value) { return value < 0 ? (int) value : dp((int) Math.round(value)); }
@@ -216,7 +311,7 @@ public final class AndroidNativeBridge implements NativeBridge {
         return new BackendContract("android", BackendContract.CURRENT_VERSION,
             Set.of(Capability.TEXT, Capability.BUTTON, Capability.CONTAINER, Capability.REACTIVE_STATE, Capability.THEME_TOKENS,
                 Capability.INPUT, Capability.CHECKBOX, Capability.PROGRESS, Capability.ROW, Capability.COLUMN,
-                Capability.SCROLL, Capability.CONDITIONAL_RENDERING, Capability.SPACING));
+                Capability.SCROLL, Capability.CONDITIONAL_RENDERING, Capability.SPACING, Capability.LIST_RENDERING));
     }
     @Override public void applyTheme(ThemeInterface theme) {
         checkThread();
@@ -289,8 +384,10 @@ public final class AndroidNativeBridge implements NativeBridge {
     @Override public void close() {
         checkThread();
         events = null;
-        cleanup.forEach(Runnable::run);
-        cleanup.clear();
+        componentCleanup.values().forEach(runs -> runs.forEach(Runnable::run));
+        componentCleanup.clear();
+        listBlocks.clear();
+        listAnchors.clear();
         updating.clear();
         views.values().forEach(view -> view.setOnClickListener(null));
         views.clear();

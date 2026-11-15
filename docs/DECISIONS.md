@@ -1,5 +1,43 @@
 # Decisões Arquiteturais
 
+## 2026-11-15: Listas reativas no Android
+
+**Contexto:** uma tela do cliente escreveu `Column.items(ListState<String>, mapper)`
+e recebeu `Required type: List<T> / Provided: ListState<String>`.
+`ListState` implementa `ReadableState<List<E>>`, não `List`, então o overload
+estático existente não podia aceitá-lo. O pedido era fazer esse código funcionar
+sem alterar a tela e documentar que `onMount` roda após `render`.
+
+**Decisão:** `ForEach<T>` (`megalodonte.v2`) representa um bloco de lista que
+observa um `ReadableState<List<T>>` e mapeia cada item para um componente.
+`Column.items`/`Row.items` ganharam um overload que anexa esse bloco; o overload
+de `List<T>` estática continua existindo. A capacidade `LIST_RENDERING` passa a ser
+exigida na indexação e declarada pela bridge Android.
+
+O `BridgeRuntime` assina o estado da lista uma vez por bloco. Ao mudar, chama
+`NativeBridge.setChildren(id, novosComponentes)`, descarta as assinaturas da
+subárvore anterior, indexa e assina a nova subárvore. Cada item deve ser uma
+instância nova; o runtime continua recusando a mesma instância em dois lugares.
+
+No `AndroidNativeBridge` o bloco é renderizado inline no `LinearLayout` pai, sem
+container aninhado, para preservar espaçamento e `fillWidth`. Uma âncora `GONE`
+marca a posição do bloco; `setChildren` remove apenas suas views, recria na mesma
+posição e reaplica o espaçamento do pai. Listeners e limpezas por componente são
+registrados por ID e executados no descarte, portanto itens removidos param de
+disparar eventos.
+
+**Validação:** `:framework-core:listRenderingTest` cobre bind/unbind, clique em
+item dinâmico, remoção, limpeza, binding de texto dentro de itens e ausência da
+capacidade. A instrumentação API 35 monta a lista, adiciona, remove, limpa,
+clica em item e verifica binding de texto. O `learn-android-app` compila com a
+tela original sem alterações.
+
+**Limite:** não há reconciliação por identidade nem preservação de foco/estado
+das views; toda mudança recria as views do bloco. Mutar a lista no lugar não é
+observável: `ListState` precisa publicar uma nova lista, como já faz em suas
+operações. O javadoc de `render()`/`onMount()` passou a registrar, em inglês, a
+ordem render → montagem → `onMount` e que assinaturas já existem nesse ponto.
+
 ## 2026-10-06: Preparação Kotlin DSL solicitada pelo IntelliJ
 
 O usuário encontrou `prepareKotlinBuildScriptModel` ausente em `:app` ao testar
