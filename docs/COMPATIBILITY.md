@@ -7,6 +7,7 @@
 | DefaultTheme | Dependência Gradle real megalodonte-theme | Mesmo JAR, sem base/JavaFX transitivo |
 | ScaleProvider | Política comum; detector 1, conversão dp/sp no host | Detector de Screen instalado pelo bootstrap |
 | ComputedState / ListState / ForEachState / ListenerManager | Artefato portátil, mesmos fontes; assinaturas descartáveis | Originais desktop; Show continua no adapter |
+| `Ref<T>` / `Component.ref` | Holder do componente declarativo; `ref` atribui durante a composição, antes da montagem | Mesmo FQN/assinatura; no desktop o componente envolve um Node JavaFX |
 | ScreenComponent / Main / Context | render, lifecycle, useView, backendContract, run com callback CloseRequest | Lifecycle/consulta comum; demais métodos de Context não portados |
 | Text / Button | Construtores básicos, Text(ReadableState), fontSize, onClick | Peso, cor, família/estados em props e ícones ainda parciais/pendentes |
 | Container / Column / Row | children/c_child; Column/Row.items estático e reativo (`ReadableState<List<T>>`); padding/spacing/dimensões/centro/bgColor básicos | ForEachState.items, detalhes de limites/alinhamento e listeners de layout pendentes |

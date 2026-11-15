@@ -1,6 +1,8 @@
 package megalodonte.components;
 
 import java.util.Objects;
+import java.util.function.Consumer;
+
 import megalodonte.base.components.Component;
 import megalodonte.props.ButtonProps;
 
@@ -14,6 +16,10 @@ public final class Button extends Component {
         this.props = Objects.requireNonNull(props);
     }
     public Button onClick(Runnable action) { onClick = Objects.requireNonNull(action); return this; }
+    public Button onClick(Consumer<Button> action) {
+        Objects.requireNonNull(action);
+        return onClick(() -> action.accept(this));
+    }
     public String label() { return label; }
     public ButtonProps props() { return props; }
     /** Backend event entry point; client code declares callbacks through onClick. */

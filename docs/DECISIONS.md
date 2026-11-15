@@ -1,5 +1,27 @@
 # Decisões Arquiteturais
 
+## 2026-11-15: `Ref<T>` no Android
+
+**Contexto:** telas portadas do desktop usam `Ref<Button>` etc. para guardar um
+componente criado em `render()`; no Android o símbolo não existia
+(`Cannot resolve symbol 'Ref'`). O `Component` Android também não tinha o helper
+`ref(...)` que o desktop expõe em `megalodonte.base.components`.
+
+**Decisão:** portar `Ref<T>` e `Component.ref(Ref<T>)` com o mesmo FQN e
+assinatura para `framework-core`, que é Java puro e continua testável por JVM.
+`ref` atribui a instância durante a composição de `render()`, antes da montagem,
+como no desktop: `new Button("Salvar").ref(botaoSalvar)`.
+
+A referência expõe somente o componente declarativo — label, props e estado
+associado. A view nativa permanece encapsulada na bridge, então `Ref` não é um
+caminho para `android.view.View`, para mutar filhos nem para substituir
+`State`/`ListState`. A regra do projeto continua: estado para dados, `Ref` apenas
+para uma operação imperativa inevitável.
+
+**Validação:** `:framework-core:componentTest` cobre Ref vazio, binding com
+retorno do mesmo componente, valor inicial e `setCurrent`. O
+`learn-android-app` compila com `Ref<Button>`.
+
 ## 2026-11-15: `UI.runOnUi` no Android
 
 **Contexto:** o desktop expõe `megalodonte.base.UI.runOnUi(Runnable)` para voltar

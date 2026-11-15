@@ -57,6 +57,14 @@ momento — por isso preencher uma `ListState` em `onMount` atualiza a tela sem
 novo render. A ordem completa está no javadoc de `ScreenComponent` e em
 [Arquitetura](docs/ARCHITECTURE.md).
 
+## Referências de componentes
+
+`Ref<T>` e `Component.ref(...)` mantêm o mesmo FQN e assinatura do desktop para
+guardar um componente criado em `render()`. No Android a referência expõe apenas
+o componente declarativo; a view nativa continua encapsulada na bridge. Use
+estado para dados e `Ref` apenas para uma operação imperativa inevitável. O
+exemplo completo está na [API cliente](docs/CLIENT_API.md).
+
 ## Trabalho em segundo plano
 
 Para voltar de threads, executores ou callbacks assíncronos à UI, use o mesmo

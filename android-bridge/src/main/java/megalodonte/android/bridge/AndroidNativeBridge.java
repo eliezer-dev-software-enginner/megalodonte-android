@@ -1,5 +1,7 @@
 package megalodonte.android.bridge;
 
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Looper;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -30,12 +32,11 @@ import megalodonte.android.core.NativeBridge;
 import megalodonte.base.components.Component;
 import megalodonte.base.theme.ThemeManager;
 import megalodonte.base.theme.ThemeInterface;
+import megalodonte.common_platform.ButtonVariant;
 import megalodonte.components.Text;
 import megalodonte.components.Button;
-import megalodonte.components.layout_components.Container;
 import megalodonte.components.layout_components.LinearComponent;
 import megalodonte.components.layout_components.Row;
-import megalodonte.components.layout_components.Column;
 import megalodonte.components.inputs.Input;
 import megalodonte.components.Checkbox;
 import megalodonte.components.ProgressBar;
@@ -44,6 +45,7 @@ import megalodonte.components.Select;
 import megalodonte.components.DatePicker;
 import megalodonte.components.Image;
 import megalodonte.components.MenuBar;
+import megalodonte.props.ButtonProps;
 import megalodonte.v2.Show;
 import megalodonte.v2.ForEach;
 import megalodonte.base.state.State;
@@ -107,12 +109,14 @@ public final class AndroidNativeBridge implements NativeBridge {
         } else if (component instanceof Button button) {
             android.widget.Button nativeButton = new android.widget.Button(host.getContext());
             nativeButton.setText(button.label());
-            nativeButton.setTextSize(button.props().getFontSize() == null
-                ? ThemeManager.theme().typography().body() : ScaleProvider.scale(button.props().getFontSize()));
+            styleButton(nativeButton, button.props(), ThemeManager.theme());
             nativeButton.setLayoutParams(new ViewGroup.LayoutParams(button.props().isFillWidth() ? -1 : -2,
                     button.props().getHeight() < 0 ? -2 : dp(button.props().getHeight())));
             nativeButton.setOnClickListener(v -> {
-                if (events != null) events.accept(new Event(component.bridgeId(), "click"));
+                if (events != null) {
+                    events.accept(new Event(button.bridgeId(), "click"));
+                    styleButton(nativeButton, button.props(), ThemeManager.theme());
+                }
             });
             view = nativeButton;
         } else if (component instanceof AndroidJsoncControl control) {
@@ -320,10 +324,7 @@ public final class AndroidNativeBridge implements NativeBridge {
             Component component = components.get(id);
             if (view instanceof TextView nativeText) {
                 if (component instanceof Button button) {
-                    nativeText.setTextColor(Color.WHITE);
-                    view.setBackgroundTintList(ColorStateList.valueOf(color(theme.colors().primary())));
-                    nativeText.setTextSize(button.props().getFontSize() == null
-                        ? theme.typography().body() : ScaleProvider.scale(button.props().getFontSize()));
+                    styleButton((android.widget.Button) view, button.props(), theme);
                 } else if (component instanceof Text text) {
                     nativeText.setTextColor(color(theme.colors().textPrimary()));
                     nativeText.setTextSize(text.props().getFontSize() == null
@@ -393,5 +394,32 @@ public final class AndroidNativeBridge implements NativeBridge {
         views.clear();
         components.clear();
         host.removeAllViews();
+    }
+
+    //------------------
+    private void styleButton(android.widget.Button b, ButtonProps p, ThemeInterface theme) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setColor(color(p.resolveBackgroundColor(theme)));
+        shape.setCornerRadius(dp(p.resolveBorderRadius(theme)));
+        int borderWidth = p.resolveBorderWidth(theme);
+        if (borderWidth > 0) shape.setStroke(dp(borderWidth), color(p.resolveBorderColor(theme)));
+
+        int text = color(p.resolveTextColor(theme));
+        int ripple = (text & 0x00FFFFFF) | 0x33000000; // feedback de toque, no lugar da animação de opacity do JavaFX
+        b.setBackground(new RippleDrawable(ColorStateList.valueOf(ripple), shape, null));
+        b.setTextColor(text);
+        b.setTextSize(ScaleProvider.scale(p.resolveFontSize()));
+
+        // O Button nativo vem com caixa alta, sombra e minHeight/minWidth próprios;
+        // sem isso o padding não manda no tamanho, como acontece no JavaFX.
+        b.setAllCaps(false);
+        b.setStateListAnimator(null);
+        b.setMinHeight(0); b.setMinimumHeight(0);
+        b.setMinWidth(0);  b.setMinimumWidth(0);
+
+        int[] pad = p.resolvePaddingUnits(); // top, right, bottom, left
+        b.setPadding(dp(pad[3]), dp(pad[0]), dp(pad[1]), dp(pad[2])); // Android: left, top, right, bottom
+
+        b.setEnabled(p.getVariant() != ButtonVariant.DISABLED);
     }
 }

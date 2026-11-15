@@ -49,9 +49,10 @@ volta de threads de fundo ao looper principal (`Handler`), análogo ao
 `Platform.runLater` do desktop. Não há runtime JavaScript,
 serialização, diff da árvore, roteamento ou equivalência completa com o backend JavaFX.
 Suportados: Text/Button, Container/Column/Row, Scroll, espaçadores,
-Input/PasswordInput/TextAreaInput, Checkbox, ProgressBar, Show.when e listas
-reativas via `ForEach`/`items(ReadableState<List<T>>, ...)`, com recriação das
-views ao mudar (sem reconciliação por identidade nem preservação de foco); a
+Input/PasswordInput/TextAreaInput, Checkbox, ProgressBar, Show.when, listas
+reativas via `ForEach`/`items(ReadableState<List<T>>, ...)` e `Ref<T>` com
+`Component.ref(...)`, com recriação das views ao mudar (sem reconciliação por
+identidade nem preservação de foco); a
 API parcial detalhada em COMPATIBILITY.md. ThemeInterface/tokens são os tipos
 reais do core. O renderer reestiliza as views quando ThemeManager muda.
 BackendContract v1, ScreenLifecycle e RouteMatcher são comuns. O matcher já é

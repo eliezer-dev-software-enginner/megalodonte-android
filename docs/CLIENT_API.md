@@ -48,6 +48,29 @@ O `Text` recebe o estado observável como no desktop. O framework assina o estad
 gera os IDs e envia as atualizações à view nativa. A aplicação só descreve a tela
 e altera seu estado no callback.
 
+## Referências de componentes
+
+`Ref<T>` guarda a instância de um componente criado em `render()`, com o mesmo
+FQN e assinatura do desktop:
+
+```java
+import megalodonte.base.components.Component;
+import megalodonte.base.components.Ref;
+import megalodonte.components.Button;
+
+private final Ref<Button> botaoSalvar = new Ref<>();
+
+@Override public Component render() {
+    return new Button("Salvar").ref(botaoSalvar);
+}
+```
+
+`botaoSalvar.current()` devolve o componente assim que a árvore é composta, antes
+da montagem. No Android a referência expõe apenas o componente declarativo
+(label, props, estado associado); a view nativa continua encapsulada na bridge.
+Use `State`/`ListState` para mudanças de dados e `Ref` somente quando uma operação
+imperativa realmente não puder ser expressa por estado.
+
 ## Listas reativas
 
 `Column.items` e `Row.items` aceitam um `ReadableState<List<T>>` — por exemplo um
@@ -151,6 +174,7 @@ ordem em inglês.
 | `ThemeManager` / `DefaultTheme` | Core/tema reais, com todos os tokens; dependência Gradle do cliente |
 | `MegalodonteApp.run` / `context.useView` | Inicialização e montagem/troca de tela |
 | `ListState` / `ForEachState` | Artefato portátil; `ListState` funciona como `ReadableState<List<T>>` |
+| `Ref<T>` / `Component.ref(Ref<T>)` | Holder do componente declarativo; `ref` atribui durante a composição, antes da montagem |
 | `UI.runOnUi` | `Handler` do looper principal; executa na hora se já estiver na main thread |
 | `Column` / `Row` | children/c_child, items estático e items reativo (`ReadableState<List<T>>`) |
 

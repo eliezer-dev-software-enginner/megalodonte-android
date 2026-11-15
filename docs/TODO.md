@@ -24,6 +24,7 @@
 - [x] `UI.runOnUi` com `Handler(Looper.getMainLooper())` e teste instrumentado vindo de thread de fundo (2026-11-15).
 - [ ] TaskExecutor/logging comuns para Async/Scope.
 - [x] List rendering reativo (`ForEach`, `items(ReadableState<List<T>>, ...)`) e descarte da subárvore anterior.
+- [x] `Ref<T>` e `Component.ref(...)` no `framework-core`, com teste de contrato JVM (2026-11-15).
 - [ ] Reconciliação por identidade e preservação de foco/estado de views em listas reativas.
 - [ ] TableModel/seleção/paginação/exportação comuns e renderer Android.
 - [ ] Select/DatePicker/Image/Icon/CurrencyInput e fontes/recursos.

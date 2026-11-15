@@ -40,6 +40,20 @@ tasks.register<JavaExec>("listRenderingTest") {
 }
 tasks.check { dependsOn("listRenderingTest") }
 
+// Component-level contracts run through JavaExec as well, without the desktop
+// client fixtures that reactive/list tests must avoid.
+val componentTest = sourceSets.create("componentTest") {
+    java.srcDir("src/componentTest/java")
+    compileClasspath += sourceSets.main.get().output + configurations.testCompileClasspath.get()
+    runtimeClasspath += sourceSets.main.get().output + configurations.testRuntimeClasspath.get()
+}
+tasks.register<JavaExec>("componentTest") {
+    dependsOn(tasks.named(componentTest.classesTaskName))
+    classpath = componentTest.runtimeClasspath
+    mainClass.set("megalodonte.android.core.ComponentContractTest")
+}
+tasks.check { dependsOn("componentTest") }
+
 listOf(2 to "megalodonte-app2-counter", 3 to "megalodonte-app3-string-lenght", 4 to "megalodonte-app4-hide-seek").forEach { (number, app) ->
     val fixtureSources = tasks.register<Sync>("prepareClient$number") {
         from("../../megalodonte-ecossystem/$app/src/main/java") { include("my_app/*.java") }
