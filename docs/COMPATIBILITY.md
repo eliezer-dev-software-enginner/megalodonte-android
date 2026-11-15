@@ -24,7 +24,8 @@
 | Icon / CurrencyInput como API Java | Pendente | Portar facades Java independentes e testes de dispositivo |
 | Card / Stack / GridFlow / FlowRow / Canva / TextFlow / Line | Pendente | Portar layout/modelo e traduzir comportamento |
 | SimpleTable / PaginatedTable / Menu / MenuBar / Modal | Pendente | Extrair modelos; não prometer ObservableList/Stage no mobile |
-| Async / Scope / UI / ErrorReporter | Pendente no Android | Exigem executor, dispatcher e logging injetáveis |
+| UI (thread principal) | `megalodonte.base.UI.runOnUi(Runnable)` com `Handler` do looper principal; executa na hora se já estiver na main thread, senão enfileira | `UI.runOnUi` usa `Platform.runLater` |
+| Async / Scope / ErrorReporter | Pendente no Android | Exigem executor e logging injetáveis |
 | FontLoader/custom assets | Não declarado como capacidade Android | Serviço JavaFX; fonte de sistema no Android resolve via Typeface |
 | Node / Scene / Stage / CSS JavaFX / spawnWindow | Exclusivo JavaFX | Uma capacidade ausente deve falhar explicitamente, nunca ser ignorada |
 

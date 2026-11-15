@@ -57,6 +57,21 @@ momento — por isso preencher uma `ListState` em `onMount` atualiza a tela sem
 novo render. A ordem completa está no javadoc de `ScreenComponent` e em
 [Arquitetura](docs/ARCHITECTURE.md).
 
+## Trabalho em segundo plano
+
+Para voltar de threads, executores ou callbacks assíncronos à UI, use o mesmo
+helper do desktop:
+
+```java
+UI.runOnUi(() -> status.set(resultado));
+```
+
+`megalodonte.base.UI.runOnUi` usa no Android um `Handler` do looper principal (o
+análogo de `Platform.runLater`): executa na hora se já estiver na thread
+principal e enfileira caso contrário. A bridge exige a thread principal para
+qualquer comando e falha explicitamente fora dela; não toque em views nativas
+diretamente.
+
 Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 
 ## Documentação

@@ -1,5 +1,37 @@
 # Decisões Arquiteturais
 
+## 2026-11-15: `UI.runOnUi` no Android
+
+**Contexto:** o desktop expõe `megalodonte.base.UI.runOnUi(Runnable)` para voltar
+de threads de fundo à thread JavaFX (`Platform.runLater`). O Android não tinha o
+equivalente, então telas que atualizam `State` após trabalho assíncrono não tinham
+como fazer isso sem tocar no `Activity.runOnUiThread` ou repetir `Handler` na mão.
+
+**Decisão:** criar `megalodonte.base.UI.runOnUi(Runnable)` no módulo
+`android-bridge`, com o mesmo FQN e assinatura do desktop, implementado com um
+`Handler` do `Looper.getMainLooper()` — o recurso nativo análogo ao
+`Platform.runLater`. Não foi criada uma abstração de dispatcher: o helper é
+pequeno e usa a API Android direta, como `Redirect`/`Async` fazem no desktop.
+
+Se o chamador já está na thread principal, a tarefa executa imediatamente, como
+`Activity.runOnUiThread`, evitando recriações extras quando o código já roda em
+callbacks de UI. Fora dela, a tarefa é enfileirada no looper principal. O helper
+só agenda; a alteração de estado continua reagindo pelo `BridgeRuntime`, que exige
+a thread principal e falha explicitamente fora dela.
+
+O arquivo fica em `android-bridge` e não em `framework-core` porque este último é
+um módulo Java puro (sem `android.jar`), mantido testável por JVM. O app depende
+de `android-bridge` (que expõe `framework-core` via `api`), então o cliente vê o
+mesmo pacote.
+
+**Validação:** teste instrumentado em emulador API 35 cobre execução imediata na
+main thread, envio de thread de fundo para a main thread e atualização de um
+`TextView` a partir de um `State` alterado por `UI.runOnUi`. O app
+`learn-android-app` compila com o helper.
+
+**Limite:** ainda não há `Async`/`Scope`/`ErrorReporter` no Android; só o retorno
+explícito à thread principal foi portado.
+
 ## 2026-11-15: Listas reativas no Android
 
 **Contexto:** uma tela do cliente escreveu `Column.items(ListState<String>, mapper)`

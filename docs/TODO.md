@@ -21,7 +21,8 @@
 - [ ] Validar especificamente em API 35, incluindo rotação/layouts/acessibilidade.
 - [ ] Unificar contratos de Component/Props/eventos por método.
 - [ ] Router Android/Navigator neutro com back stack e restauração.
-- [ ] TaskExecutor/UiDispatcher/logging comuns para Async/Scope.
+- [x] `UI.runOnUi` com `Handler(Looper.getMainLooper())` e teste instrumentado vindo de thread de fundo (2026-11-15).
+- [ ] TaskExecutor/logging comuns para Async/Scope.
 - [x] List rendering reativo (`ForEach`, `items(ReadableState<List<T>>, ...)`) e descarte da subárvore anterior.
 - [ ] Reconciliação por identidade e preservação de foco/estado de views em listas reativas.
 - [ ] TableModel/seleção/paginação/exportação comuns e renderer Android.

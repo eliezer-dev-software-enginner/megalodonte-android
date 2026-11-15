@@ -44,7 +44,9 @@ em `onMount` (inclusive em uma `ListState`) aparecem na UI sem novo render.
 
 ## Limites desta etapa
 
-A bridge é síncrona, em Java e na thread principal. Não há runtime JavaScript,
+A bridge é síncrona, em Java e na thread principal. `megalodonte.base.UI.runOnUi`
+volta de threads de fundo ao looper principal (`Handler`), análogo ao
+`Platform.runLater` do desktop. Não há runtime JavaScript,
 serialização, diff da árvore, roteamento ou equivalência completa com o backend JavaFX.
 Suportados: Text/Button, Container/Column/Row, Scroll, espaçadores,
 Input/PasswordInput/TextAreaInput, Checkbox, ProgressBar, Show.when e listas

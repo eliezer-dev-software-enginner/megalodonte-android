@@ -76,6 +76,26 @@ lista no lugar não é observado: publique uma nova lista, como as operações d
 `ListState` fazem. Ainda não há reconciliação por identidade nem preservação de
 foco/estado das views; itens são recriados a cada mudança.
 
+## Atualizações vindas de threads
+
+O helper é o mesmo do desktop: `megalodonte.base.UI.runOnUi(Runnable)`. No Android
+ele encapsula um `Handler` do looper principal — o análogo nativo de
+`Platform.runLater`. Se o chamador já estiver na thread principal, a tarefa roda
+imediatamente (como `Activity.runOnUiThread`); caso contrário, é enfileirada.
+
+```java
+new Thread(() -> {
+    String resultado = consultaDemorada();
+    UI.runOnUi(() -> status.set(resultado));
+}).start();
+```
+
+Use-o ao voltar de thread de fundo, executor ou callback assíncrono para alterar
+`State`/`ListState` que alimentam a tela. Não é necessário (nem permitido) tocar
+em views nativas: a bridge só aceita comandos na thread principal e falha
+explicitamente fora dela. Alterações de estado feitas na própria thread principal
+não precisam do helper.
+
 ## Ponto de entrada Android
 
 ```java
@@ -131,6 +151,7 @@ ordem em inglês.
 | `ThemeManager` / `DefaultTheme` | Core/tema reais, com todos os tokens; dependência Gradle do cliente |
 | `MegalodonteApp.run` / `context.useView` | Inicialização e montagem/troca de tela |
 | `ListState` / `ForEachState` | Artefato portátil; `ListState` funciona como `ReadableState<List<T>>` |
+| `UI.runOnUi` | `Handler` do looper principal; executa na hora se já estiver na main thread |
 | `Column` / `Row` | children/c_child, items estático e items reativo (`ReadableState<List<T>>`) |
 
 Os nomes/imports preservam a experiência clássica nesse subconjunto. As classes

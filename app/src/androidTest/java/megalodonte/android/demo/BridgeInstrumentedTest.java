@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,9 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import megalodonte.android.bridge.AndroidNativeBridge;
 import megalodonte.android.core.BridgeRuntime;
+import megalodonte.base.UI;
 import megalodonte.base.state.State;
 import megalodonte.base.theme.ThemeManager;
 import megalodonte.base.theme.ThemeInterface;
@@ -156,7 +161,40 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     require(listHost.getChildCount() == 0, "Reactive list host must be released");
                 } finally { runtime.close(); ThemeManager.setTheme(originalTheme); }
             });
-            result.putString("stream", "Native client/render/input/checkbox/progress/show/theme/reactive-list/disposal tests passed\n");
+            // UI.runOnUi: immediate on the main thread, posted from background
+            // threads and able to feed mounted state reactively.
+            AtomicReference<Thread> helperThread = new AtomicReference<>();
+            runOnMainSync(() -> {
+                UI.runOnUi(() -> helperThread.set(Thread.currentThread()));
+                require(helperThread.get() == Thread.currentThread(),
+                    "UI.runOnUi on the main thread must run immediately");
+            });
+            FrameLayout helperHost = new FrameLayout(getTargetContext());
+            State<String> remote = State.of("before");
+            Text remoteText = new Text(remote);
+            BridgeRuntime[] helperRuntime = new BridgeRuntime[1];
+            runOnMainSync(() -> helperRuntime[0] = new BridgeRuntime(
+                new AndroidNativeBridge(helperHost), new Column().children(remoteText)));
+            try {
+                AtomicReference<Thread> postedThread = new AtomicReference<>();
+                CountDownLatch posted = new CountDownLatch(1);
+                Thread worker = new Thread(() -> UI.runOnUi(() -> {
+                    postedThread.set(Thread.currentThread());
+                    remote.set("from background");
+                    posted.countDown();
+                }), "ui-helper-test");
+                worker.start();
+                require(posted.await(10, TimeUnit.SECONDS), "UI.runOnUi must reach the main thread");
+                require(postedThread.get() == Looper.getMainLooper().getThread(),
+                    "UI.runOnUi from background must execute on the main thread");
+                runOnMainSync(() -> require("from background".equals(
+                    ((TextView) helperHost.findViewWithTag(remoteText.bridgeId())).getText().toString()),
+                    "Background state update through UI.runOnUi must reach native views"));
+            } finally {
+                runOnMainSync(() -> helperRuntime[0].close());
+            }
+            require(helperHost.getChildCount() == 0, "Helper host must release native views");
+            result.putString("stream", "Native client/render/input/checkbox/progress/show/theme/reactive-list/ui-helper/disposal tests passed\n");
             result.putString("megalodonte.result", "passed");
             finish(Activity.RESULT_OK, result);
         } catch (Throwable error) {

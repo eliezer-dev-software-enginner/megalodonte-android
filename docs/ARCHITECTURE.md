@@ -32,6 +32,10 @@ Eventos com ID/nome desconhecido são ignorados.
 Os objetos atravessam uma interface Java no mesmo processo/thread. A inspiração
 no modelo de bridges está na separação de responsabilidades e no fluxo de
 comandos/eventos; não existe uma bridge JS/JNI ou o protocolo do React Native.
+Todos os comandos (`mount`, `setText`, `setValue`, `setChildren`, `close`) exigem
+a thread principal e falham explicitamente fora dela. Para voltar de trabalho em
+segundo plano, use `megalodonte.base.UI.runOnUi(Runnable)`, que enfileira no
+`Handler` do looper principal (ou executa na hora, se já estiver nele).
 
 ## Declaração da tela
 
