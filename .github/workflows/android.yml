@@ -34,12 +34,6 @@ jobs:
           repository: eliezer-dev-software-enginner/megalodonte-reactivity-portable
           path: framework/libraries/megalodonte-reactivity-portable
 
-      - name: Checkout JSONC UI
-        uses: actions/checkout@v4
-        with:
-          repository: eliezer-dev-software-enginner/megalodonte-jsonc-ui
-          path: framework/megalodonte-declarative/megalodonte-jsonc-ui
-
       - name: Setup Java 25
         uses: actions/setup-java@v4
         with:
