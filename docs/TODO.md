@@ -16,6 +16,8 @@
 - [x] Inputs, checkbox, progresso, layouts/scroll/espaçadores e Show Android.
 - [x] Fontes originais dos clientes 1–4 compilados e executados nos testes.
 - [x] Módulos JavaFX recompilados; tema/core/portable testados; APK/lint passaram.
+- [x] Compatibilidade do Android Studio: AGP 8.12.0, Gradle 8.13 e JDK 17;
+  framework, aplicativo consumidor e projeto novo do CLI validados (2026-11-18).
 - [x] Checks de imports/bytecode e grafo Android sem JavaFX.
 - [x] Instrumentação nativa em API 37: cliente, input, checkbox, progresso, Show, tema e descarte.
 - [ ] Validar especificamente em API 35, incluindo rotação/layouts/acessibilidade.

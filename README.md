@@ -138,7 +138,8 @@ exemplos em `framework/megalodonte-ecossystem/` são necessários para
 `:megalodonte-base-android:check`, conforme os caminhos definidos em
 `framework-core/build.gradle.kts`.
 
-Com JDK 25, Android SDK Platform 35, `ANDROID_HOME` configurado, as três
+Com JDK 17 configurado como JVM do Gradle, Android SDK Platform 35,
+`ANDROID_HOME` configurado, as três
 bibliotecas irmãs e os quatro exemplos presentes nos caminhos acima, execute
 no PowerShell, a partir da raiz:
 
@@ -149,8 +150,9 @@ no PowerShell, a partir da raiz:
 O APK é gerado em `app/build/outputs/apk/debug/app-debug.apk`.
 Abra a raiz do repositório como projeto no Android Studio para executar a demonstração.
 Veja [configuração e execução](docs/GETTING_STARTED.md) para requisitos,
-instalação no dispositivo e comandos de verificação. O código Java usa nível 17;
-o JDK 25 é exigido pelos projetos comuns, conforme esse guia.
+instalação no dispositivo e comandos de verificação. O Android usa AGP 8.12.0
+com Gradle 8.13. Um JDK 25 pode permanecer instalado como toolchain dos projetos
+comuns, mas não deve executar esse wrapper Android.
 
 ## Licença
 

@@ -212,5 +212,18 @@ e montagem continuam pertencendo a cada implementação de plataforma.
 distintas, não implementações duplicadas. Diretórios de fontes `theme` vazios e
 legados dentro de `framework-core` não fazem parte da API Android.
 
+## 2026-11-18: Compatibilidade com o Android Studio
+
+**Decisão:** substituir AGP 9.0.1 e Gradle 9.2 por AGP 8.12.0 e Gradle 8.13,
+combinação aceita pelo Android Studio usado no projeto e definida pela matriz
+oficial do AGP. O Gradle Android executa com JDK 17; JDK 25 permanece restrito
+aos toolchains e builds Desktop que o suportam.
+
+Os artefatos neutros `megalodonte-core`, `megalodonte-theme` e
+`megalodonte-reactivity-portable` compilam com toolchain Java 17. Configurações
+de teste que só existem no Gradle 9 são aplicadas condicionalmente, permitindo
+que esses artefatos sejam consumidos tanto pelo wrapper Android 8.13 quanto por
+seus builds isolados em Gradle 9.
+
 ---
 

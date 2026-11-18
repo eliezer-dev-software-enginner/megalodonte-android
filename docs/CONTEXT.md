@@ -10,7 +10,8 @@ Core/tema comuns já foram extraídos; a migração de toda a UI ainda está em 
 
 ## Estrutura
 
-- Java 17 como nível de código/bytecode; Gradle 9.2.0; Android Gradle Plugin 9.0.1.
+- Java 17 como nível de código/bytecode e JVM do Gradle; Gradle 8.13;
+  Android Gradle Plugin 8.12.0.
 - `compileSdk`, `targetSdk` e `minSdk` da aplicação: 35 (Android 15).
 - `megalodonte-base-android` (diretório `framework-core`): API cliente nos pacotes clássicos `megalodonte.application`,
   `megalodonte.base.components`, `megalodonte.components`, `megalodonte.props` e tema.

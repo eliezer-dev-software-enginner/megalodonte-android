@@ -2,9 +2,10 @@
 
 ## Requisitos
 
-- Android Studio compatível com AGP 9.0.1, ou ferramentas Android por linha de comando.
-- JDK 25 disponível para os toolchains dos projetos comuns; o bytecode portátil/Android permanece Java 17.
-- Android SDK Platform 35 e Build Tools 36.0.0 (padrão do AGP 9.0.1).
+- Android Studio compatível com AGP 8.12.0, ou ferramentas Android por linha de comando.
+- JDK 17 para executar o Gradle Android. Um JDK 25 pode continuar instalado para
+  toolchains dos projetos Desktop, mas Gradle 8.13 não deve ser iniciado por ele.
+- Android SDK Platform 35 e Build Tools 35.0.0 (padrão do AGP 8.12.0).
 - Emulador/dispositivo Android 15 ou posterior para execução.
 - Checkout das bibliotecas em `framework/libraries`, incluindo core/theme/reactivity-portable.
 
@@ -26,7 +27,7 @@ os artefatos, retire os includeBuild e configure o repositório Maven.
 
 ## Android Studio
 
-Abra `megalodonte-android`, selecione um JDK compatível em Gradle JDK e instale
+Abra `megalodonte-android`, selecione JDK 17 em Gradle JDK e instale
 a plataforma 35 no SDK Manager. Aguarde o sync. Execute a configuração `app`
 em um dispositivo API 35 ou posterior.
 
@@ -111,4 +112,5 @@ exceção/assertion; não usar somente o exit code do adb para concluir que pass
 ## Referências oficiais
 
 - [Configuração Android 15 / API 35](https://developer.android.com/about/versions/15/setup-sdk?hl=pt-br)
-- [Compatibilidade AGP 9.0.1](https://developer.android.com/build/releases/agp-9-0-0-release-notes)
+- [Compatibilidade AGP 8.12.0](https://developer.android.com/build/releases/agp-8-12-0-release-notes)
+- [Compatibilidade entre Java e Gradle](https://docs.gradle.org/current/userguide/compatibility.html)
