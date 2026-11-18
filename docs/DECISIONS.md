@@ -202,5 +202,15 @@ Artefatos neutros permanecem sem sufixo; módulos específicos usam `-desktop` o
 `megalodonte-base-android` e `megalodonte-bridge-android`; os diretórios históricos
 permanecem para não quebrar checkouts e ferramentas que localizam o código-fonte.
 
+`Component`, `Ref` e `ScreenComponent` implementam, nos dois hosts, os contratos
+neutros do `megalodonte-core`. Esses contratos cobrem composição, referências e
+ciclo de vida sem expor JavaFX ou tipos nativos do Android. Identidade, node/view
+e montagem continuam pertencendo a cada implementação de plataforma.
+
+`megalodonte.base.components` contém as abstrações fundamentais, enquanto
+`megalodonte.components` contém controles e layouts concretos. São camadas
+distintas, não implementações duplicadas. Diretórios de fontes `theme` vazios e
+legados dentro de `framework-core` não fazem parte da API Android.
+
 ---
 

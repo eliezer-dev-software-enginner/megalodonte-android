@@ -2,7 +2,7 @@ package megalodonte.base.components;
 
 import java.util.Map;
 
-public interface ScreenComponent extends megalodonte.contracts.ScreenLifecycle {
+public interface ScreenComponent extends megalodonte.contracts.ScreenComponentContract<Component> {
 
     /**
      * Builds a fresh component tree for this screen. The runtime calls it once

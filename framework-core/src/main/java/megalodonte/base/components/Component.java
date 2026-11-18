@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /** Declarative component; native identity is allocated by the framework. */
-public abstract class Component {
+public abstract class Component implements megalodonte.contracts.ComponentContract<Component> {
     private static final AtomicLong nextId = new AtomicLong();
     private final String id = "component-" + nextId.incrementAndGet();
     public final String bridgeId() { return id; }
@@ -23,6 +23,12 @@ public abstract class Component {
      */
     @SuppressWarnings("unchecked")
     public <T extends Component> Component ref(Ref<T> ref) {
+        return ref((megalodonte.contracts.RefContract<T>) ref);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Component> Component ref(megalodonte.contracts.RefContract<T> ref) {
         ref.setCurrent((T) this);
         return this;
     }

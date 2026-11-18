@@ -19,9 +19,11 @@
 - [x] Checks de imports/bytecode e grafo Android sem JavaFX.
 - [x] Instrumentação nativa em API 37: cliente, input, checkbox, progresso, Show, tema e descarte.
 - [ ] Validar especificamente em API 35, incluindo rotação/layouts/acessibilidade.
-- [ ] Unificar contratos de Component/Props/eventos por método.
+- [x] Unificar os contratos básicos de `Component`, `Ref` e `ScreenComponent`
+  entre Desktop e Android (2026-11-18).
+- [ ] Unificar contratos de props e eventos por método.
 - [x] Compartilhar contratos iniciais de condição e lista entre desktop e Android (`ConditionalContent` e `ForEachState`, 2026-11-18).
-- [ ] Espalhar contratos neutros por componentes, props, router e demais bibliotecas, criando artefatos Android separados quando a fronteira estabilizar.
+- [ ] Espalhar os contratos neutros já iniciados por props, router e demais bibliotecas, criando artefatos Android separados quando a fronteira estabilizar.
 - [ ] Router Android/Navigator neutro com back stack e restauração.
 - [x] `UI.runOnUi` com `Handler(Looper.getMainLooper())` e teste instrumentado vindo de thread de fundo (2026-11-15).
 - [ ] TaskExecutor/logging comuns para Async/Scope.
@@ -65,7 +67,8 @@
 ## Próximos passos
 
 - [x] Extrair estado publicável (workspace usa includeBuild; artefatos também publicam em Maven).
-- [ ] Definir contrato de componentes/props compartilhável com o backend JavaFX.
+- [x] Definir contratos compartilhados de componente, referência e tela com o backend JavaFX (2026-11-18).
+- [ ] Definir contratos compartilhados de props e eventos com o backend JavaFX.
 - [x] Adicionar observe/unsubscribe e remover bindings ao fechar.
 - [ ] Adicionar testes instrumentados do renderer e da Activity.
 - [ ] Evoluir atualização da árvore, props/temas e componentes além de Text/Button/Container.

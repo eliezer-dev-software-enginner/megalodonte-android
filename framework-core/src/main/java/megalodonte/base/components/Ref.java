@@ -11,7 +11,7 @@ package megalodonte.base.components;
  *
  * @param <T> the component type held by this reference
  */
-public class Ref<T> {
+public class Ref<T> implements megalodonte.contracts.RefContract<T> {
     private T current;
 
     public Ref() {
@@ -21,10 +21,12 @@ public class Ref<T> {
         this.current = initial;
     }
 
+    @Override
     public T current() {
         return current;
     }
 
+    @Override
     public void setCurrent(T component) {
         this.current = component;
     }

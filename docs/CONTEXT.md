@@ -58,12 +58,14 @@ reais do core. O renderer reestiliza as views quando ThemeManager muda.
 BackendContract v1, ScreenLifecycle e RouteMatcher são comuns. O matcher já é
 usado no desktop; Router Android completo ainda não foi implementado.
 `Show` implementa o contrato comum `ConditionalContent<Component>` e `ForEach`
-implementa `ForEachState<T, Component>`; as diferenças ficam no renderer Android.
+implementa `ForEachState<T, Component>`. `Component`, `Ref` e
+`ScreenComponent` também implementam contratos neutros compartilhados com o
+Desktop; identidade e montagem continuam específicas do renderer Android.
 State/map e estados calculados/listas têm assinaturas descartáveis; o runtime
 remove seus bindings ao fechar. Os clientes originais 1–4 passam como fixtures.
 Tabelas, menus, modais, recursos, router/async e props avançadas continuam pendentes.
-Os contratos comuns serão ampliados progressivamente para componentes, props,
-router e demais bibliotecas; todo artefato específico Android termina em `-android`.
+Os contratos comuns serão ampliados progressivamente para props, router e
+demais bibliotecas; todo artefato específico Android termina em `-android`.
 Um emulador existente API 37 foi iniciado sem janela para instrumentação: cliente,
 input formatado, checkbox, progresso, Show, tema reativo e descarte passaram.
 Android 15/API 35, rotação e layouts avançados ainda precisam de validação específica.

@@ -14,9 +14,11 @@ public final class ComponentContractTest {
 
     public static void main(String[] args) {
         Ref<Button> buttonRef = new Ref<>();
+        require(buttonRef instanceof megalodonte.contracts.RefContract<?>, "Ref must implement the shared contract");
         require(buttonRef.current() == null, "A Ref starts empty");
 
         Button button = new Button("Salvar");
+        require(button instanceof megalodonte.contracts.ComponentContract<?>, "Component must implement the shared contract");
         Component returned = button.ref(buttonRef);
         require(returned == button, "ref must return the same component for chaining");
         require(buttonRef.current() == button, "ref must expose the bound component");
