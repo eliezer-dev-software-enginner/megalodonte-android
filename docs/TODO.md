@@ -20,6 +20,8 @@
 - [x] Instrumentação nativa em API 37: cliente, input, checkbox, progresso, Show, tema e descarte.
 - [ ] Validar especificamente em API 35, incluindo rotação/layouts/acessibilidade.
 - [ ] Unificar contratos de Component/Props/eventos por método.
+- [x] Compartilhar contratos iniciais de condição e lista entre desktop e Android (`ConditionalContent` e `ForEachState`, 2026-11-18).
+- [ ] Espalhar contratos neutros por componentes, props, router e demais bibliotecas, criando artefatos Android separados quando a fronteira estabilizar.
 - [ ] Router Android/Navigator neutro com back stack e restauração.
 - [x] `UI.runOnUi` com `Handler(Looper.getMainLooper())` e teste instrumentado vindo de thread de fundo (2026-11-15).
 - [ ] TaskExecutor/logging comuns para Async/Scope.
@@ -50,8 +52,8 @@
 - [x] Compilar e executar Main/WelcomeScreen originais do app1-welcome sem alterações.
 - [x] Testar cliques, estado derivado, descarte, troca de tela e restauração.
 
-- [x] Executar `:framework-core:check`: testes de contrato passaram em 2026-10-05.
-- [x] Contrato `LIST_RENDERING` e teste Java de lista reativa (`:framework-core:listRenderingTest`, 2026-11-15).
+- [x] Executar `:megalodonte-base-android:check`: testes de contrato passaram em 2026-10-05.
+- [x] Contrato `LIST_RENDERING` e teste Java de lista reativa (`:megalodonte-base-android:listRenderingTest`, 2026-11-15).
 - [x] Instrumentação API 35 em 2026-11-15: montar, adicionar, remover, limpar, clique em item dinâmico e binding de texto em lista reativa.
 - [x] Gerar APK com `:app:assembleDebug`: `app/build/outputs/apk/debug/app-debug.apk`.
 - [x] Executar `:app:lintDebug`: build/check/lint concluídos com sucesso em 2026-10-05.

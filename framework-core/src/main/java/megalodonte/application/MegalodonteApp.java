@@ -8,7 +8,13 @@ import megalodonte.android.core.NativeBridge;
 public final class MegalodonteApp {
     public enum Event { CloseRequest }
     private static final ThreadLocal<Context> launching = new ThreadLocal<>();
+    private static volatile String applicationName = "Megalodonte App";
+    private static volatile String applicationIcon;
     private MegalodonteApp() { }
+    public static void appName(String name) { applicationName = Objects.requireNonNull(name); }
+    public static void appIcon(String classpathResourcePath) { applicationIcon = Objects.requireNonNull(classpathResourcePath); }
+    public static String appName() { return applicationName; }
+    public static String appIcon() { return applicationIcon; }
     /** Same client entry point as the desktop framework. */
     public static void run(Consumer<Context> configure) {
         Context context = launching.get();
@@ -17,6 +23,18 @@ public final class MegalodonteApp {
     }
     public static void run(Consumer<Context> configure, Consumer<Event> events) {
         run(context -> { context.setEventHandler(events); configure.accept(context); });
+    }
+    public static void run(Class<? extends MegalodonteApplication> hostClass, String[] args,
+                           Consumer<Context> configure) {
+        Objects.requireNonNull(hostClass);
+        Objects.requireNonNull(args);
+        run(configure);
+    }
+    public static void run(Class<? extends MegalodonteApplication> hostClass, String[] args,
+                           Consumer<Context> configure, Consumer<Event> events) {
+        Objects.requireNonNull(hostClass);
+        Objects.requireNonNull(args);
+        run(configure, events);
     }
     /** Platform bootstrap; Android's framework Activity supplies the bridge. */
     public static Context launch(NativeBridge bridge, Map<String, String> restoredState, Runnable main) {

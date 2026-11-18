@@ -14,6 +14,6 @@
   matriz de métodos suportados e testes de capacidades/fixtures.
 - Fazer chamadas da bridge e alterações do estado usado pela UI na thread principal.
 - Garantir IDs únicos, descarte de listeners/views e respeito aos insets do Android 15.
-- Validar mudanças do contrato com `:framework-core:check`; validar Android com build e lint.
+- Validar mudanças do contrato com `:megalodonte-base-android:check`; validar Android com build e lint.
 - Registrar decisões em `DECISIONS.md` e manter `CONTEXT.md` e `TODO.md` coerentes com o resultado real.
 - Não registrar testes em emulador ou build como concluídos sem executá-los.

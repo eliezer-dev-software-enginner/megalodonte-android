@@ -17,7 +17,7 @@ import megalodonte.components.Text;
 import megalodonte.components.layout_components.Container;
 import megalodonte.props.ContainerProps;
 import megalodonte.props.TextProps;
-import my_app.WelcomeAppTest;
+import megalodonte_app1_welcome.WelcomeAppTest;
 import megalodonte.base.theme.ThemeInterface;
 import megalodonte.contracts.BackendContract;
 

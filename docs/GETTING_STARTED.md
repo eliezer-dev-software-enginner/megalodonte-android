@@ -55,7 +55,7 @@ No diretório do projeto, ajuste os caminhos para sua instalação:
 ```powershell
 $env:JAVA_HOME = 'C:\Program Files\Android\Android Studio\jbr'
 $env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
-./gradlew.bat :framework-core:check :app:assembleDebug :app:lintDebug
+./gradlew.bat :megalodonte-base-android:check :app:assembleDebug :app:lintDebug
 ```
 
 Alternativamente, configure `sdk.dir` no `local.properties` (ignorado no Git).
@@ -77,7 +77,7 @@ Com um dispositivo conectado e depuração USB habilitada, ou um emulador inicia
 3. Girar o dispositivo e confirmar preservação do contador.
 4. Repetir com escala de fonte aumentada e verificar leitura/toque.
 
-O teste `:framework-core:check` compila e executa os fontes originais do
+O teste `:megalodonte-base-android:check` compila e executa os fontes originais do
 `megalodonte-app1-welcome`, sem modificá-los. Também cobre binding automático,
 clique → estado → texto, eventos desconhecidos, componente duplicado, descarte,
 troca de tela e restauração antes do render.
@@ -86,7 +86,7 @@ desabilitado porque esta etapa usa um runner próprio sem JUnit.
 Clientes 2–4 também são testados por runners vinculados ao check. Validação completa:
 
 ```powershell
-./gradlew.bat :framework-core:check :megalodonte-core:check :megalodonte-reactivity-portable:check :app:verifySharedDependencies :app:assembleDebug :app:lintDebug
+./gradlew.bat :megalodonte-base-android:check :megalodonte-core:check :megalodonte-reactivity-portable:check :app:verifySharedDependencies :app:assembleDebug :app:lintDebug
 ```
 
 Build/lint não substituem a verificação visual em dispositivo.

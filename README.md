@@ -100,11 +100,11 @@ Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 
 | Módulo | Responsabilidade |
 | --- | --- |
-| `framework-core` | Facades cliente Android e runtime; depende dos artefatos comuns |
-| `android-bridge` | Renderers nativos, propriedades/eventos, tema, insets e lifecycle |
+| `megalodonte-base-android` (`framework-core/`) | Facades cliente Android e runtime; depende dos artefatos comuns |
+| `megalodonte-bridge-android` (`android-bridge/`) | Renderers nativos, propriedades/eventos, tema, insets e lifecycle |
 | `app` | `Main`, `WelcomeScreen` e conexão mínima da Activity com o host do framework |
 
-O `android-bridge` também contém `AndroidJsoncScreen`, que interpreta views
+O módulo `megalodonte-bridge-android` também contém `AndroidJsoncScreen`, que interpreta views
 JSONC e produz componentes Megalodonte renderizados pela bridge Android. Os
 21 tipos de componentes do schema têm renderer Android; as diferenças de
 propriedades em relação ao desktop estão em [JSONC_ANDROID.md](docs/JSONC_ANDROID.md). O
@@ -135,7 +135,7 @@ framework/
 
 Esses projetos irmãos e exemplos não estão incluídos neste repositório. Os
 exemplos em `framework/megalodonte-ecossystem/` são necessários para
-`:framework-core:check`, conforme os caminhos definidos em
+`:megalodonte-base-android:check`, conforme os caminhos definidos em
 `framework-core/build.gradle.kts`.
 
 Com JDK 25, Android SDK Platform 35, `ANDROID_HOME` configurado, as três
@@ -143,7 +143,7 @@ bibliotecas irmãs e os quatro exemplos presentes nos caminhos acima, execute
 no PowerShell, a partir da raiz:
 
 ```powershell
-./gradlew.bat :framework-core:check :app:assembleDebug :app:lintDebug
+./gradlew.bat :megalodonte-base-android:check :app:assembleDebug :app:lintDebug
 ```
 
 O APK é gerado em `app/build/outputs/apk/debug/app-debug.apk`.

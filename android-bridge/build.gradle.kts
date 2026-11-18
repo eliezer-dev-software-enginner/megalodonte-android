@@ -8,4 +8,4 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
-dependencies { api(project(":framework-core")) }
+dependencies { api(project(":megalodonte-base-android")) }

@@ -32,7 +32,7 @@ import megalodonte.base.state.ReadableState;
  *
  * @param <T> item type held by the observed list
  */
-public final class ForEach<T> extends Component {
+public final class ForEach<T> extends Component implements megalodonte.base.state.ForEachState<T, Component> {
 
     private final ReadableState<List<T>> state;
     private final Function<T, ? extends Component> factory;
@@ -64,6 +64,8 @@ public final class ForEach<T> extends Component {
         return state;
     }
 
+    @Override public ReadableState<List<T>> getState() { return state(); }
+
     /**
      * Returns the components mapped from the last observed list snapshot.
      * The returned list is an immutable copy.
@@ -71,6 +73,8 @@ public final class ForEach<T> extends Component {
     public List<Component> components() {
         return List.copyOf(components);
     }
+
+    @Override public List<Component> getComponents() { return components(); }
 
     /**
      * Rebuilds the mapped components from the current list snapshot.

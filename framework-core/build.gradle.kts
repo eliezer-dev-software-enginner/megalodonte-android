@@ -12,7 +12,7 @@ dependencies {
 // Compile the original desktop welcome client unchanged against the Android API.
 val welcomeFixture = tasks.register<Sync>("prepareWelcomeFixture") {
     from("../../megalodonte-ecossystem/megalodonte-app1-welcome/src/main/java") {
-        include("my_app/Main.java", "my_app/WelcomeScreen.java")
+        include("megalodonte_app1_welcome/Main.java", "megalodonte_app1_welcome/HomeScreen.java")
     }
     into(layout.buildDirectory.dir("generated/sources/welcome-fixture"))
 }
@@ -56,7 +56,7 @@ tasks.check { dependsOn("componentTest") }
 
 listOf(2 to "megalodonte-app2-counter", 3 to "megalodonte-app3-string-lenght", 4 to "megalodonte-app4-hide-seek").forEach { (number, app) ->
     val fixtureSources = tasks.register<Sync>("prepareClient$number") {
-        from("../../megalodonte-ecossystem/$app/src/main/java") { include("my_app/*.java") }
+        from("../../megalodonte-ecossystem/$app/src/main/java") { include("**/*.java") }
         into(layout.buildDirectory.dir("generated/sources/client-$number"))
     }
     val fixture = sourceSets.create("client$number") {

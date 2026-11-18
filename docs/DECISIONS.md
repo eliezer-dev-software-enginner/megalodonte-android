@@ -1,5 +1,4 @@
 # Decisões Arquiteturais
-
 ## 2026-11-15: `Ref<T>` no Android
 
 **Contexto:** telas portadas do desktop usam `Ref<Button>` etc. para guardar um
@@ -18,7 +17,7 @@ caminho para `android.view.View`, para mutar filhos nem para substituir
 `State`/`ListState`. A regra do projeto continua: estado para dados, `Ref` apenas
 para uma operação imperativa inevitável.
 
-**Validação:** `:framework-core:componentTest` cobre Ref vazio, binding com
+**Validação:** `:megalodonte-base-android:componentTest` cobre Ref vazio, binding com
 retorno do mesmo componente, valor inicial e `setCurrent`. O
 `learn-android-app` compila com `Ref<Button>`.
 
@@ -80,7 +79,7 @@ posição e reaplica o espaçamento do pai. Listeners e limpezas por componente 
 registrados por ID e executados no descarte, portanto itens removidos param de
 disparar eventos.
 
-**Validação:** `:framework-core:listRenderingTest` cobre bind/unbind, clique em
+**Validação:** `:megalodonte-base-android:listRenderingTest` cobre bind/unbind, clique em
 item dinâmico, remoção, limpeza, binding de texto dentro de itens e ausência da
 capacidade. A instrumentação API 35 monta a lista, adiciona, remove, limpa,
 clica em item e verifica binding de texto. O `learn-android-app` compila com a
@@ -188,3 +187,20 @@ listeners/views; eventos ou atualizações posteriores ao fechamento são ignora
 Ainda não existe executor separado, fila de comandos ou protocolo serializado.
 O estado pertence à tela e deixa de ser usado após seu fechamento; o `State`
 atual não oferece unsubscribe. Não reutilizar um State de longa duração entre telas.
+## 2026-11-18: Contratos comuns e nomes explícitos por plataforma
+
+**Decisão:** comportamento independente de renderer pertence a interfaces do
+`megalodonte-core`. As implementações desktop preservam a base existente e passam
+a declarar esses contratos; Android adapta seu lifecycle e seus widgets nativos.
+`Show` agora implementa `ConditionalContent<Component>` nos dois hosts, e o bloco
+Android `ForEach` implementa o contrato comum `ForEachState<T, Component>`.
+
+Essa direção se estende a componentes, props, router e futuras bibliotecas. Métodos
+estáticos de fábrica continuam em cada plataforma porque Java não os sobrescreve.
+Artefatos neutros permanecem sem sufixo; módulos específicos usam `-desktop` ou
+`-android`. Os módulos internos atuais passam a se chamar
+`megalodonte-base-android` e `megalodonte-bridge-android`; os diretórios históricos
+permanecem para não quebrar checkouts e ferramentas que localizam o código-fonte.
+
+---
+
