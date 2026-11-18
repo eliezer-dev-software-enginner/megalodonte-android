@@ -21,7 +21,7 @@ dependencies {
 }
 val verifySharedDependencies = tasks.register("verifySharedDependencies") {
     doLast {
-        val forbidden = setOf("megalodonte-base", "megalodonte-components", "megalodonte-reactivity", "megalodonte-router")
+        val forbidden = setOf("megalodonte-base", "megalodonte-base-desktop", "megalodonte-components", "megalodonte-reactivity", "megalodonte-router")
         val resolution = configurations.getByName("debugRuntimeClasspath").incoming.resolutionResult
         resolution.allDependencies.forEach { dependency ->
             if (dependency is org.gradle.api.artifacts.result.UnresolvedDependencyResult) throw GradleException("Unresolved shared dependency", dependency.failure)
