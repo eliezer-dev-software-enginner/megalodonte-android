@@ -7,7 +7,8 @@
   toolchains dos projetos Desktop, mas Gradle 8.13 não deve ser iniciado por ele.
 - Android SDK Platform 35 e Build Tools 35.0.0 (padrão do AGP 8.12.0).
 - Emulador/dispositivo Android 15 ou posterior para execução.
-- Checkout das bibliotecas em `framework/libraries`, incluindo core/theme/reactivity-portable.
+- Checkouts `megalodonte-core`, `megalodonte-theme` e
+  `megalodonte-reactivity` em `framework/libraries`.
 
 ```text
 megalodonte-world/
@@ -16,12 +17,13 @@ megalodonte-world/
     libraries/
       megalodonte-core/
       megalodonte-theme/
-      megalodonte-reactivity-portable/
       megalodonte-reactivity/
 ```
 
-Composite builds resolvem as coordenadas Maven para esses projetos irmãos.
-Estado/tema têm artefatos únicos; portable prepara os fontes neutros originais.
+Composite builds resolvem core e tema. O módulo `megalodonte-base-android`
+compila diretamente `ComputedState`, `ListenerManager`, `ForEachState` e
+`ListState` dos fontes originais de `megalodonte-reactivity`, sem um artefato
+wrapper vazio.
 O APK não depende do build desktop/SDK JavaFX. Fora deste workspace, publique
 os artefatos, retire os includeBuild e configure o repositório Maven.
 
@@ -87,7 +89,7 @@ desabilitado porque esta etapa usa um runner próprio sem JUnit.
 Clientes 2–4 também são testados por runners vinculados ao check. Validação completa:
 
 ```powershell
-./gradlew.bat :megalodonte-base-android:check :megalodonte-core:check :megalodonte-reactivity-portable:check :app:verifySharedDependencies :app:assembleDebug :app:lintDebug
+./gradlew.bat :megalodonte-base-android:check :app:verifySharedDependencies :app:assembleDebug :app:lintDebug
 ```
 
 Build/lint não substituem a verificação visual em dispositivo.

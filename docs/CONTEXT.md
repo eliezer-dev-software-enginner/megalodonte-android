@@ -13,7 +13,7 @@ Core/tema comuns já foram extraídos; a migração de toda a UI ainda está em 
 - Java 17 como nível de código/bytecode e JVM do Gradle; Gradle 8.13;
   Android Gradle Plugin 8.12.0.
 - `compileSdk`, `targetSdk` e `minSdk` da aplicação: 35 (Android 15).
-- `megalodonte-base-android` (diretório `framework-core`): API cliente nos pacotes clássicos `megalodonte.application`,
+- `megalodonte-base-android` (diretório `base-android`): API cliente nos pacotes clássicos `megalodonte.application`,
   `megalodonte.base.components`, `megalodonte.components`, `megalodonte.props` e tema.
   `BridgeRuntime` e `NativeBridge` são infraestrutura interna em `megalodonte.android.core`.
 - `megalodonte-bridge-android` (diretório `android-bridge`): `AndroidNativeBridge` e `MegalodonteActivity`, com widgets, insets
@@ -21,9 +21,11 @@ Core/tema comuns já foram extraídos; a migração de toda a UI ainda está em 
 - `app`: `my_app.Main`, `WelcomeScreen implements ScreenComponent` e `MainActivity`
   que somente liga o ponto de entrada `Main.main()` ao host.
 - Estado, tema, escala, lifecycle e matcher vêm do artefato megalodonte-core.
-- O cliente declara megalodonte-theme real; reactivity-portable fornece os mesmos
-  fontes neutros de ComputedState/ListState/ForEachState/ListenerManager.
-- Composite builds ligam os três projetos; não há cópia de estado no backend.
+- O cliente declara `megalodonte-theme` real. `megalodonte-base-android`
+  compila os fontes neutros originais de
+  ComputedState/ListState/ForEachState/ListenerManager diretamente do checkout
+  `megalodonte-reactivity`; não há artefato portable intermediário.
+- Composite builds ligam core e tema; não há cópia de estado no backend.
 - Os módulos delegam `prepareKotlinBuildScriptModel` à raiz para atender à
   solicitação de preparação dos scripts Gradle pelo IntelliJ.
 

@@ -5,9 +5,30 @@ java {
 }
 dependencies {
     api("megalodonte:megalodonte-core:1.0.0-beta")
-    api("megalodonte:megalodonte-reactivity-portable:1.0.0-beta")
     testImplementation("megalodonte:megalodonte-theme:1.0.0-beta")
 }
+
+// These neutral APIs keep their established packages on Desktop and Android.
+// Compile the original sources directly into megalodonte-base-android instead
+// of publishing an empty wrapper module that only copied them.
+val sharedReactivityRoot = file("../../libraries/megalodonte-reactivity/src/main/java")
+val sharedReactivityPaths = listOf(
+    "megalodonte/ComputedState.java",
+    "megalodonte/ListenerManager.java",
+    "megalodonte/ForEachState.java",
+    "megalodonte/v2/ListState.java"
+)
+val prepareSharedReactivity = tasks.register<Sync>("prepareSharedReactivity") {
+    doFirst {
+        val missing = sharedReactivityPaths.filterNot { sharedReactivityRoot.resolve(it).isFile }
+        if (missing.isNotEmpty()) {
+            throw GradleException("Missing neutral reactivity sources in $sharedReactivityRoot: ${missing.joinToString()}")
+        }
+    }
+    from(sharedReactivityRoot) { include(sharedReactivityPaths) }
+    into(layout.buildDirectory.dir("generated/sources/shared-reactivity"))
+}
+sourceSets.main { java.srcDir(prepareSharedReactivity) }
 
 // Compile the original desktop welcome client unchanged against the Android API.
 val welcomeFixture = tasks.register<Sync>("prepareWelcomeFixture") {

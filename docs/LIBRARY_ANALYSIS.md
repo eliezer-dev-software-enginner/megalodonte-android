@@ -13,7 +13,7 @@ os fontes de produção de todas as bibliotecas e torna as lacunas verificáveis
 | --- | --- | --- | --- |
 | base | State, ReadableState, ForEachState, tokens/contrato de tema, políticas de escala | Component/Props envolvem Node; ThemeManager usa Scene; ScaleProvider usa Screen; Scope depende de Async virtual/SLF4J/ErrorReporter | Estado e tema extraídos; serviços de escala/fontes injetados; lifecycle e matcher de rotas comuns |
 | theme | DefaultTheme e valores semânticos | Dependência transitiva de base e bytecode Java 25 | Agora depende somente do core, compilada com release 17 e consumida por ambos |
-| reactivity | ComputedState, ListState, ForEachState e ListenerManager | Show envolve VBox/Animation; plugin e módulo JPMS dependem de JavaFX | Artefato portátil usa os MESMOS fontes neutros; Show tem adapter Android próprio |
+| reactivity | ComputedState, ListState, ForEachState e ListenerManager | Show envolve VBox/Animation; plugin e módulo JPMS dependem de JavaFX | Base Android compila diretamente os quatro fontes neutros; Show tem adapter Android próprio |
 | router | Matching de segmentos/parâmetros | RouterBase expõe Stage; factories e ScreenManager dependem de contextos/janelas JavaFX | Matcher extraído e usado pelo desktop; navegação Android completa continua pendente |
 | components | Formatação, dados de tabela, definições de props e reconciliação podem ser separados | Views, CSS, enums geométricos, Node, imagens/ícones nativos e eventos JavaFX aparecem no cliente/props | Adapters Android para um subconjunto; próxima extração deve ser de modelos/contratos, não cópia das skins |
 
@@ -28,11 +28,10 @@ detecção de escala da política comum.
 flowchart TD
     Core[megalodonte-core: estado, tema, escala e contratos]
     Theme[megalodonte-theme: DefaultTheme] --> Core
-    Portable[megalodonte-reactivity-portable: mesmos fontes neutros] --> Core
+    ReactivitySources[fontes neutros de megalodonte-reactivity] --> Android
     Base[megalodonte-base: host JavaFX] --> Core
     Desktop[components / router / reactivity JavaFX] --> Base
-    Android[framework-core / android-bridge] --> Core
-    Android --> Portable
+    Android[base-android / android-bridge] --> Core
     Client[Aplicação Android] --> Android
     Client --> Theme
 ```
@@ -42,11 +41,11 @@ segunda implementação desses tipos dentro do Android. Seu module-info só expo
 pacotes neutros; base requer core transitivamente e não volta a exportar pacotes
 movidos. Isso evita split packages no JPMS desktop.
 
-Reactivity ainda mistura tipos neutros e Show no mesmo módulo. A extração portátil
-é uma projeção de build dos quatro fontes neutros originais, sem fork de código.
-Não combinar `megalodonte-reactivity` desktop e `megalodonte-reactivity-portable`
-no mesmo aplicativo: possuem classes homônimas. A separação física definitiva
-dos modelos e do adapter Show exige reorganização de pacotes/artefatos.
+Reactivity ainda mistura tipos neutros e Show no mesmo repositório. O Android
+compila somente os quatro fontes neutros originais dentro de
+`megalodonte-base-android`, sem publicar um segundo artefato e sem fork de código.
+O JAR Desktop completo não entra no APK. A separação física definitiva dos
+modelos e do adapter Show ainda exige reorganização de pacotes.
 
 ## Garantias atuais do contrato
 
@@ -127,7 +126,7 @@ foram feitas.
 
 ## Compatibilidade e migração
 
-- Compilar o ecossistema na nova ordem: core, portable, base, reactivity, theme,
+- Compilar o ecossistema na nova ordem: core, base, reactivity, theme,
   router e components. `install-all` já inclui os novos artefatos.
 - Recompilar consumidores desktop: tipos mudaram de módulo. O helper transitório
   `ThemeManager.applyFontFamily(Object)` preserva chamadas de fonte, mas não o

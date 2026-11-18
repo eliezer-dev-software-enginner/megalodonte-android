@@ -7,7 +7,7 @@ componente criado em `render()`; no Android o símbolo não existia
 `ref(...)` que o desktop expõe em `megalodonte.base.components`.
 
 **Decisão:** portar `Ref<T>` e `Component.ref(Ref<T>)` com o mesmo FQN e
-assinatura para `framework-core`, que é Java puro e continua testável por JVM.
+assinatura para `base-android`, que é Java puro e continua testável por JVM.
 `ref` atribui a instância durante a composição de `render()`, antes da montagem,
 como no desktop: `new Button("Salvar").ref(botaoSalvar)`.
 
@@ -40,9 +40,9 @@ callbacks de UI. Fora dela, a tarefa é enfileirada no looper principal. O helpe
 só agenda; a alteração de estado continua reagindo pelo `BridgeRuntime`, que exige
 a thread principal e falha explicitamente fora dela.
 
-O arquivo fica em `android-bridge` e não em `framework-core` porque este último é
+O arquivo fica em `android-bridge` e não em `base-android` porque este último é
 um módulo Java puro (sem `android.jar`), mantido testável por JVM. O app depende
-de `android-bridge` (que expõe `framework-core` via `api`), então o cliente vê o
+de `android-bridge` (que expõe `base-android` via `api`), então o cliente vê o
 mesmo pacote.
 
 **Validação:** teste instrumentado em emulador API 35 cobre execução imediata na
@@ -210,7 +210,7 @@ e montagem continuam pertencendo a cada implementação de plataforma.
 `megalodonte.base.components` contém as abstrações fundamentais, enquanto
 `megalodonte.components` contém controles e layouts concretos. São camadas
 distintas, não implementações duplicadas. Diretórios de fontes `theme` vazios e
-legados dentro de `framework-core` não fazem parte da API Android.
+legados dentro de `base-android` não fazem parte da API Android.
 
 ## 2026-11-18: Compatibilidade com o Android Studio
 
@@ -219,11 +219,25 @@ combinação aceita pelo Android Studio usado no projeto e definida pela matriz
 oficial do AGP. O Gradle Android executa com JDK 17; JDK 25 permanece restrito
 aos toolchains e builds Desktop que o suportam.
 
-Os artefatos neutros `megalodonte-core`, `megalodonte-theme` e
-`megalodonte-reactivity-portable` compilam com toolchain Java 17. Configurações
+Os artefatos neutros `megalodonte-core` e `megalodonte-theme` compilam com
+toolchain Java 17. Configurações
 de teste que só existem no Gradle 9 são aplicadas condicionalmente, permitindo
 que esses artefatos sejam consumidos tanto pelo wrapper Android 8.13 quanto por
 seus builds isolados em Gradle 9.
+
+## 2026-11-18: Base Android sem módulos intermediários
+
+**Decisão:** o diretório físico `framework-core` passa a se chamar
+`base-android`, igual ao módulo lógico `megalodonte-base-android`. Ele não é
+fundido ao `megalodonte-core`: o core é neutro e compartilhado com Desktop,
+enquanto a base contém componentes, runtime e lifecycle específicos do Android.
+Misturá-los faria o core depender da plataforma e quebraria sua função comum.
+
+O módulo `megalodonte-reactivity-portable` foi removido do grafo. Ele não tinha
+fontes próprios e apenas copiava quatro classes de `megalodonte-reactivity`.
+Agora `megalodonte-base-android` prepara e compila esses mesmos fontes diretamente,
+preservando os pacotes públicos e uma única fonte de verdade sem publicar um JAR
+intermediário vazio.
 
 ---
 

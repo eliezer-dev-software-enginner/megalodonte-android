@@ -15,7 +15,8 @@
 - [x] Assinaturas descartáveis, lifecycle, matcher e capacidades versão 1.
 - [x] Inputs, checkbox, progresso, layouts/scroll/espaçadores e Show Android.
 - [x] Fontes originais dos clientes 1–4 compilados e executados nos testes.
-- [x] Módulos JavaFX recompilados; tema/core/portable testados; APK/lint passaram.
+- [x] Módulos JavaFX recompilados; tema/core e reatividade neutra testados;
+  APK/lint passaram.
 - [x] Compatibilidade do Android Studio: AGP 8.12.0, Gradle 8.13 e JDK 17;
   framework, aplicativo consumidor e projeto novo do CLI validados (2026-11-18).
 - [x] Checks de imports/bytecode e grafo Android sem JavaFX.
@@ -30,12 +31,13 @@
 - [x] `UI.runOnUi` com `Handler(Looper.getMainLooper())` e teste instrumentado vindo de thread de fundo (2026-11-15).
 - [ ] TaskExecutor/logging comuns para Async/Scope.
 - [x] List rendering reativo (`ForEach`, `items(ReadableState<List<T>>, ...)`) e descarte da subárvore anterior.
-- [x] `Ref<T>` e `Component.ref(...)` no `framework-core`, com teste de contrato JVM (2026-11-15).
+- [x] `Ref<T>` e `Component.ref(...)` no `base-android`, com teste de contrato JVM (2026-11-15).
 - [ ] Reconciliação por identidade e preservação de foco/estado de views em listas reativas.
 - [ ] TableModel/seleção/paginação/exportação comuns e renderer Android.
 - [ ] Select/DatePicker/Image/Icon/CurrencyInput e fontes/recursos.
 - [ ] Menu/Modal/Stack/Grid/Flow/Canva/TextFlow, animações e props avançadas.
-- [x] Organizar repositórios próprios e submódulos de core/portable.
+- [x] Remover o wrapper `megalodonte-reactivity-portable` e compilar os fontes
+  neutros diretamente em `megalodonte-base-android` (2026-11-18).
 - [ ] Versionar a migração antes de distribuição externa.
 
 ## Concluído — estrutura inicial, 2026-10-05

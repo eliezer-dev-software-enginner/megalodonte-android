@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>framework-core</name>
-	<comment>Project framework-core created by Buildship.</comment>
+	<name>base-android</name>
+	<comment>Project base-android created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

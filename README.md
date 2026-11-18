@@ -100,7 +100,7 @@ Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 
 | Módulo | Responsabilidade |
 | --- | --- |
-| `megalodonte-base-android` (`framework-core/`) | Facades cliente Android e runtime; depende dos artefatos comuns |
+| `megalodonte-base-android` (`base-android/`) | Facades cliente Android e runtime; depende dos artefatos comuns |
 | `megalodonte-bridge-android` (`android-bridge/`) | Renderers nativos, propriedades/eventos, tema, insets e lifecycle |
 | `app` | `Main`, `WelcomeScreen` e conexão mínima da Activity com o host do framework |
 
@@ -113,9 +113,10 @@ consulte [JSONC_ANDROID.md](docs/JSONC_ANDROID.md) para o escopo dessa integraç
 
 ## Build
 
-O workspace inclui via composite build os projetos irmãos megalodonte-core,
-megalodonte-theme e megalodonte-reactivity-portable. Não recompila State/tema
-dentro do backend; consulte a matriz antes de portar telas maiores.
+O workspace inclui `megalodonte-core` e `megalodonte-theme` por composite build.
+O módulo `megalodonte-base-android` compila diretamente os quatro fontes neutros
+de reatividade do checkout `megalodonte-reactivity`; não existe mais um módulo
+intermediário `megalodonte-reactivity-portable`.
 
 O `settings.gradle.kts` exige esta disposição de diretórios:
 
@@ -125,7 +126,7 @@ framework/
   libraries/
     megalodonte-core/
     megalodonte-theme/
-    megalodonte-reactivity-portable/
+    megalodonte-reactivity/
   megalodonte-ecossystem/
     megalodonte-app1-welcome/
     megalodonte-app2-counter/
@@ -136,11 +137,11 @@ framework/
 Esses projetos irmãos e exemplos não estão incluídos neste repositório. Os
 exemplos em `framework/megalodonte-ecossystem/` são necessários para
 `:megalodonte-base-android:check`, conforme os caminhos definidos em
-`framework-core/build.gradle.kts`.
+`base-android/build.gradle.kts`.
 
 Com JDK 17 configurado como JVM do Gradle, Android SDK Platform 35,
-`ANDROID_HOME` configurado, as três
-bibliotecas irmãs e os quatro exemplos presentes nos caminhos acima, execute
+`ANDROID_HOME` configurado, os três checkouts irmãos e os quatro exemplos
+presentes nos caminhos acima, execute
 no PowerShell, a partir da raiz:
 
 ```powershell

@@ -17,7 +17,7 @@ $taskInventory = foreach ($taskModule in $taskModules) {
         $taskJvmSpecific = @($taskImports | Where-Object { $_ -match '^(org\.slf4j|java\.desktop|javax\.swing)\.' })
         $taskBody = [regex]::Replace($taskSource, '(?s)/\*.*?\*/', '')
         $taskMembers = @([regex]::Matches($taskBody, '(?m)^\s*public\s+(?:(?:static|final|abstract|default|synchronized)\s+)*(?:<[^\n]+?>\s+)?[^;={}\n]+?\([^;{}]*\)(?:\s+throws\s+[^{;]+)?(?=\s*[{;])') | ForEach-Object { [regex]::Replace($_.Value.Trim(), '\s+', ' ') })
-        $taskCounterpart = Join-Path $taskAndroidRoot ('framework-core/src/main/java/' + $taskName.Replace('.', '/') + '.java')
+        $taskCounterpart = Join-Path $taskAndroidRoot ('base-android/src/main/java/' + $taskName.Replace('.', '/') + '.java')
         $taskStatus = if ($taskModule -in @('megalodonte-core','megalodonte-theme')) { 'shared-artifact' }
             elseif ($taskName -in $taskPortable) { 'same-source-portable-artifact' }
             elseif (Test-Path -LiteralPath $taskCounterpart) { 'android-adapter-partial-api' }
