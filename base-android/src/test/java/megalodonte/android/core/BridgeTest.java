@@ -88,6 +88,15 @@ public final class BridgeTest {
         menuAction.run();
         require(menuCalls[0] == 1 && "Novo".equals(menuAction.getTitle()),
                 "Native menu command must run its declared action");
+        Menu directAction = new Menu("Atualizar", () -> menuCalls[0]++);
+        require(directAction.hasAction() && directAction.getItems().isEmpty(),
+                "A direct Menu action must remain a leaf command");
+        directAction.run();
+        require(menuCalls[0] == 2, "A direct Menu action must run its callback");
+        try {
+            directAction.item("Inválido", () -> {});
+            throw new AssertionError("A direct Menu action must reject nested items");
+        } catch (IllegalStateException expected) { }
         FakeBridge welcomeBridge = new FakeBridge();
         try (Context ignored = MegalodonteApp.launch(welcomeBridge, Map.of(), WelcomeAppTest::runOriginalMain)) {
             require(welcomeBridge.root instanceof Container, "Original client must render Container");

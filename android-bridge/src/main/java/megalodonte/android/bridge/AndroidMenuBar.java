@@ -22,6 +22,13 @@ public final class AndroidMenuBar {
         int id = 1;
         boolean oneGroup = bar.getMenus().size() == 1;
         for (Menu group : bar.getMenus()) {
+            if (group.hasAction()) {
+                android.view.MenuItem action = toolbar.getMenu().add(
+                        0, id++, android.view.Menu.NONE, group.getTitle());
+                action.setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+                action.setOnMenuItemClickListener(clicked -> { group.run(); return true; });
+                continue;
+            }
             android.view.Menu destination;
             if (oneGroup) destination = toolbar.getMenu();
             else {
