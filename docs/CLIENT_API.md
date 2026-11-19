@@ -203,3 +203,8 @@ return new MenuBar()
 ```
 
 O adaptador `AndroidMenuBar.create(context, bar)` atende telas Megalodonte; o overload legado `create(context, bar, title, subtitle)` continua disponível para Activities Android tradicionais. As ações são `Runnable` executadas na thread da UI. Componentes arbitrários via `trailing(...)` continuam exclusivos da barra Desktop.
+
+`new Menu("Atualizar", action)` representa uma ação direta: no Android ela entra
+como item clicável do overflow e executa o callback, sem criar submenu. Esse modo
+é uma folha e não pode receber `.item(...)`; use `new Menu("Grupo").item(...)`
+quando houver comandos internos.
