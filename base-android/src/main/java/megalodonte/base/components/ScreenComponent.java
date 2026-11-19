@@ -30,8 +30,20 @@ public interface ScreenComponent extends megalodonte.contracts.ScreenComponentCo
     /** Called when the screen is replaced or the host is destroyed. */
     default void onDestroy() { }
 
-    /** Optional Android lifecycle hooks; plain screens only implement render(). */
+    /**
+     * Returns the values that Android should retain when recreating this screen.
+     * Keys and values must be non-null because the host stores them in a Bundle.
+     */
     default Map<String, String> saveState() { return Map.of(); }
 
+    /**
+     * Restores state immediately before the first {@link #render()} call.
+     * The map itself is never null, but it is empty on a fresh launch and may
+     * omit any optional key. Consequently, {@code state.get(key)} may return
+     * null; use {@code getOrDefault}, {@code containsKey}, or another explicit
+     * fallback instead of assuming that a saved value exists.
+     *
+     * @param state non-null, possibly empty values restored by the Android host
+     */
     default void restoreState(Map<String, String> state) { }
 }

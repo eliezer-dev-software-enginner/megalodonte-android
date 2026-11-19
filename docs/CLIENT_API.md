@@ -150,6 +150,10 @@ Para preservar dados na recriação Android, uma tela também pode implementar:
 ```
 
 O host salva o mapa em Bundle e o Context restaura antes de chamar `render()`.
+O mapa entregue a `restoreState` nunca é nulo, mas fica vazio em uma abertura
+nova e pode não conter uma chave opcional; portanto `saved.get("chave")` pode
+retornar `null`. Use `getOrDefault`, como no exemplo, ou teste `containsKey`
+antes de substituir o valor inicial de um `State`.
 Esses hooks são extensões Android opcionais; uma tela estática só precisa de render.
 
 A ordem no `Context.useView` é `restoreState` → `render()` → montagem/assinaturas →
