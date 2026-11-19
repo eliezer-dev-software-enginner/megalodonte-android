@@ -66,7 +66,8 @@ implementa `ForEachState<T, Component>`. `Component`, `Ref` e
 Desktop; identidade e montagem continuam específicas do renderer Android.
 State/map e estados calculados/listas têm assinaturas descartáveis; o runtime
 remove seus bindings ao fechar. Os clientes originais 1–4 passam como fixtures.
-Tabelas, menus, modais, recursos, router/async e props avançadas continuam pendentes.
+`MenuBar` já usa `Toolbar` nativa com título, subtítulo, cores e overflow; tabelas,
+modais, recursos, router/async e props avançadas continuam pendentes.
 Os contratos comuns serão ampliados progressivamente para props, router e
 demais bibliotecas; todo artefato específico Android termina em `-android`.
 Um emulador existente API 37 foi iniciado sem janela para instrumentação: cliente,

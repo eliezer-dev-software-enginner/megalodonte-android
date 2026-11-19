@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
 import android.widget.FrameLayout;
+import android.widget.Toolbar;
 import android.text.TextWatcher;
 import android.text.Editable;
 import android.text.InputType;
@@ -97,7 +98,7 @@ public final class AndroidNativeBridge implements NativeBridge {
         List<Runnable> cleanup = new ArrayList<>();
         View view;
         if (component instanceof MenuBar menuBar) {
-            view = AndroidMenuBar.create(host.getContext(), menuBar, "", "");
+            view = AndroidMenuBar.create(host.getContext(), menuBar);
         } else if (component instanceof Text text) {
             TextView nativeText = new TextView(host.getContext());
             ThemeInterface theme = ThemeManager.getTheme();
@@ -341,7 +342,9 @@ public final class AndroidNativeBridge implements NativeBridge {
                 if (theme.typography().fontFamily() != null)
                     nativeText.setTypeface(Typeface.create(theme.typography().fontFamily(), Typeface.NORMAL));
                 else nativeText.setTypeface(Typeface.DEFAULT);
-            } else if (component instanceof LinearComponent layout)
+            } else if (component instanceof MenuBar menuBar && view instanceof Toolbar toolbar)
+                AndroidMenuBar.applyStyle(toolbar, menuBar, theme);
+            else if (component instanceof LinearComponent layout)
                 view.setBackgroundColor(color(layout.props().getBgColor() == null ? theme.colors().background() : layout.props().getBgColor()));
             else if (view instanceof android.widget.ProgressBar progress)
                 progress.setProgressTintList(ColorStateList.valueOf(color(theme.colors().primary())));

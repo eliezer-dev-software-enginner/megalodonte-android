@@ -192,4 +192,14 @@ overloads legados de uma categoria foram portados.
 
 ## MenuBar nativa no Android
 
-`megalodonte.components.MenuBar`, `Menu` e `MenuItem` mantêm a API fluida de menus e ações do desktop (`MenuBar.of().menu(new Menu("Projeto").item("Salvar", action))`). No Android, `AndroidNativeBridge` renderiza o componente com uma `android.widget.Toolbar`; os comandos abrem no menu de três pontos. Um único grupo é apresentado diretamente, enquanto vários grupos aparecem como submenus. `MenuItem.showAsAction()` solicita exibição na barra quando houver espaço; os demais itens ficam no overflow. O adaptador `AndroidMenuBar.create(context, bar, title, subtitle)` permite usar o mesmo contrato também em uma `Activity` Android tradicional, como no editor de vídeo. As ações são `Runnable` executadas na thread da UI. Recursos exclusivos da barra JavaFX, como componentes arbitrários em `trailing` e estilos de `bgColor`, não fazem parte deste contrato nativo.
+`megalodonte.components.MenuBar`, `Menu` e `MenuItem` mantêm a API fluida de menus e ações do desktop. No Android, `AndroidNativeBridge` renderiza o componente como uma `android.widget.Toolbar` completa: `.title(...)`, `.subtitle(...)`, `.bgColor(...)` e `.textColor(...)` configuram a apresentação nativa, enquanto os comandos abrem no menu de três pontos. Um único grupo é apresentado diretamente, enquanto vários grupos aparecem como submenus. `MenuItem.showAsAction()` solicita exibição na barra quando houver espaço; os demais itens ficam no overflow.
+
+```java
+return new MenuBar()
+        .title("My App")
+        .bgColor("#D32F2F")
+        .textColor("#FFFFFF")
+        .menu(new Menu("Detalhes").item("Sobre", action));
+```
+
+O adaptador `AndroidMenuBar.create(context, bar)` atende telas Megalodonte; o overload legado `create(context, bar, title, subtitle)` continua disponível para Activities Android tradicionais. As ações são `Runnable` executadas na thread da UI. Componentes arbitrários via `trailing(...)` continuam exclusivos da barra Desktop.

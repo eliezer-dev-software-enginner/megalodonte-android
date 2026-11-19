@@ -198,9 +198,9 @@ Android `ForEach` implementa o contrato comum `ForEachState<T, Component>`.
 Essa direção se estende a componentes, props, router e futuras bibliotecas. Métodos
 estáticos de fábrica continuam em cada plataforma porque Java não os sobrescreve.
 Artefatos neutros permanecem sem sufixo; módulos específicos usam `-desktop` ou
-`-android`. Os módulos internos atuais passam a se chamar
-`megalodonte-base-android` e `megalodonte-bridge-android`; os diretórios históricos
-permanecem para não quebrar checkouts e ferramentas que localizam o código-fonte.
+`-android`. Os módulos internos atuais se chamam `megalodonte-base-android` e
+`megalodonte-bridge-android`; os diretórios físicos correspondentes são
+`base-android` e `android-bridge`.
 
 `Component`, `Ref` e `ScreenComponent` implementam, nos dois hosts, os contratos
 neutros do `megalodonte-core`. Esses contratos cobrem composição, referências e
@@ -238,6 +238,14 @@ fontes próprios e apenas copiava quatro classes de `megalodonte-reactivity`.
 Agora `megalodonte-base-android` prepara e compila esses mesmos fontes diretamente,
 preservando os pacotes públicos e uma única fonte de verdade sem publicar um JAR
 intermediário vazio.
+
+## 2026-11-18: MenuBar como Toolbar Android completa
+
+**Decisão:** a tela cliente não deve reconstruir uma barra de aplicativo com
+`Row`, espaçador e texto. `MenuBar` passa a declarar título, subtítulo, fundo e
+cor de conteúdo; o bridge os aplica diretamente em uma `android.widget.Toolbar`,
+mantendo o overflow nativo à direita e reestilizando a barra quando o tema muda.
+Grupos e ações continuam pertencendo a `Menu` e `MenuItem`.
 
 ---
 

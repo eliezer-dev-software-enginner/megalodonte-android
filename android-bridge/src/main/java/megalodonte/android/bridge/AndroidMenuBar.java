@@ -1,8 +1,11 @@
 package megalodonte.android.bridge;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.SubMenu;
 import android.widget.Toolbar;
+import megalodonte.base.theme.ThemeInterface;
+import megalodonte.base.theme.ThemeManager;
 import megalodonte.components.Menu;
 import megalodonte.components.MenuBar;
 
@@ -10,10 +13,8 @@ import megalodonte.components.MenuBar;
 public final class AndroidMenuBar {
     private AndroidMenuBar() { }
 
-    public static Toolbar create(Context context, MenuBar bar, String title, String subtitle) {
+    public static Toolbar create(Context context, MenuBar bar) {
         Toolbar toolbar = new Toolbar(context);
-        toolbar.setTitle(title);
-        toolbar.setSubtitle(subtitle);
         int id = 1;
         boolean oneGroup = bar.getMenus().size() == 1;
         for (Menu group : bar.getMenus()) {
@@ -32,6 +33,31 @@ public final class AndroidMenuBar {
                 item.setOnMenuItemClickListener(clicked -> { command.run(); return true; });
             }
         }
+        applyStyle(toolbar, bar, ThemeManager.theme());
         return toolbar;
+    }
+
+    /** Compatibility adapter for Activities that provide their title separately. */
+    public static Toolbar create(Context context, MenuBar bar, String title, String subtitle) {
+        Toolbar toolbar = create(context, bar);
+        toolbar.setTitle(title);
+        toolbar.setSubtitle(subtitle);
+        return toolbar;
+    }
+
+    public static void applyStyle(Toolbar toolbar, MenuBar bar, ThemeInterface theme) {
+        toolbar.setTitle(bar.getTitle());
+        toolbar.setSubtitle(bar.getSubtitle());
+        toolbar.setBackgroundColor(color(bar.getBackgroundColor() == null
+                ? theme.colors().surface() : bar.getBackgroundColor()));
+        int foreground = color(bar.getTextColor() == null
+                ? theme.colors().textPrimary() : bar.getTextColor());
+        toolbar.setTitleTextColor(foreground);
+        toolbar.setSubtitleTextColor(foreground);
+        if (toolbar.getOverflowIcon() != null) toolbar.getOverflowIcon().setTint(foreground);
+    }
+
+    private static int color(String value) {
+        return "transparent".equals(value) ? Color.TRANSPARENT : Color.parseColor(value);
     }
 }

@@ -70,11 +70,20 @@ public final class BridgeTest {
     }
     public static void main(String[] args) {
         int[] menuCalls = {0};
-        MenuBar menuBar = MenuBar.of().menu(new Menu("Projeto")
+        MenuBar menuBar = MenuBar.of()
+                .title("Meu app")
+                .subtitle("Área principal")
+                .bgColor("#112233")
+                .textColor("#FFFFFF")
+                .menu(new Menu("Projeto")
                 .item("Novo", () -> menuCalls[0]++)
                 .itemIf(false, "Oculto", () -> menuCalls[0]++));
         require(menuBar.getMenus().size() == 1 && menuBar.getMenus().get(0).getItems().size() == 1,
                 "MenuBar must preserve the desktop menu/item contract");
+        require("Meu app".equals(menuBar.getTitle()) && "Área principal".equals(menuBar.getSubtitle())
+                        && "#112233".equals(menuBar.getBackgroundColor())
+                        && "#FFFFFF".equals(menuBar.getTextColor()),
+                "MenuBar must preserve native toolbar presentation");
         MenuItem menuAction = menuBar.getMenus().get(0).getItems().get(0);
         menuAction.run();
         require(menuCalls[0] == 1 && "Novo".equals(menuAction.getTitle()),

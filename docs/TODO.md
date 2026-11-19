@@ -35,7 +35,8 @@
 - [ ] Reconciliação por identidade e preservação de foco/estado de views em listas reativas.
 - [ ] TableModel/seleção/paginação/exportação comuns e renderer Android.
 - [ ] Select/DatePicker/Image/Icon/CurrencyInput e fontes/recursos.
-- [ ] Menu/Modal/Stack/Grid/Flow/Canva/TextFlow, animações e props avançadas.
+- [x] `MenuBar` nativa com título, subtítulo, cores, grupos e overflow (2026-11-18).
+- [ ] Modal/Stack/Grid/Flow/Canva/TextFlow, animações e props avançadas.
 - [x] Remover o wrapper `megalodonte-reactivity-portable` e compilar os fontes
   neutros diretamente em `megalodonte-base-android` (2026-11-18).
 - [ ] Versionar a migração antes de distribuição externa.
