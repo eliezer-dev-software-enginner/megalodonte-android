@@ -192,7 +192,7 @@ overloads legados de uma categoria foram portados.
 
 ## MenuBar nativa no Android
 
-`megalodonte.components.MenuBar`, `Menu` e `MenuItem` mantêm a API fluida de menus e ações do desktop. No Android, `AndroidNativeBridge` renderiza o componente como uma `android.widget.Toolbar` completa: `.title(...)`, `.subtitle(...)`, `.bgColor(...)` e `.textColor(...)` configuram a apresentação nativa, enquanto os comandos abrem no menu de três pontos. Um único grupo é apresentado diretamente, enquanto vários grupos aparecem como submenus. `MenuItem.showAsAction()` solicita exibição na barra quando houver espaço; os demais itens ficam no overflow.
+`megalodonte.components.MenuBar`, `Menu` e `MenuItem` mantêm a API fluida de menus e ações do desktop. No Android, `AndroidNativeBridge` renderiza o componente como uma `android.widget.Toolbar` completa e com largura total por padrão: `.title(...)`, `.subtitle(...)`, `.bgColor(...)` e `.textColor(...)` configuram a apresentação nativa, enquanto os comandos abrem no menu de três pontos. Um único grupo é apresentado diretamente, enquanto vários grupos aparecem como submenus. `MenuItem.showAsAction()` solicita exibição na barra quando houver espaço; os demais itens ficam no overflow.
 
 ```java
 return new MenuBar()

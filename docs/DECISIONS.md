@@ -244,7 +244,8 @@ intermediário vazio.
 **Decisão:** a tela cliente não deve reconstruir uma barra de aplicativo com
 `Row`, espaçador e texto. `MenuBar` passa a declarar título, subtítulo, fundo e
 cor de conteúdo; o bridge os aplica diretamente em uma `android.widget.Toolbar`,
-mantendo o overflow nativo à direita e reestilizando a barra quando o tema muda.
+que ocupa a largura disponível por padrão, mantém o overflow nativo à direita e
+é reestilizada quando o tema muda.
 Grupos e ações continuam pertencendo a `Menu` e `MenuItem`.
 
 ---

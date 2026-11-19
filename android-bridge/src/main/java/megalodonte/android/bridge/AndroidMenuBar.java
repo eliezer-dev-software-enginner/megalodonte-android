@@ -3,6 +3,7 @@ package megalodonte.android.bridge;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.SubMenu;
+import android.view.ViewGroup;
 import android.widget.Toolbar;
 import megalodonte.base.theme.ThemeInterface;
 import megalodonte.base.theme.ThemeManager;
@@ -15,6 +16,9 @@ public final class AndroidMenuBar {
 
     public static Toolbar create(Context context, MenuBar bar) {
         Toolbar toolbar = new Toolbar(context);
+        toolbar.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         int id = 1;
         boolean oneGroup = bar.getMenus().size() == 1;
         for (Menu group : bar.getMenus()) {
