@@ -11,13 +11,15 @@ public class Input extends Component {
     public final InputProps props;
     private Function<String, OnChangeResult> onChange;
     private Function<String, OnChangeResult> onInitialize;
-    private Runnable onEnter = () -> {};
+    private Runnable onEnter;
+    private KeyboardActionHandler onKeyboardAction;
     public Input(State<String> state) { this(state, new InputProps()); }
     public Input(State<String> state, InputProps props) { this.state = Objects.requireNonNull(state); this.props = Objects.requireNonNull(props); }
     public Input(String value) { this(State.of(value)); }
     public Input onChange(Function<String, OnChangeResult> handler) { onChange = Objects.requireNonNull(handler); return this; }
     public Input onInitialize(Function<String, OnChangeResult> handler) { onInitialize = Objects.requireNonNull(handler); return this; }
     public Input onEnter(Runnable handler) { onEnter = Objects.requireNonNull(handler); return this; }
+    public Input onKeyboardAction(KeyboardActionHandler handler) { onKeyboardAction = Objects.requireNonNull(handler); return this; }
     public String value() { return formatted(state.get()); }
     public ReadableState<String> displayState() { return state.map(this::formatted); }
     private String formatted(String value) {
@@ -32,7 +34,13 @@ public class Input extends Component {
         if (result.stateValue() != null) state.set(result.stateValue());
         return result.displayValue() == null ? value : result.displayValue();
     }
-    public void dispatchEnter() { onEnter.run(); }
+    public void dispatchEnter() { if (onEnter != null) onEnter.run(); }
+    public void dispatchKeyboardAction(Runnable performDefaultAction) {
+        Runnable nativeDefault = Objects.requireNonNull(performDefaultAction);
+        if (onKeyboardAction != null) onKeyboardAction.onKeyboardAction(nativeDefault);
+        else if (onEnter != null) onEnter.run();
+        else nativeDefault.run();
+    }
     public boolean password() { return false; }
     public boolean multiline() { return false; }
 }

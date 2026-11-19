@@ -119,6 +119,8 @@ public final class BridgeRuntime implements AutoCloseable {
             if ("change".equals(event.name()) && event.value() instanceof String value)
                 updateValue(input.bridgeId(), input.dispatchChange(value));
             else if ("enter".equals(event.name())) input.dispatchEnter();
+            else if ("keyboardAction".equals(event.name()) && event.value() instanceof Runnable performDefaultAction)
+                input.dispatchKeyboardAction(performDefaultAction);
         } else if (target instanceof Checkbox checkbox && "change".equals(event.name()) && event.value() instanceof Boolean value)
             checkbox.state.set(value);
     }

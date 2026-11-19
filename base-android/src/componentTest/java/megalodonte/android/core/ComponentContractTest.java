@@ -4,6 +4,8 @@ import megalodonte.base.components.Component;
 import megalodonte.base.components.Ref;
 import megalodonte.components.Button;
 import megalodonte.components.Text;
+import megalodonte.components.inputs.Input;
+import megalodonte.props.InputProps;
 
 /** Component-level contracts; runs without Android or a test framework. */
 public final class ComponentContractTest {
@@ -30,6 +32,30 @@ public final class ComponentContractTest {
         Text replacement = new Text("Substituto");
         seeded.setCurrent(replacement);
         require(seeded.current() == replacement, "setCurrent must replace the component");
+
+        InputProps inputProps = new InputProps()
+                .label("Username")
+                .outlined()
+                .imeAction(InputProps.ImeAction.NEXT);
+        require(inputProps.getVariant() == InputProps.Variant.OUTLINED
+                        && inputProps.getImeAction() == InputProps.ImeAction.NEXT
+                        && "Username".equals(inputProps.getLabel()),
+                "InputProps must expose platform-neutral Material and IME options");
+
+        int[] keyboardCalls = {0};
+        int[] defaultCalls = {0};
+        Input input = new Input("").onKeyboardAction(performDefaultAction -> {
+            keyboardCalls[0]++;
+            performDefaultAction.run();
+        });
+        input.dispatchKeyboardAction(() -> defaultCalls[0]++);
+        require(keyboardCalls[0] == 1 && defaultCalls[0] == 1,
+                "KeyboardActionHandler must choose when to invoke the native default action");
+
+        Input inputWithoutHandler = new Input("");
+        inputWithoutHandler.dispatchKeyboardAction(() -> defaultCalls[0]++);
+        require(defaultCalls[0] == 2,
+                "Input must preserve the native IME behavior when no custom handler is installed");
 
         System.out.println("Component contract tests passed");
     }

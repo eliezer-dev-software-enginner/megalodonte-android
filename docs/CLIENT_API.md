@@ -48,6 +48,35 @@ O `Text` recebe o estado observável como no desktop. O framework assina o estad
 gera os IDs e envia as atualizações à view nativa. A aplicação só descreve a tela
 e altera seu estado no callback.
 
+## Inputs Material e ações do teclado
+
+O mesmo `Input` cobre a apresentação simples, preenchida e contornada. Não é
+necessário criar componentes distintos apenas para reproduzir `TextField` e
+`OutlinedTextField`: `InputProps.Variant` seleciona o renderer nativo e `label`
+define o rótulo flutuante. `PasswordInput` e `TextAreaInput` permanecem separados
+porque alteram comportamento, não apenas aparência.
+
+```java
+private final State<String> username = State.of("Username");
+
+new Input(username, new InputProps()
+        .label("Usuário")
+        .placeHolder("Digite seu usuário")
+        .outlined()
+        .imeAction(InputProps.ImeAction.NEXT))
+    .onKeyboardAction(performDefaultAction -> {
+        validateUsername();
+        performDefaultAction.run();
+    });
+```
+
+As opções são `DEFAULT`, `DONE`, `NEXT`, `PREVIOUS`, `GO`, `SEARCH` e `SEND`.
+Sem `onKeyboardAction`, a ação nativa continua automática: `NEXT`/`PREVIOUS`
+movem o foco e `DONE` fecha o teclado. Com um handler, a aplicação decide se e
+quando chama `performDefaultAction.run()`, podendo executar validação antes. O
+callback antigo `onEnter(Runnable)` permanece compatível, mas, por não receber a
+ação padrão, é preferível usar a nova API em formulários com navegação de foco.
+
 ## Referências de componentes
 
 `Ref<T>` guarda a instância de um componente criado em `render()`, com o mesmo
@@ -181,6 +210,7 @@ ordem em inglês.
 | `Ref<T>` / `Component.ref(Ref<T>)` | Holder do componente declarativo; `ref` atribui durante a composição, antes da montagem |
 | `UI.runOnUi` | `Handler` do looper principal; executa na hora se já estiver na main thread |
 | `Column` / `Row` | children/c_child, items estático e items reativo (`ReadableState<List<T>>`) |
+| `Input` / `InputProps` | simples, filled e outlined; label/placeholder; ações IME com comportamento padrão opcional |
 
 Os nomes/imports preservam a experiência clássica nesse subconjunto. As classes
 Android substituem as implementações JavaFX e não devem ser combinadas com os

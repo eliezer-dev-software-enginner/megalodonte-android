@@ -14,7 +14,7 @@
 | ForEach / listas reativas | Capacidade `LIST_RENDERING`; recria as views do bloco ao mudar; sem reconciliação nem preservação de foco | ForEachState continua no adapter desktop |
 | SpacerVertical / Horizontal | Tamanho fixo/reativo e fill | Implementado com views/weights nativos |
 | Input | State/String, placeholder, editable, disable, fontSize, onChange/Initialize/Enter | Adornos Node, foco/caret e todas as props legadas ainda pendentes |
-| PasswordInput / TextAreaInput | State+InputProps; mascaramento/múltiplas linhas nativos | Botão reveal e props avançadas pendentes |
+| Input / PasswordInput / TextAreaInput | State+InputProps; plain/filled/outlined, label flutuante, ações IME, mascaramento/múltiplas linhas nativos | Botão reveal e tipos de teclado avançados pendentes |
 | Checkbox | Label, State<Boolean>, fontSize, binding bidirecional | Estilos avançados pendentes |
 | ProgressBar | State<Integer>, faixa 0–100 | Controle nativo; estilos adicionais pendentes |
 | Scroll | Filho único, scroll vertical | Eixo horizontal e API de ScrollPane não compartilhados |

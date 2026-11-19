@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextThemeWrapper;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import android.text.TextWatcher;
 import android.text.Editable;
 import android.text.InputType;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.content.Context;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -47,6 +50,7 @@ import megalodonte.components.DatePicker;
 import megalodonte.components.Image;
 import megalodonte.components.MenuBar;
 import megalodonte.props.ButtonProps;
+import megalodonte.props.InputProps;
 import megalodonte.v2.Show;
 import megalodonte.v2.ForEach;
 import megalodonte.base.state.State;
@@ -77,6 +81,8 @@ public final class AndroidNativeBridge implements NativeBridge {
     }
     private final ViewGroup host;
     private final Map<String, View> views = new HashMap<>();
+    private final Map<String, EditText> inputFields = new HashMap<>();
+    private final Map<String, com.google.android.material.textfield.TextInputLayout> inputLayouts = new HashMap<>();
     private final Map<String, Component> components = new HashMap<>();
     private final Map<String, ListBlock> listBlocks = new HashMap<>();
     private final Map<String, List<Runnable>> componentCleanup = new HashMap<>();
@@ -144,17 +150,21 @@ public final class AndroidNativeBridge implements NativeBridge {
         } else if (component instanceof megalodonte.components.SpacerVertical || component instanceof megalodonte.components.SpacerHorizontal) {
             view = new View(host.getContext());
         } else if (component instanceof Input input) {
-            EditText field = new EditText(host.getContext());
+            boolean decorated = input.props.getVariant() != InputProps.Variant.PLAIN;
+            Context fieldContext = decorated
+                ? new ContextThemeWrapper(host.getContext(), com.google.android.material.R.style.Theme_Material3_DayNight_NoActionBar)
+                : host.getContext();
+            EditText field = decorated
+                ? new com.google.android.material.textfield.TextInputEditText(fieldContext)
+                : new EditText(fieldContext);
             field.setInputType(InputType.TYPE_CLASS_TEXT | (input.password() ? InputType.TYPE_TEXT_VARIATION_PASSWORD : 0)
                 | (input.multiline() ? InputType.TYPE_TEXT_FLAG_MULTI_LINE : 0));
             field.setSingleLine(!input.multiline());
             field.setText(input.value());
-            field.setHint(input.props.getPlaceholder());
             field.setEnabled(!input.props.isDisabled());
             if (!input.props.isEditable()) field.setKeyListener(null);
-            field.setImeOptions(input.multiline() ? EditorInfo.IME_FLAG_NO_ENTER_ACTION : EditorInfo.IME_ACTION_DONE);
-            field.setLayoutParams(new ViewGroup.LayoutParams(input.props.getWidth() < 0 ? input.props.getWidth() : dp(input.props.getWidth()),
-                    input.props.getHeight() < 0 ? (input.multiline() ? dp(120) : -2) : dp(input.props.getHeight())));
+            int imeAction = imeAction(input);
+            field.setImeOptions(imeAction);
             TextWatcher watcher = new TextWatcher() {
                 @Override public void beforeTextChanged(CharSequence text, int start, int count, int after) { }
                 @Override public void onTextChanged(CharSequence text, int start, int before, int count) { }
@@ -164,12 +174,33 @@ public final class AndroidNativeBridge implements NativeBridge {
             };
             field.addTextChangedListener(watcher);
             field.setOnEditorActionListener((v, action, event) -> {
-                if (action != EditorInfo.IME_ACTION_DONE && !(event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER)) return false;
-                if (events != null) events.accept(new Event(input.bridgeId(), "enter"));
+                boolean hardwareEnter = event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER;
+                if (action == EditorInfo.IME_ACTION_NONE && (!hardwareEnter || input.multiline())) return false;
+                int resolvedAction = action == EditorInfo.IME_ACTION_NONE ? imeAction : action;
+                if (events != null) events.accept(new Event(input.bridgeId(), "keyboardAction",
+                    (Runnable) () -> performDefaultImeAction(field, resolvedAction)));
                 return true;
             });
             cleanup.add(() -> { field.removeTextChangedListener(watcher); field.setOnEditorActionListener(null); });
-            view = field;
+            inputFields.put(input.bridgeId(), field);
+            if (decorated) {
+                com.google.android.material.textfield.TextInputLayout layout =
+                    new com.google.android.material.textfield.TextInputLayout(fieldContext);
+                layout.setBoxBackgroundMode(input.props.getVariant() == InputProps.Variant.OUTLINED
+                    ? com.google.android.material.textfield.TextInputLayout.BOX_BACKGROUND_OUTLINE
+                    : com.google.android.material.textfield.TextInputLayout.BOX_BACKGROUND_FILLED);
+                layout.setHint(input.props.getLabel());
+                layout.setPlaceholderText(input.props.getPlaceholder());
+                layout.addView(field, new com.google.android.material.textfield.TextInputLayout.LayoutParams(-1, -2));
+                inputLayouts.put(input.bridgeId(), layout);
+                view = layout;
+            } else {
+                field.setHint(input.props.getPlaceholder());
+                view = field;
+            }
+            view.setLayoutParams(new ViewGroup.LayoutParams(
+                input.props.getWidth() < 0 ? input.props.getWidth() : dp(input.props.getWidth()),
+                input.props.getHeight() < 0 ? (input.multiline() ? dp(120) : -2) : dp(input.props.getHeight())));
         } else if (component instanceof Checkbox checkbox) {
             CheckBox field = new CheckBox(host.getContext());
             field.setText(checkbox.label);
@@ -306,6 +337,8 @@ public final class AndroidNativeBridge implements NativeBridge {
         }
         components.remove(component.bridgeId());
         views.remove(component.bridgeId());
+        inputFields.remove(component.bridgeId());
+        inputLayouts.remove(component.bridgeId());
         List<Runnable> cleanup = componentCleanup.remove(component.bridgeId());
         if (cleanup != null) cleanup.forEach(Runnable::run);
     }
@@ -323,6 +356,23 @@ public final class AndroidNativeBridge implements NativeBridge {
         host.setBackgroundColor(color(theme.colors().background()));
         views.forEach((id, view) -> {
             Component component = components.get(id);
+            if (component instanceof Input input) {
+                EditText field = inputFields.get(id);
+                if (field != null) {
+                    field.setTextColor(color(theme.colors().textPrimary()));
+                    field.setHintTextColor(color(theme.colors().placeholder()));
+                    field.setTextSize(input.props.getFontSize() == null ? theme.typography().body() : ScaleProvider.scale(input.props.getFontSize()));
+                    field.setTypeface(theme.typography().fontFamily() == null
+                        ? Typeface.DEFAULT : Typeface.create(theme.typography().fontFamily(), Typeface.NORMAL));
+                }
+                com.google.android.material.textfield.TextInputLayout layout = inputLayouts.get(id);
+                if (layout != null) {
+                    layout.setBoxStrokeColor(color(theme.colors().primary()));
+                    layout.setDefaultHintTextColor(ColorStateList.valueOf(color(theme.colors().textPrimary())));
+                    layout.setPlaceholderTextColor(ColorStateList.valueOf(color(theme.colors().placeholder())));
+                }
+                return;
+            }
             if (view instanceof TextView nativeText) {
                 if (component instanceof Button button) {
                     styleButton((android.widget.Button) view, button.props(), theme);
@@ -330,10 +380,6 @@ public final class AndroidNativeBridge implements NativeBridge {
                     nativeText.setTextColor(color(theme.colors().textPrimary()));
                     nativeText.setTextSize(text.props().getFontSize() == null
                         ? theme.typography().body() : ScaleProvider.scale(text.props().getFontSize()));
-                } else if (component instanceof Input input) {
-                    nativeText.setTextColor(color(theme.colors().textPrimary()));
-                    nativeText.setHintTextColor(color(theme.colors().placeholder()));
-                    nativeText.setTextSize(input.props.getFontSize() == null ? theme.typography().body() : ScaleProvider.scale(input.props.getFontSize()));
                 } else if (component instanceof Checkbox checkbox) {
                     nativeText.setTextColor(color(theme.colors().textPrimary()));
                     nativeText.setTextSize(checkbox.props.getFontSize() == null ? theme.typography().body() : ScaleProvider.scale(checkbox.props.getFontSize()));
@@ -358,7 +404,8 @@ public final class AndroidNativeBridge implements NativeBridge {
         updating.add(id);
         try {
             if (component instanceof Input && value instanceof String text) {
-                EditText field = (EditText) view;
+                EditText field = inputFields.get(id);
+                if (field == null) throw new IllegalStateException("Mounted Input has no native field: " + id);
                 if (!field.getText().toString().equals(text)) { field.setText(text); field.setSelection(text.length()); }
             } else if (component instanceof Checkbox && (value == null || value instanceof Boolean))
                 ((CheckBox) view).setChecked(Boolean.TRUE.equals(value));
@@ -395,11 +442,36 @@ public final class AndroidNativeBridge implements NativeBridge {
         updating.clear();
         views.values().forEach(view -> view.setOnClickListener(null));
         views.clear();
+        inputFields.clear();
+        inputLayouts.clear();
         components.clear();
         host.removeAllViews();
     }
 
     //------------------
+    private int imeAction(Input input) {
+        return switch (input.props.getImeAction()) {
+            case DONE -> EditorInfo.IME_ACTION_DONE;
+            case NEXT -> EditorInfo.IME_ACTION_NEXT;
+            case PREVIOUS -> EditorInfo.IME_ACTION_PREVIOUS;
+            case GO -> EditorInfo.IME_ACTION_GO;
+            case SEARCH -> EditorInfo.IME_ACTION_SEARCH;
+            case SEND -> EditorInfo.IME_ACTION_SEND;
+            case DEFAULT -> input.multiline() ? EditorInfo.IME_FLAG_NO_ENTER_ACTION : EditorInfo.IME_ACTION_DONE;
+        };
+    }
+
+    private void performDefaultImeAction(EditText field, int action) {
+        if (action == EditorInfo.IME_ACTION_NEXT || action == EditorInfo.IME_ACTION_PREVIOUS) {
+            int direction = action == EditorInfo.IME_ACTION_NEXT ? View.FOCUS_FORWARD : View.FOCUS_BACKWARD;
+            View target = field.focusSearch(direction);
+            if (target != null) target.requestFocus();
+        } else if (action == EditorInfo.IME_ACTION_DONE) {
+            InputMethodManager keyboard = (InputMethodManager) host.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (keyboard != null) keyboard.hideSoftInputFromWindow(field.getWindowToken(), 0);
+        }
+    }
+
     private void styleButton(android.widget.Button b, ButtonProps p, ThemeInterface theme) {
         GradientDrawable shape = new GradientDrawable();
         shape.setColor(color(p.resolveBackgroundColor(theme)));

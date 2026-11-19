@@ -8,4 +8,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
-dependencies { api(project(":megalodonte-base-android")) }
+dependencies {
+    api(project(":megalodonte-base-android"))
+    implementation("com.google.android.material:material:1.14.0")
+}

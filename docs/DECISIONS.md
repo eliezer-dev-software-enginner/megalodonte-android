@@ -1,4 +1,27 @@
 # Decisões Arquiteturais
+## 2026-11-19: variantes Material e ações IME no mesmo `Input`
+
+**Contexto:** o `Input` era renderizado como `EditText` simples. Isso impedia a
+aparência preenchida ou contornada com label flutuante e limitava o teclado a
+`DONE`/`onEnter`, sem navegação padrão entre campos.
+
+**Decisão:** preservar um único componente declarativo e adicionar opções
+neutras em `InputProps`: `Variant.PLAIN`, `FILLED` e `OUTLINED`, `label` e
+`ImeAction`. A bridge usa `TextInputLayout`/`TextInputEditText` do Material
+Components somente para as variantes decoradas; o cliente não importa tipos do
+Android nem do Compose. `PasswordInput` e `TextAreaInput` continuam subclasses
+por possuírem semântica própria.
+
+`KeyboardActionHandler` recebe um `Runnable performDefaultAction`. Sem handler,
+a bridge executa o padrão automaticamente; com handler, o cliente escolhe o
+momento. `NEXT` e `PREVIOUS` procuram o próximo foco e `DONE` dispensa o teclado.
+`onEnter` foi preservado para compatibilidade e continua consumindo a ação, como
+antes. A API segue o contrato conceitual do Compose, mas é implementada sobre
+views nativas porque o renderer Megalodonte Android não usa Compose.
+
+**Validação:** o teste de contrato cobre props, handler com ação padrão e fallback
+automático; o build da bridge verifica a integração Material no Android.
+
 ## 2026-11-15: `Ref<T>` no Android
 
 **Contexto:** telas portadas do desktop usam `Ref<Button>` etc. para guardar um
