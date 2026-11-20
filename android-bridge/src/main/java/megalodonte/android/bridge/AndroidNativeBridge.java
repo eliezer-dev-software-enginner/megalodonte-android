@@ -216,6 +216,7 @@ public final class AndroidNativeBridge implements NativeBridge {
                 com.google.android.material.R.style.Theme_Material3_DayNight_NoActionBar);
             com.google.android.material.materialswitch.MaterialSwitch field =
                 new com.google.android.material.materialswitch.MaterialSwitch(toggleContext);
+            field.setText(toggle.accessibleLabel());
             field.setContentDescription(toggle.accessibleLabel());
             field.setChecked(Boolean.TRUE.equals(toggle.state().get()));
             field.setOnCheckedChangeListener((button, value) -> {

@@ -107,8 +107,9 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     require(checked.get(), "Native checkbox must update state");
                     nativeSwitch.setChecked(true);
                     require(switched.get() && switchChanges.get() == 1
+                            && "Notifications".contentEquals(nativeSwitch.getText())
                             && "Notifications".contentEquals(nativeSwitch.getContentDescription()),
-                        "Native switch must update state and expose its accessible label");
+                        "Native switch must update state and expose its visible and accessible label");
                     progress.set(65);
                     require(nativeProgress.getProgress() == 65, "Native progress binding failed");
                     host.findViewWithTag(toggle.bridgeId()).performClick();

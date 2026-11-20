@@ -18,6 +18,8 @@ Core/tema comuns já foram extraídos; a migração de toda a UI ainda está em 
   `BridgeRuntime` e `NativeBridge` são infraestrutura interna em `megalodonte.android.core`.
 - `megalodonte-bridge-android` (diretório `android-bridge`): `AndroidNativeBridge` e `MegalodonteActivity`, com widgets, insets
   e ciclo de vida Android encapsulados no framework.
+- `Switch(String, State<Boolean>)` exibe o texto informado junto ao controle e
+  reutiliza-o como descrição acessível.
 - `app`: `my_app.Main`, `WelcomeScreen implements ScreenComponent` e `MainActivity`
   que somente liga o ponto de entrada `Main.main()` ao host.
 - Estado, tema, escala, lifecycle e matcher vêm do artefato megalodonte-core.

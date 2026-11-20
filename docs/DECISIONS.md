@@ -1,4 +1,14 @@
 # Decisões Arquiteturais
+## 2026-11-20: o texto do `Switch` é visível e acessível
+
+**Contexto:** o primeiro argumento de `Switch(String, State<Boolean>)` era
+aplicado apenas como descrição de acessibilidade. Assim, textos essenciais como
+"Carregar dados de arquivo .json" não apareciam visualmente na tela.
+
+**Decisão:** o renderer exibe esse valor ao lado do controle nativo e também o
+mantém como `contentDescription`. O consumidor não precisa duplicar a legenda
+com um componente `Text` separado.
+
 ## 2026-11-20: largura do conteúdo condicional em `Show`
 
 **Contexto:** uma `Column` exibida por `Show.when` reservava altura, mas seus
