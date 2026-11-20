@@ -17,6 +17,7 @@
 - [x] Input Material plain/filled/outlined e ações IME portáveis com callback que pode executar a ação padrão (2026-11-19).
 - [x] `Switch` nativo Material com binding bidirecional e `onCheckedChange` equivalente ao contrato desktop (2026-11-20).
 - [x] Exibir na interface o rótulo informado no construtor de `Switch` (2026-11-20).
+- [x] Aplicar cor/typografia do tema ao rótulo e expor `SwitchProps` (2026-11-20).
 - [x] Impedir colapso de largura em `Show.when` com `Column` e filhos `fillWidth` (2026-11-20).
 - [x] Fontes originais dos clientes 1–4 compilados e executados nos testes.
 - [x] Módulos JavaFX recompilados; tema/core e reatividade neutra testados;

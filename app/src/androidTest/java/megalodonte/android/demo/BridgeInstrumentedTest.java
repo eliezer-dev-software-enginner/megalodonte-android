@@ -33,6 +33,7 @@ import megalodonte.components.Text;
 import megalodonte.components.Button;
 import megalodonte.components.Checkbox;
 import megalodonte.components.Switch;
+import megalodonte.props.SwitchProps;
 import megalodonte.components.ProgressBar;
 import megalodonte.components.Scroll;
 import megalodonte.components.inputs.Input;
@@ -69,7 +70,8 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                 });
                 Checkbox checkbox = new Checkbox("Check", checked);
                 AtomicInteger switchChanges = new AtomicInteger();
-                Switch switchControl = new Switch("Notifications", switched)
+                Switch switchControl = new Switch("Notifications", switched,
+                    new SwitchProps().textColor("#123456").fontSize(17))
                     .onCheckedChange(value -> switchChanges.incrementAndGet());
                 ProgressBar bar = new ProgressBar(progress);
                 Text derived = new Text(inputState.map(value -> "Length: " + value.length()));
@@ -108,7 +110,8 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     nativeSwitch.setChecked(true);
                     require(switched.get() && switchChanges.get() == 1
                             && "Notifications".contentEquals(nativeSwitch.getText())
-                            && "Notifications".contentEquals(nativeSwitch.getContentDescription()),
+                            && "Notifications".contentEquals(nativeSwitch.getContentDescription())
+                            && nativeSwitch.getCurrentTextColor() == 0xff123456,
                         "Native switch must update state and expose its visible and accessible label");
                     progress.set(65);
                     require(nativeProgress.getProgress() == 65, "Native progress binding failed");

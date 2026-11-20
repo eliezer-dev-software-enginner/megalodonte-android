@@ -7,7 +7,9 @@ aplicado apenas como descrição de acessibilidade. Assim, textos essenciais com
 
 **Decisão:** o renderer exibe esse valor ao lado do controle nativo e também o
 mantém como `contentDescription`. O consumidor não precisa duplicar a legenda
-com um componente `Text` separado.
+com um componente `Text` separado. A cor padrão vem de
+`theme.colors().textPrimary()`; `SwitchProps` permite sobrescrever cor e tamanho
+sem acessar APIs nativas.
 
 ## 2026-11-20: largura do conteúdo condicional em `Show`
 

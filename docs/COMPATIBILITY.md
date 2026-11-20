@@ -16,7 +16,7 @@
 | Input | State/String, placeholder, editable, disable, fontSize, onChange/Initialize/Enter | Adornos Node, foco/caret e todas as props legadas ainda pendentes |
 | Input / PasswordInput / TextAreaInput | State+InputProps; plain/filled/outlined, label flutuante, ações IME, mascaramento/múltiplas linhas nativos | Botão reveal e tipos de teclado avançados pendentes |
 | Checkbox | Label, State<Boolean>, fontSize, binding bidirecional | Estilos avançados pendentes |
-| Switch | Mesmo construtor desktop; descrição acessível, State<Boolean>, `onCheckedChange`, binding bidirecional e cores Material do tema | Thumb customizado/ícone ainda pendente |
+| Switch | Rótulo visível/acessível, State<Boolean>, `onCheckedChange`, binding bidirecional, `SwitchProps` e cores Material do tema | Thumb customizado/ícone ainda pendente |
 | ProgressBar | State<Integer>, faixa 0–100 | Controle nativo; estilos adicionais pendentes |
 | Scroll | Filho único, scroll vertical | Eixo horizontal e API de ScrollPane não compartilhados |
 | Show.when | Condição reativa/boolean, ramo único/ternário, GONE no Android | Transitions/expandWhen pendentes |

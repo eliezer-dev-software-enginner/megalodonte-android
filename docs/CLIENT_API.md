@@ -79,26 +79,29 @@ ação padrão, é preferível usar a nova API em formulários com navegação d
 
 ## Switch
 
-O Android preserva o mesmo contrato do componente desktop. O texto é uma
-descrição acessível, não um rótulo visual; componha um `Text` ao lado quando a
-tela precisar mostrar a legenda:
+O texto informado é exibido junto ao controle e também funciona como descrição
+acessível:
 
 ```java
 private final State<Boolean> notifications = State.of(false);
 
-new Row().children(
-    new Text("Notificações"),
-    new Switch("Ativar notificações", notifications)
-        .onCheckedChange(currentState -> {
-            saveNotificationPreference(currentState);
-        })
-);
+new Switch("Ativar notificações", notifications)
+    .onCheckedChange(currentState -> {
+        saveNotificationPreference(currentState);
+    });
 ```
 
 Toques na view nativa atualizam o `State`, e mudanças programáticas no `State`
 atualizam o controle. `onCheckedChange` roda depois que uma interação do usuário
 já atualizou o estado; uma alteração programática no `State` não dispara esse
-callback. As cores de thumb e track acompanham o tema.
+callback. As cores de thumb e track acompanham o tema. O rótulo usa
+`theme.colors().textPrimary()` e a tipografia de corpo por padrão; personalize
+um caso específico com props:
+
+```java
+new Switch("Ativar notificações", notifications,
+    new SwitchProps().textColor("#123456").fontSize(16));
+```
 
 ## Referências de componentes
 

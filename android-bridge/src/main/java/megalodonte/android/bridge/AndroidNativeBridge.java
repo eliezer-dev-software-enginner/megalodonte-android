@@ -224,7 +224,7 @@ public final class AndroidNativeBridge implements NativeBridge {
                     events.accept(new Event(toggle.bridgeId(), "change", value));
             });
             cleanup.add(() -> field.setOnCheckedChangeListener(null));
-            styleSwitch(field, ThemeManager.theme());
+            styleSwitch(field, toggle, ThemeManager.theme());
             view = field;
         } else if (component instanceof ProgressBar progress) {
             android.widget.ProgressBar field = new android.widget.ProgressBar(host.getContext(), null, android.R.attr.progressBarStyleHorizontal);
@@ -393,7 +393,7 @@ public final class AndroidNativeBridge implements NativeBridge {
                 return;
             }
             if (component instanceof Switch && view instanceof com.google.android.material.materialswitch.MaterialSwitch toggle) {
-                styleSwitch(toggle, theme);
+                styleSwitch(toggle, (Switch) component, theme);
                 return;
             }
             if (view instanceof TextView nativeText) {
@@ -474,13 +474,19 @@ public final class AndroidNativeBridge implements NativeBridge {
     }
 
     //------------------
-    private void styleSwitch(com.google.android.material.materialswitch.MaterialSwitch toggle, ThemeInterface theme) {
+    private void styleSwitch(com.google.android.material.materialswitch.MaterialSwitch toggle,
+                             Switch component, ThemeInterface theme) {
         int[][] states = { { android.R.attr.state_checked }, { -android.R.attr.state_checked } };
         toggle.setTrackTintList(new ColorStateList(states, new int[] {
             color(theme.colors().primary()), color(theme.colors().secondary())
         }));
         int thumb = color(theme.colors().surface());
         toggle.setThumbTintList(new ColorStateList(states, new int[] { thumb, thumb }));
+        toggle.setTextColor(color(component.props().resolveTextColor(theme)));
+        toggle.setTextSize(component.props().getFontSize() == null
+            ? theme.typography().body() : ScaleProvider.scale(component.props().getFontSize()));
+        toggle.setTypeface(theme.typography().fontFamily() == null
+            ? Typeface.DEFAULT : Typeface.create(theme.typography().fontFamily(), Typeface.NORMAL));
     }
 
     private int imeAction(Input input) {
