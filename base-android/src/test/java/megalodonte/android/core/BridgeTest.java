@@ -159,14 +159,17 @@ public final class BridgeTest {
         State<Boolean> switched = State.of(false);
         State<Integer> progress = State.of(10);
         megalodonte.components.Checkbox checkbox = new megalodonte.components.Checkbox("Checked", checked);
-        megalodonte.components.Switch toggle = new megalodonte.components.Switch("Notifications", switched);
+        int[] switchChanges = {0};
+        megalodonte.components.Switch toggle = new megalodonte.components.Switch("Notifications", switched)
+            .onCheckedChange(value -> switchChanges[0]++);
         megalodonte.components.ProgressBar bar = new megalodonte.components.ProgressBar(progress);
         FakeBridge controls = new FakeBridge();
         BridgeRuntime controlRuntime = new BridgeRuntime(controls, new Container().children(checkbox, toggle, bar));
         controls.events.accept(new NativeBridge.Event(checkbox.bridgeId(), "change", true));
         controls.events.accept(new NativeBridge.Event(toggle.bridgeId(), "change", true));
         progress.set(65);
-        require(checked.get() && switched.get() && Integer.valueOf(65).equals(controls.values.get(bar.bridgeId())),
+        require(checked.get() && switched.get() && switchChanges[0] == 1
+                && Integer.valueOf(65).equals(controls.values.get(bar.bridgeId())),
             "Control bindings must be bidirectional/reactive");
         controlRuntime.close();
         progress.set(99);

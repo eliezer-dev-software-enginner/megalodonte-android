@@ -128,7 +128,7 @@ public final class BridgeRuntime implements AutoCloseable {
         } else if (target instanceof Checkbox checkbox && "change".equals(event.name()) && event.value() instanceof Boolean value)
             checkbox.state.set(value);
         else if (target instanceof Switch toggle && "change".equals(event.name()) && event.value() instanceof Boolean value)
-            toggle.state().set(value);
+            toggle.dispatchChange(value);
     }
     private void updateValue(String id, Object value) { if (!closed) bridge.setValue(id, value); }
     public void setText(String id, String value) {

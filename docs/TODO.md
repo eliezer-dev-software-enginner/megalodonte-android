@@ -15,7 +15,7 @@
 - [x] Assinaturas descartáveis, lifecycle, matcher e capacidades versão 1.
 - [x] Inputs, checkbox, progresso, layouts/scroll/espaçadores e Show Android.
 - [x] Input Material plain/filled/outlined e ações IME portáveis com callback que pode executar a ação padrão (2026-11-19).
-- [x] `Switch` nativo Material com o mesmo contrato e binding bidirecional do desktop (2026-11-20).
+- [x] `Switch` nativo Material com binding bidirecional e `onCheckedChange` equivalente ao contrato desktop (2026-11-20).
 - [x] Fontes originais dos clientes 1–4 compilados e executados nos testes.
 - [x] Módulos JavaFX recompilados; tema/core e reatividade neutra testados;
   APK/lint passaram.

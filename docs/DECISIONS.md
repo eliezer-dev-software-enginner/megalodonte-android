@@ -7,7 +7,10 @@ accessibleLabel, State<Boolean>)`, mas o Android tinha somente `Checkbox`.
 **Decisão:** portar o mesmo FQN e construtor para `base-android`, com binding
 bidirecional e validação do rótulo acessível. A bridge renderiza um
 `MaterialSwitch`, aplica tokens do tema ao thumb/track, remove seu listener no
-descarte e declara a capacidade `SWITCH`. O estado continua sendo controlado
+descarte e declara a capacidade `SWITCH`. `onCheckedChange(Consumer<Boolean>)`
+é disparado somente pela interação nativa, depois da atualização do estado;
+alterações programáticas continuam atualizando a view sem executar efeitos de
+usuário. O estado continua sendo controlado
 pelo aplicativo, de acordo com a semântica documentada pelo
 [Android Developers](https://developer.android.com/develop/ui/compose/components/switch?hl=pt-br).
 

@@ -68,7 +68,9 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     return OnChangeResult.same(value.toUpperCase(java.util.Locale.ROOT));
                 });
                 Checkbox checkbox = new Checkbox("Check", checked);
-                Switch switchControl = new Switch("Notifications", switched);
+                AtomicInteger switchChanges = new AtomicInteger();
+                Switch switchControl = new Switch("Notifications", switched)
+                    .onCheckedChange(value -> switchChanges.incrementAndGet());
                 ProgressBar bar = new ProgressBar(progress);
                 Text derived = new Text(inputState.map(value -> "Length: " + value.length()));
                 Show show = Show.when(visible, () -> new Text("visible"));
@@ -99,7 +101,8 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     nativeCheckbox.setChecked(true);
                     require(checked.get(), "Native checkbox must update state");
                     nativeSwitch.setChecked(true);
-                    require(switched.get() && "Notifications".contentEquals(nativeSwitch.getContentDescription()),
+                    require(switched.get() && switchChanges.get() == 1
+                            && "Notifications".contentEquals(nativeSwitch.getContentDescription()),
                         "Native switch must update state and expose its accessible label");
                     progress.set(65);
                     require(nativeProgress.getProgress() == 65, "Native progress binding failed");
@@ -127,7 +130,7 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     nativeSwitch.setChecked(false);
                     nativeInput.setText("disposed");
                     inputState.set("after");
-                    require(checked.get() && switched.get() && inputChanges.get() == 1
+                    require(checked.get() && switched.get() && switchChanges.get() == 1 && inputChanges.get() == 1
                         && nativeInput.getText().toString().equals("disposed"),
                         "Native listeners/bindings survived disposal");
                     require(host.getChildCount() == 0, "Host must release native views");

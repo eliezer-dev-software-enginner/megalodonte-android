@@ -66,6 +66,14 @@ public final class ComponentContractTest {
             new Switch(" ", enabled);
             throw new AssertionError("Switch must reject a blank accessible label");
         } catch (IllegalArgumentException expected) { }
+        int[] switchChanges = {0};
+        toggle.onCheckedChange(value -> switchChanges[0] += value ? 1 : 10);
+        toggle.dispatchChange(true);
+        require(enabled.get() && switchChanges[0] == 1,
+                "Switch must update state before invoking onCheckedChange");
+        enabled.set(false);
+        require(switchChanges[0] == 1,
+                "Programmatic Switch state changes must not invoke onCheckedChange");
 
         System.out.println("Component contract tests passed");
     }

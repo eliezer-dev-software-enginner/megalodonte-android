@@ -89,11 +89,16 @@ private final State<Boolean> notifications = State.of(false);
 new Row().children(
     new Text("Notificações"),
     new Switch("Ativar notificações", notifications)
+        .onCheckedChange(currentState -> {
+            saveNotificationPreference(currentState);
+        })
 );
 ```
 
 Toques na view nativa atualizam o `State`, e mudanças programáticas no `State`
-atualizam o controle. As cores de thumb e track acompanham o tema.
+atualizam o controle. `onCheckedChange` roda depois que uma interação do usuário
+já atualizou o estado; uma alteração programática no `State` não dispara esse
+callback. As cores de thumb e track acompanham o tema.
 
 ## Referências de componentes
 
