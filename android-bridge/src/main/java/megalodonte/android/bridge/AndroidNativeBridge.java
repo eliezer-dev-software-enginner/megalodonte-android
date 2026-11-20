@@ -236,7 +236,8 @@ public final class AndroidNativeBridge implements NativeBridge {
             view = field;
         } else if (component instanceof Show show) {
             FrameLayout field = new FrameLayout(host.getContext());
-            for (Component child : show.children()) field.addView(create(child), new FrameLayout.LayoutParams(-2, -2));
+            for (Component child : show.children())
+                field.addView(create(child), new FrameLayout.LayoutParams(-1, -2));
             view = field;
         } else if (component instanceof LinearComponent container) {
             LinearLayout layout = new LinearLayout(host.getContext());
@@ -305,6 +306,8 @@ public final class AndroidNativeBridge implements NativeBridge {
         if (child instanceof LinearComponent childLayout) {
             width = dimension(childLayout.props().getWidth()); height = dimension(childLayout.props().getHeight());
         } else if (child instanceof Scroll && !horizontal) {
+            width = -1;
+        } else if (child instanceof Show && !horizontal) {
             width = -1;
         }
         ViewGroup.LayoutParams requested = childView.getLayoutParams();

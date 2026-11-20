@@ -53,6 +53,10 @@ volta de threads de fundo ao looper principal (`Handler`), análogo ao
 serialização, diff da árvore, roteamento ou equivalência completa com o backend JavaFX.
 Suportados: Text/Button, Container/Column/Row, Scroll, espaçadores,
 Input/PasswordInput/TextAreaInput (incluindo variantes Material e ações IME), Checkbox, Switch, ProgressBar, Show.when, listas
+
+`Show.when` preenche a largura quando usado em uma `Column`, inclusive quando o
+ramo contém outra `Column` com inputs ou botões `fillWidth`; quando oculto, não
+reserva espaço no layout.
 reativas via `ForEach`/`items(ReadableState<List<T>>, ...)` e `Ref<T>` com
 `Component.ref(...)`, com recriação das views ao mudar (sem reconciliação por
 identidade nem preservação de foco); a

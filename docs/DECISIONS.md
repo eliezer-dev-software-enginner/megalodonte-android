@@ -1,4 +1,19 @@
 # Decisões Arquiteturais
+## 2026-11-20: largura do conteúdo condicional em `Show`
+
+**Contexto:** uma `Column` exibida por `Show.when` reservava altura, mas seus
+inputs e botões não apareciam. O wrapper `FrameLayout` e a `Column` usavam
+`WRAP_CONTENT`, enquanto os filhos internos pediam `MATCH_PARENT`; essa medição
+circular colapsava a largura do conteúdo e deixava apenas um espaço branco.
+
+**Decisão:** filhos do `FrameLayout` condicional usam `MATCH_PARENT` na largura,
+e um `Show` que é filho de uma `Column` também ocupa a largura disponível. Em
+uma `Row`, o wrapper continua com largura de conteúdo para não consumir o eixo
+horizontal inteiro por padrão.
+
+**Validação:** a instrumentação verifica os parâmetros de layout do wrapper e de
+seu conteúdo; os testes de `Show` e o build/lint do APK permanecem obrigatórios.
+
 ## 2026-11-20: `Switch` compartilhando o contrato do desktop
 
 **Contexto:** `megalodonte-components` desktop já expõe `Switch(String

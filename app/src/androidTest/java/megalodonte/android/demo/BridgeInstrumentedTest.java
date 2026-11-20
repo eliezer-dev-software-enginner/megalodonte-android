@@ -88,6 +88,11 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     View nativeShow = host.findViewWithTag(show.bridgeId());
                     android.widget.ProgressBar nativeProgress = host.findViewWithTag(bar.bridgeId());
                     require(host.getChildAt(0) instanceof android.widget.ScrollView, "Scroll must be native");
+                    require(nativeShow.getLayoutParams().width == ViewGroup.LayoutParams.MATCH_PARENT,
+                        "Show inside a Column must fill the available width");
+                    require(((ViewGroup) nativeShow).getChildAt(0).getLayoutParams().width
+                            == ViewGroup.LayoutParams.MATCH_PARENT,
+                        "Show content must not collapse match-parent children inside a wrap-content wrapper");
                     require(nativeShow.getVisibility() == View.GONE, "Hidden branch must release layout space");
                     nativeInput.setText("native");
                     require(inputState.get().equals("NATIVE") && nativeInput.getText().toString().equals("NATIVE"), "Formatted input feedback failed");
