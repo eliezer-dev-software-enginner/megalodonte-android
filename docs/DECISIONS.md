@@ -1,4 +1,19 @@
 # Decisões Arquiteturais
+## 2026-11-20: `Switch` compartilhando o contrato do desktop
+
+**Contexto:** `megalodonte-components` desktop já expõe `Switch(String
+accessibleLabel, State<Boolean>)`, mas o Android tinha somente `Checkbox`.
+
+**Decisão:** portar o mesmo FQN e construtor para `base-android`, com binding
+bidirecional e validação do rótulo acessível. A bridge renderiza um
+`MaterialSwitch`, aplica tokens do tema ao thumb/track, remove seu listener no
+descarte e declara a capacidade `SWITCH`. O estado continua sendo controlado
+pelo aplicativo, de acordo com a semântica documentada pelo
+[Android Developers](https://developer.android.com/develop/ui/compose/components/switch?hl=pt-br).
+
+**Validação:** testes de contrato cobrem rótulo/estado, runtime cobre eventos e
+binding, e a instrumentação verifica a view Material, acessibilidade e descarte.
+
 ## 2026-11-19: variantes Material e ações IME no mesmo `Input`
 
 **Contexto:** o `Input` era renderizado como `EditText` simples. Isso impedia a
@@ -18,6 +33,7 @@ momento. `NEXT` e `PREVIOUS` procuram o próximo foco e `DONE` dispensa o teclad
 `onEnter` foi preservado para compatibilidade e continua consumindo a ação, como
 antes. A API segue o contrato conceitual do Compose, mas é implementada sobre
 views nativas porque o renderer Megalodonte Android não usa Compose.
+As referências oficiais usadas nessa decisão estão em [REFERENCES.md](REFERENCES.md).
 
 **Validação:** o teste de contrato cobre props, handler com ação padrão e fallback
 automático; o build da bridge verifica a integração Material no Android.

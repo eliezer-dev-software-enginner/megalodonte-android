@@ -93,6 +93,7 @@ Android 15 (API 35) é o alvo e a versão mínima desta primeira etapa.
 - [Configuração, build e execução](docs/GETTING_STARTED.md)
 - [Análise das bibliotecas e refatorações](docs/LIBRARY_ANALYSIS.md)
 - [Matriz de compatibilidade e lacunas](docs/COMPATIBILITY.md)
+- [Referências oficiais usadas no renderer](docs/REFERENCES.md)
 - [Componentes JSONC no Android](docs/JSONC_ANDROID.md)
 - [Inventário reproduzível](docs/library-inventory.json)
 

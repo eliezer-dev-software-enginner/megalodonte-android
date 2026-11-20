@@ -43,6 +43,7 @@ import megalodonte.components.layout_components.LinearComponent;
 import megalodonte.components.layout_components.Row;
 import megalodonte.components.inputs.Input;
 import megalodonte.components.Checkbox;
+import megalodonte.components.Switch;
 import megalodonte.components.ProgressBar;
 import megalodonte.components.Scroll;
 import megalodonte.components.Select;
@@ -210,6 +211,20 @@ public final class AndroidNativeBridge implements NativeBridge {
             });
             cleanup.add(() -> field.setOnCheckedChangeListener(null));
             view = field;
+        } else if (component instanceof Switch toggle) {
+            Context toggleContext = new ContextThemeWrapper(host.getContext(),
+                com.google.android.material.R.style.Theme_Material3_DayNight_NoActionBar);
+            com.google.android.material.materialswitch.MaterialSwitch field =
+                new com.google.android.material.materialswitch.MaterialSwitch(toggleContext);
+            field.setContentDescription(toggle.accessibleLabel());
+            field.setChecked(Boolean.TRUE.equals(toggle.state().get()));
+            field.setOnCheckedChangeListener((button, value) -> {
+                if (events != null && !updating.contains(toggle.bridgeId()))
+                    events.accept(new Event(toggle.bridgeId(), "change", value));
+            });
+            cleanup.add(() -> field.setOnCheckedChangeListener(null));
+            styleSwitch(field, ThemeManager.theme());
+            view = field;
         } else if (component instanceof ProgressBar progress) {
             android.widget.ProgressBar field = new android.widget.ProgressBar(host.getContext(), null, android.R.attr.progressBarStyleHorizontal);
             field.setMax(100);
@@ -348,7 +363,7 @@ public final class AndroidNativeBridge implements NativeBridge {
     @Override public BackendContract contract() {
         return new BackendContract("android", BackendContract.CURRENT_VERSION,
             Set.of(Capability.TEXT, Capability.BUTTON, Capability.CONTAINER, Capability.REACTIVE_STATE, Capability.THEME_TOKENS,
-                Capability.INPUT, Capability.CHECKBOX, Capability.PROGRESS, Capability.ROW, Capability.COLUMN,
+                Capability.INPUT, Capability.CHECKBOX, Capability.SWITCH, Capability.PROGRESS, Capability.ROW, Capability.COLUMN,
                 Capability.SCROLL, Capability.CONDITIONAL_RENDERING, Capability.SPACING, Capability.LIST_RENDERING));
     }
     @Override public void applyTheme(ThemeInterface theme) {
@@ -371,6 +386,10 @@ public final class AndroidNativeBridge implements NativeBridge {
                     layout.setDefaultHintTextColor(ColorStateList.valueOf(color(theme.colors().textPrimary())));
                     layout.setPlaceholderTextColor(ColorStateList.valueOf(color(theme.colors().placeholder())));
                 }
+                return;
+            }
+            if (component instanceof Switch && view instanceof com.google.android.material.materialswitch.MaterialSwitch toggle) {
+                styleSwitch(toggle, theme);
                 return;
             }
             if (view instanceof TextView nativeText) {
@@ -409,6 +428,8 @@ public final class AndroidNativeBridge implements NativeBridge {
                 if (!field.getText().toString().equals(text)) { field.setText(text); field.setSelection(text.length()); }
             } else if (component instanceof Checkbox && (value == null || value instanceof Boolean))
                 ((CheckBox) view).setChecked(Boolean.TRUE.equals(value));
+            else if (component instanceof Switch && (value == null || value instanceof Boolean))
+                ((com.google.android.material.materialswitch.MaterialSwitch) view).setChecked(Boolean.TRUE.equals(value));
             else if (component instanceof ProgressBar && (value == null || value instanceof Integer))
                 ((android.widget.ProgressBar) view).setProgress(value == null ? 0 : Math.max(0, Math.min(100, (Integer) value)));
             else if (component instanceof Show show && (value == null || value instanceof Boolean)) {
@@ -449,6 +470,15 @@ public final class AndroidNativeBridge implements NativeBridge {
     }
 
     //------------------
+    private void styleSwitch(com.google.android.material.materialswitch.MaterialSwitch toggle, ThemeInterface theme) {
+        int[][] states = { { android.R.attr.state_checked }, { -android.R.attr.state_checked } };
+        toggle.setTrackTintList(new ColorStateList(states, new int[] {
+            color(theme.colors().primary()), color(theme.colors().secondary())
+        }));
+        int thumb = color(theme.colors().surface());
+        toggle.setThumbTintList(new ColorStateList(states, new int[] { thumb, thumb }));
+    }
+
     private int imeAction(Input input) {
         return switch (input.props.getImeAction()) {
             case DONE -> EditorInfo.IME_ACTION_DONE;

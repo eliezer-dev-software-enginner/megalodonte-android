@@ -32,6 +32,7 @@ import megalodonte.base.theme.ThemeBorder;
 import megalodonte.components.Text;
 import megalodonte.components.Button;
 import megalodonte.components.Checkbox;
+import megalodonte.components.Switch;
 import megalodonte.components.ProgressBar;
 import megalodonte.components.Scroll;
 import megalodonte.components.inputs.Input;
@@ -58,6 +59,7 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                 FrameLayout host = new FrameLayout(testActivity);
                 State<String> inputState = State.of("start");
                 State<Boolean> checked = State.of(false);
+                State<Boolean> switched = State.of(false);
                 State<Integer> progress = State.of(10);
                 State<Boolean> visible = State.of(false);
                 AtomicInteger inputChanges = new AtomicInteger();
@@ -66,18 +68,20 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     return OnChangeResult.same(value.toUpperCase(java.util.Locale.ROOT));
                 });
                 Checkbox checkbox = new Checkbox("Check", checked);
+                Switch switchControl = new Switch("Notifications", switched);
                 ProgressBar bar = new ProgressBar(progress);
                 Text derived = new Text(inputState.map(value -> "Length: " + value.length()));
                 Show show = Show.when(visible, () -> new Text("visible"));
                 Button toggle = new Button("toggle").onClick(() -> visible.set(!visible.get()));
                 Scroll root = new Scroll(new Column().children(input, derived,
-                    new Row().children(checkbox, toggle), bar, show));
+                    new Row().children(checkbox, switchControl, toggle), bar, show));
                 AndroidNativeBridge bridge = new AndroidNativeBridge(host);
                 BridgeRuntime runtime = new BridgeRuntime(bridge, root);
                 ThemeInterface originalTheme = ThemeManager.theme();
                 try {
                     EditText nativeInput = host.findViewWithTag(input.bridgeId());
                     CheckBox nativeCheckbox = host.findViewWithTag(checkbox.bridgeId());
+                    android.widget.CompoundButton nativeSwitch = host.findViewWithTag(switchControl.bridgeId());
                     TextView nativeDerived = host.findViewWithTag(derived.bridgeId());
                     View nativeShow = host.findViewWithTag(show.bridgeId());
                     android.widget.ProgressBar nativeProgress = host.findViewWithTag(bar.bridgeId());
@@ -94,6 +98,9 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                         "Rejected text update changed the input");
                     nativeCheckbox.setChecked(true);
                     require(checked.get(), "Native checkbox must update state");
+                    nativeSwitch.setChecked(true);
+                    require(switched.get() && "Notifications".contentEquals(nativeSwitch.getContentDescription()),
+                        "Native switch must update state and expose its accessible label");
                     progress.set(65);
                     require(nativeProgress.getProgress() == 65, "Native progress binding failed");
                     host.findViewWithTag(toggle.bridgeId()).performClick();
@@ -117,9 +124,12 @@ public final class BridgeInstrumentedTest extends Instrumentation {
                     ThemeManager.setTheme(originalTheme);
                     require(nativeDerived.getCurrentTextColor() == 0xff112233, "Disposed runtime kept observing global theme");
                     nativeCheckbox.setChecked(false);
+                    nativeSwitch.setChecked(false);
                     nativeInput.setText("disposed");
                     inputState.set("after");
-                    require(checked.get() && inputChanges.get() == 1 && nativeInput.getText().toString().equals("disposed"), "Native listeners/bindings survived disposal");
+                    require(checked.get() && switched.get() && inputChanges.get() == 1
+                        && nativeInput.getText().toString().equals("disposed"),
+                        "Native listeners/bindings survived disposal");
                     require(host.getChildCount() == 0, "Host must release native views");
                     FrameLayout listHost = new FrameLayout(testActivity);
                     ListState<String> names = ListState.of(new ArrayList<>(List.of("Ada", "Grace")));

@@ -77,6 +77,24 @@ quando chama `performDefaultAction.run()`, podendo executar validação antes. O
 callback antigo `onEnter(Runnable)` permanece compatível, mas, por não receber a
 ação padrão, é preferível usar a nova API em formulários com navegação de foco.
 
+## Switch
+
+O Android preserva o mesmo contrato do componente desktop. O texto é uma
+descrição acessível, não um rótulo visual; componha um `Text` ao lado quando a
+tela precisar mostrar a legenda:
+
+```java
+private final State<Boolean> notifications = State.of(false);
+
+new Row().children(
+    new Text("Notificações"),
+    new Switch("Ativar notificações", notifications)
+);
+```
+
+Toques na view nativa atualizam o `State`, e mudanças programáticas no `State`
+atualizam o controle. As cores de thumb e track acompanham o tema.
+
 ## Referências de componentes
 
 `Ref<T>` guarda a instância de um componente criado em `render()`, com o mesmo
@@ -211,6 +229,7 @@ ordem em inglês.
 | `UI.runOnUi` | `Handler` do looper principal; executa na hora se já estiver na main thread |
 | `Column` / `Row` | children/c_child, items estático e items reativo (`ReadableState<List<T>>`) |
 | `Input` / `InputProps` | simples, filled e outlined; label/placeholder; ações IME com comportamento padrão opcional |
+| `Switch` | Mesmo FQN/construtor desktop; `State<Boolean>`, descrição acessível e binding bidirecional Material |
 
 Os nomes/imports preservam a experiência clássica nesse subconjunto. As classes
 Android substituem as implementações JavaFX e não devem ser combinadas com os

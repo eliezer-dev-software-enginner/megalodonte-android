@@ -10,6 +10,7 @@ import megalodonte.base.theme.ThemeManager;
 import megalodonte.components.Button;
 import megalodonte.components.Text;
 import megalodonte.components.Checkbox;
+import megalodonte.components.Switch;
 import megalodonte.components.ProgressBar;
 import megalodonte.components.inputs.Input;
 import megalodonte.v2.ForEach;
@@ -41,6 +42,7 @@ public final class BridgeRuntime implements AutoCloseable {
             bridge.contract().require(megalodonte.contracts.Capability.SPACING);
         if (component instanceof Input) bridge.contract().require(megalodonte.contracts.Capability.INPUT);
         if (component instanceof Checkbox) bridge.contract().require(megalodonte.contracts.Capability.CHECKBOX);
+        if (component instanceof Switch) bridge.contract().require(megalodonte.contracts.Capability.SWITCH);
         if (component instanceof ProgressBar) bridge.contract().require(megalodonte.contracts.Capability.PROGRESS);
         if (component instanceof Show) bridge.contract().require(megalodonte.contracts.Capability.CONDITIONAL_RENDERING);
         if (component instanceof ForEach) bridge.contract().require(megalodonte.contracts.Capability.LIST_RENDERING);
@@ -73,6 +75,8 @@ public final class BridgeRuntime implements AutoCloseable {
             binding = input.displayState().observe(value -> updateValue(id, value));
         } else if (component instanceof Checkbox checkbox) {
             binding = checkbox.state.observe(value -> updateValue(id, value));
+        } else if (component instanceof Switch toggle) {
+            binding = toggle.state().observe(value -> updateValue(id, value));
         } else if (component instanceof ProgressBar progress) {
             binding = progress.state.observe(value -> updateValue(id, value));
         } else if (component instanceof Show show) {
@@ -123,6 +127,8 @@ public final class BridgeRuntime implements AutoCloseable {
                 input.dispatchKeyboardAction(performDefaultAction);
         } else if (target instanceof Checkbox checkbox && "change".equals(event.name()) && event.value() instanceof Boolean value)
             checkbox.state.set(value);
+        else if (target instanceof Switch toggle && "change".equals(event.name()) && event.value() instanceof Boolean value)
+            toggle.state().set(value);
     }
     private void updateValue(String id, Object value) { if (!closed) bridge.setValue(id, value); }
     public void setText(String id, String value) {

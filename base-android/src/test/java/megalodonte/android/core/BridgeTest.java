@@ -156,14 +156,18 @@ public final class BridgeTest {
         } catch (IllegalStateException expected) { }
         require(failedBridge.closeCount == 1, "Failed bootstrap must dispose host");
         State<Boolean> checked = State.of(false);
+        State<Boolean> switched = State.of(false);
         State<Integer> progress = State.of(10);
         megalodonte.components.Checkbox checkbox = new megalodonte.components.Checkbox("Checked", checked);
+        megalodonte.components.Switch toggle = new megalodonte.components.Switch("Notifications", switched);
         megalodonte.components.ProgressBar bar = new megalodonte.components.ProgressBar(progress);
         FakeBridge controls = new FakeBridge();
-        BridgeRuntime controlRuntime = new BridgeRuntime(controls, new Container().children(checkbox, bar));
+        BridgeRuntime controlRuntime = new BridgeRuntime(controls, new Container().children(checkbox, toggle, bar));
         controls.events.accept(new NativeBridge.Event(checkbox.bridgeId(), "change", true));
+        controls.events.accept(new NativeBridge.Event(toggle.bridgeId(), "change", true));
         progress.set(65);
-        require(checked.get() && Integer.valueOf(65).equals(controls.values.get(bar.bridgeId())), "Control bindings must be bidirectional/reactive");
+        require(checked.get() && switched.get() && Integer.valueOf(65).equals(controls.values.get(bar.bridgeId())),
+            "Control bindings must be bidirectional/reactive");
         controlRuntime.close();
         progress.set(99);
         require(Integer.valueOf(65).equals(controls.values.get(bar.bridgeId())), "Controls must detach on disposal");

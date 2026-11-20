@@ -4,6 +4,7 @@ import megalodonte.base.components.Component;
 import megalodonte.base.components.Ref;
 import megalodonte.components.Button;
 import megalodonte.components.Text;
+import megalodonte.components.Switch;
 import megalodonte.components.inputs.Input;
 import megalodonte.props.InputProps;
 
@@ -56,6 +57,15 @@ public final class ComponentContractTest {
         inputWithoutHandler.dispatchKeyboardAction(() -> defaultCalls[0]++);
         require(defaultCalls[0] == 2,
                 "Input must preserve the native IME behavior when no custom handler is installed");
+
+        var enabled = megalodonte.base.state.State.of(false);
+        Switch toggle = new Switch("Notifications", enabled);
+        require("Notifications".equals(toggle.accessibleLabel()) && toggle.state() == enabled,
+                "Switch must preserve its accessible label and boolean state");
+        try {
+            new Switch(" ", enabled);
+            throw new AssertionError("Switch must reject a blank accessible label");
+        } catch (IllegalArgumentException expected) { }
 
         System.out.println("Component contract tests passed");
     }

@@ -52,7 +52,7 @@ volta de threads de fundo ao looper principal (`Handler`), análogo ao
 `Platform.runLater` do desktop. Não há runtime JavaScript,
 serialização, diff da árvore, roteamento ou equivalência completa com o backend JavaFX.
 Suportados: Text/Button, Container/Column/Row, Scroll, espaçadores,
-Input/PasswordInput/TextAreaInput (incluindo variantes Material e ações IME), Checkbox, ProgressBar, Show.when, listas
+Input/PasswordInput/TextAreaInput (incluindo variantes Material e ações IME), Checkbox, Switch, ProgressBar, Show.when, listas
 reativas via `ForEach`/`items(ReadableState<List<T>>, ...)` e `Ref<T>` com
 `Component.ref(...)`, com recriação das views ao mudar (sem reconciliação por
 identidade nem preservação de foco); a
